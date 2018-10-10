@@ -38,12 +38,14 @@ Usage: rdfupload [-?] [-ep=<endpoint>] -if=<inputFile> [-pw=<passWord>]
 * Linux / OSX
 
 ```shell
-docker run -it --rm -v /data/rdfu:/data rdf-upload -rq "/data/rdffile.nt" -ep "http://localhost:7200/sparql"
+docker run -it --rm -v /data/data-constructor:/data rdf-upload -rq "/data" -ep "http://localhost:7200/repositories/test"
+
+docker run -it --rm --link graphdb:graphdb -v /data/data-constructor:/data data-constructor -rq "/data" -url "http://graphdb:7200/repositories/test" -un import_user -pw test
 ```
 * Windows
 
 ```powershell
-docker run -it --rm -v /c/data/rdfu:/data rdf-upload -rq "/data/rdffile.nt" -ep "http://localhost:7200/sparql"
+docker run -it --rm -v /c/data/data-constructor:/data rdf-upload -rq "/data" -ep "http://localhost:7200/repositories/test"
 ```
 
 

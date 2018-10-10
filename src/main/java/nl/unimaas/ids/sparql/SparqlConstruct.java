@@ -24,6 +24,7 @@ public class SparqlConstruct {
 	private static SPARQLRepository repo;
 
 	public static void executeConstructFiles(String filePath, String endpoint, String username, String password) throws Exception {
+		
 		repo = new SPARQLRepository(endpoint);
 		repo.setUsernameAndPassword(username, password);
 		repo.initialize();
