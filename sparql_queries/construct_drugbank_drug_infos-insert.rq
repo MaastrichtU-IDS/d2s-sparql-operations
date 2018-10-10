@@ -12,6 +12,7 @@ INSERT
 { 
   GRAPH <http://data2services/biolink/drugbank>
   {
+    # WORKING
     ?drugUri a bioentity:Drug .
     ?drugUri bioentity:name ?drugName .
     ?drugUri bioentity:id ?drugId .

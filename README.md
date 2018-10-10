@@ -24,8 +24,6 @@ Usage: rdfupload [-?] [-ep=<endpoint>] -if=<inputFile> [-pw=<passWord>]
                Password used for authentication
       -rep, --repository=<repository>
                Repository ID
-      -uep, --updateEndPoint=<updateEndpoint>
-               SPARQL udpate endpoint
       -un, --userName=<userName>
                Username userd for authentication
       -url, --graphdb-url=<url>
@@ -38,9 +36,13 @@ Usage: rdfupload [-?] [-ep=<endpoint>] -if=<inputFile> [-pw=<passWord>]
 * Linux / OSX
 
 ```shell
-docker run -it --rm -v /data/data-constructor:/data rdf-upload -rq "/data" -ep "http://localhost:7200/repositories/test"
+# Using local SPARQL endpoint
+docker run -it --rm -v /data/data-constructor:/data rdf-upload -rq "/data" -url "http://localhost:7200/repositories/test"
 
+# Using GraphDB docker
 docker run -it --rm --link graphdb:graphdb -v /data/data-constructor:/data data-constructor -rq "/data" -url "http://graphdb:7200/repositories/test" -un import_user -pw test
+
+docker run -it --rm -v /data/data-constructor:/data data-constructor -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test" -un import_user -pw test
 ```
 * Windows
 
