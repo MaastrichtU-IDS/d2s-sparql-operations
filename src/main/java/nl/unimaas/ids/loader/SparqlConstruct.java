@@ -10,6 +10,7 @@ import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * A class to upload to GraphDB SPARQL endpoint
@@ -31,9 +32,8 @@ public class SparqlConstruct {
 			
 			Model resultModel = QueryResults.asModel(graphResult);
 			
-			Rio.write(resultModel, System.out, RDFFormat.RDFXML);
-
-			FileUtils.writeStringToFile(new File("/data/test.txt"), resultModel.toString());
+			Rio.write(resultModel, new FileOutputStream("/data/test.txt"), RDFFormat.TURTLE);
+			Rio.write(resultModel, System.out, RDFFormat.TURTLE);
 			
 		} catch (Exception e) {
 			throw e;
