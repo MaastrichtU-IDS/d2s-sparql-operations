@@ -8,10 +8,6 @@ public class CliOptions {
 	@Option(names = { "-?", "--help" }, usageHelp = true, description = "Display a help message")
 	boolean help = false;
 
-
-	@Option(names= {"-m", "--method"}, description = "Upload Method (HTTP (default), SPARQL, RDF4JSPARQL)")
-	String method = "HTTP";
-
 	@Option(names= {"-url", "--database-url"}, description = "URL for Repository/Endpoint (default is http://graphdb:7200)")
 	String dbUrl = "http://graphdb:7200)";
 

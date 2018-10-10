@@ -14,21 +14,15 @@ import java.io.File;
 /**
  * A class to upload to GraphDB SPARQL endpoint
  */
-public class SparqlLoader {
+public class SparqlConstruct {
 
 	private static SPARQLRepository repo;
 
-	public static void uploadRdf(boolean isRdf4jSparql, String filePath, String endpoint, String username, String password) throws Exception {
+	public static void executeConstructFiles(String filePath, String endpoint, String username, String password) throws Exception {
 
-		if(isRdf4jSparql == true) {
-			repo = new SPARQLRepository(endpoint, endpoint + "/statements");
-		} else {
-			repo = new SPARQLRepository(endpoint);
-		}
-
+		repo = new SPARQLRepository(endpoint);
 		repo.setUsernameAndPassword(username, password);
 		repo.initialize();
-
 
 		try (RepositoryConnection conn = repo.getConnection()) {
 			//File inputFile = new File(filePath);
@@ -37,12 +31,8 @@ public class SparqlLoader {
 			
 			Model resultModel = QueryResults.asModel(graphResult);
 			
-
-
 			Rio.write(resultModel, System.out, RDFFormat.RDFXML);
 
-
-			
 			FileUtils.writeStringToFile(new File("/data/test.txt"), resultModel.toString());
 			
 		} catch (Exception e) {
