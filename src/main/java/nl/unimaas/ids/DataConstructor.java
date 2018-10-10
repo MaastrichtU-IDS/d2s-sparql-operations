@@ -1,7 +1,6 @@
 package nl.unimaas.ids;
 
-import nl.unimaas.ids.loader.SparqlConstruct;
-
+import nl.unimaas.ids.sparql.SparqlConstruct;
 import picocli.CommandLine;
 
 public class DataConstructor {
