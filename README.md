@@ -36,15 +36,14 @@ Usage: rdfupload [-?] [-ep=<endpoint>] -if=<inputFile> [-pw=<passWord>]
 * Linux / OSX
 
 ```shell
+# Insert on graphdb.dumontierlab.com
+docker run -it --rm -v /data/data-constructor:/data data-constructor -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test/statements" -un import_user -pw test
+
 # Using local SPARQL endpoint
 docker run -it --rm -v /data/data-constructor:/data rdf-upload -rq "/data" -url "http://localhost:7200/repositories/test"
 
 # Using GraphDB docker
 docker run -it --rm --link graphdb:graphdb -v /data/data-constructor:/data data-constructor -rq "/data" -url "http://graphdb:7200/repositories/test" -un import_user -pw test
-
-nohup docker run -it --rm -v /data/drugbank-constructs:/data data-constructor -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test" -un import_user -pw test > construct.log 2> error.log &
-
-docker run -it --rm -v /data:/data data-constructor -rq "/data/data-constructor" -url "http://graphdb.dumontierlab.com/repositories/test" -un import_user -pw test
 ```
 * Windows
 
