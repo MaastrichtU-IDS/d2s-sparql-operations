@@ -1,0 +1,50 @@
+PREFIX x2rm: <http://ids.unimaas.nl/rdf2xml/model/>
+PREFIX d2s: <http://data2services/vocab/>
+PREFIX ido: <http://identifiers.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bioentity: <http://bioentity.io/vocab/>
+INSERT 
+{ 
+    GRAPH <http://data2services/biolink/drugbank/test> {  
+        # external-identifiers
+        ?drugUri bioentity:same_as ?drugIdentifierUri .
+        ?drugIdentifierUri a bioentity:Drug ;
+            bioentity:id ?drugIdentifierId .
+    }
+}
+WHERE {
+    GRAPH <http://kraken/graph/xml2rdf> {
+
+        ?drugObj a x2rm:drugbank\/drug ;
+            # Get drug primary ID
+            x2rm:hasChild [
+                a x2rm:drugbank\/drug\/drugbank-id ;
+                x2rm:hasAttribute [ a x2rm:drugbank\/drug\/drugbank-id\/\@primary ] ;
+                x2rm:hasValue ?drugId
+            ] ;
+            # Get EXTERNAL IDENTIFIERS
+            x2rm:hasChild [ 
+                a x2rm:drugbank\/drug\/external-identifiers; 
+                x2rm:hasChild [ 
+                    a x2rm:drugbank\/drug\/external-identifiers\/external-identifier;
+                    x2rm:hasChild [ 
+                        a x2rm:drugbank\/drug\/external-identifiers\/external-identifier\/resource; 
+                        x2rm:hasValue ?drugIdentifierResource 
+                    ] ;
+                    x2rm:hasChild [ 
+                        a x2rm:drugbank\/drug\/external-identifiers\/external-identifier\/identifier; 
+                        x2rm:hasValue ?drugIdentifierId 
+                    ]
+                ] 
+            ] .
+
+         BIND ( iri(concat("http://identifiers.org/drugbank:", ?drugId)) AS ?drugUri )
+         BIND ( iri(concat("http://identifiers.org/", ENCODE_FOR_URI(REPLACE(?drugIdentifierResource, " ", "", "i")), ":", ?drugIdentifierId) ) AS ?drugIdentifierUri )
+         # Build the external-identifier by removing all spaces and encode_for_uri
+    }
+}

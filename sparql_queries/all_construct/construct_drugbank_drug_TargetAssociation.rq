@@ -1,0 +1,68 @@
+PREFIX x2rm: <http://ids.unimaas.nl/rdf2xml/model/>
+PREFIX d2s: <http://data2services/vocab/>
+PREFIX ido: <http://identifiers.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bioentity: <http://bioentity.io/vocab/>
+CONSTRUCT 
+{ 
+    
+    ### Represent target (Drug to protein or DNA) ChemicalToGeneAssociation
+    #Should we use: ?drugUri bioentity:interacts_with ?targetUri .
+    [ a bioentity:ChemicalToGeneAssociation ;
+    bioentity:relation bioentity:ChemicalToGeneAssociation ;
+    bioentity:subject ?drugUri ;
+    bioentity:object ?targetUri ;
+    #bioentity:publications ?targetArticleUri ;
+    bioentity:qualifiers ?targetActionUri ;
+    d2s:organism ?targetOrganism] .
+
+    ?targetActionUri a bioentity:Attribute .
+    ?targetActionUri bioentity:name ?targetAction .
+
+    ?targetUri a bioentity:GeneOrGeneProduct .
+    ?targetUri bioentity:name ?targetName .
+    ?targetUri bioentity:id ?targetId .
+
+    }
+WHERE {
+select * where { 
+
+    # Get drug primary ID
+    ?drugObj a x2rm:drugbank\/drug .
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/drugbank-id ; x2rm:hasAttribute [ a x2rm:drugbank\/drug\/drugbank-id\/\@primary ] ; x2rm:hasValue ?drugId ] .
+    BIND ( iri(concat("http://identifiers.org/drugbank:", ?drugId)) AS ?drugUri )
+
+
+    ### Get drug-TARGETS association
+
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets; x2rm:hasChild ?targetObj ] .
+    ?targetObj a x2rm:drugbank\/drug\/targets\/target .
+
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/id ; x2rm:hasValue ?targetId ] .
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/name; x2rm:hasValue ?targetName ] .
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/organism; x2rm:hasValue ?targetOrganism ] .
+    BIND ( iri(concat("http://identifiers.org/drugbank:", ?targetId)) AS ?targetUri )
+
+
+    # Get target action as qualifiers
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/actions; 
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/actions\/action; x2rm:hasValue ?targetAction
+    ] ] .
+    BIND ( iri(concat("http://data2services/vocab/action/", ?targetAction)) AS ?targetActionUri )
+
+
+    # Get target organism
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/actions; 
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/actions\/action; x2rm:hasValue ?targetAction
+    ] ] .
+    BIND ( iri(concat("http://data2services/vocab/action/", ?targetAction)) AS ?targetActionUri )
+
+
+}
+
+}

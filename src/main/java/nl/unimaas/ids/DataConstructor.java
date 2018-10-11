@@ -1,6 +1,7 @@
 package nl.unimaas.ids;
 
 import nl.unimaas.ids.sparql.SparqlConstruct;
+import nl.unimaas.ids.sparql.SparqlInsert;
 import picocli.CommandLine;
 
 public class DataConstructor {
@@ -12,7 +13,8 @@ public class DataConstructor {
 			if(cli.help)
 				printUsageAndExit();
 
-			SparqlConstruct.executeConstructFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
+			//SparqlConstruct.executeConstructFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
+			SparqlInsert.executeInsertFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
 
 		} catch (Exception e) {
 			printUsageAndExit(e);

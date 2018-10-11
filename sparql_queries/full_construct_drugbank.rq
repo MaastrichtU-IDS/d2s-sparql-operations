@@ -1,0 +1,317 @@
+PREFIX x2rm: <http://ids.unimaas.nl/rdf2xml/model/>
+PREFIX d2s: <http://data2services/vocab/>
+PREFIX ido: <http://identifiers.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bioentity: <http://bioentity.io/vocab/>
+CONSTRUCT 
+{ 
+    ?drugUri a bioentity:Drug .
+    ?drugUri bioentity:name ?drugName .
+    ?drugUri bioentity:id ?drugId .
+    ?drugUri bioentity:systematic_synonym ?systematicSynonym .
+    ?drugUri bioentity:description ?drugDescription .
+
+    # X-ref
+    ?drugUri bioentity:same_as ?casNumberUri .
+    ?casNumberUri bioentity:id ?casNumber .
+
+    ?drugUri bioentity:same_as ?uniiUri .
+    ?uniiUri bioentity:id ?unii .
+
+    # Affected organism
+    ?drugUri bioentity:affects ?affectedOrganismUri .
+    ?affectedOrganismUri a bioentity:OrganismalEntity .
+    ?affectedOrganismUri bioentity:name ?affectedOrganism .
+
+
+
+    ### Represent food interaction. Should we use an association object?
+    ?drugUri bioentity:interacts_with ?foodInteraction .
+
+
+
+
+    ### experimental-properties
+    ?drugUri bioentity:filler ?drugExpePropertiesUri .
+    ?drugExpePropertiesUri a ?drugExpePropertiesType .
+    ?drugExpePropertiesUri d2s:kind ?drugExpePropertiesKind .
+    ?drugExpePropertiesUri d2s:value ?drugExpePropertiesValue .
+    ?drugExpePropertiesUri d2s:source ?drugExpePropertiesSource .
+
+
+    # TODO: category. Is using this predicate right? https://biolink.github.io/biolink-model/docs/category.html
+    ?drugUri bioentity:category ?categoryMeshUri .
+    ?categoryMeshUri bioentity:id ?categoryMeshId .
+    ?categoryMeshUri bioentity:name ?categoryName .
+
+
+
+    ### Represent Drug drug interaction. https://biolink.github.io/biolink-model/docs/ChemicalToThingAssociation.html
+    # Or should we use https://biolink.github.io/biolink-model/docs/affects.html
+    ?drugInteractionAssociationUri a bioentity:ChemicalToThingAssociation .
+    ?drugInteractionAssociationUri bioentity:relation bioentity:ChemicalToThingAssociation .
+    ?drugInteractionAssociationUri bioentity:subject ?drugUri .
+    ?drugInteractionAssociationUri bioentity:object ?drugInteractionUri .
+    ?drugInteractionAssociationUri bioentity:description ?drugInteractionDescription .
+
+    ?drugInteractionUri a bioentity:Drug .
+    ?drugInteractionUri bioentity:name ?drugInteractionName .
+
+
+
+    ### Represent target (Drug to protein) ChemicalToGeneAssociation
+    #Should we use: ?drugUri bioentity:interacts_with ?targetUri .
+    ?targetAssociationUri a bioentity:ChemicalToGeneAssociation .
+    ?targetAssociationUri bioentity:relation bioentity:ChemicalToGeneAssociation .
+    ?targetAssociationUri bioentity:subject ?drugUri .
+    ?targetAssociationUri bioentity:object ?targetUri .
+    ?targetAssociationUri bioentity:publications ?targetArticleUri .
+    ?targetAssociationUri bioentity:qualifiers ?targetActionUri .
+
+    ?targetActionUri a bioentity:Attribute .
+    ?targetActionUri bioentity:name ?targetAction .
+
+    ?targetArticleUri a bioentity:Publication .
+    ?targetArticleUri bioentity:id ?targetArticlePubmedId .
+    ?targetArticleUri bioentity:name ?targetArticleCitation .
+    ?targetArticleUri bioentity:relates_to ?targetUri . 
+
+    # TODO: extract more informations about targets. Ramzi: Protein or GeneProduct?
+    ?targetUri a bioentity:Protein .
+    ?targetUri bioentity:name ?targetName .
+    ?targetUri bioentity:id ?targetId .
+
+
+    # TODO: extract enzymes (structure really similar to targets)
+
+
+    # Pathways
+    ?pathwayAssociationUri a bioentity:ChemicalToPathwayAssociation .
+    ?pathwayAssociationUri bioentity:relation bioentity:ChemicalToPathwayAssociation .
+    ?pathwayAssociationUri bioentity:subject ?drugUri .
+    ?pathwayAssociationUri bioentity:object ?drugPathwayUri .
+
+    ?drugPathwayUri a bioentity:Pathway .
+    ?drugPathwayUri bioentity:id ?drugPathwaySmpdbId .
+    ?drugPathwayUri bioentity:name ?drugPathwayName .
+
+
+    # external-identifiers
+    ?drugUri bioentity:same_as ?drugIdentifierUri .
+    ?drugIdentifierUri a bioentity:Drug .
+    ?drugIdentifierUri bioentity:id ?drugIdentifierId .
+
+    ?pubmedArticleUri a bioentity:Publication .
+    ?pubmedArticleUri bioentity:id ?articlePmid .
+    ?pubmedArticleUri bioentity:name ?articleCitation .
+    ?pubmedArticleUri bioentity:relates_to ?drugUri .
+    
+    ?linkSubjectUri a bioentity:Publication .
+    ?linkSubjectUri bioentity:iri ?linkUrl .
+    ?linkSubjectUri bioentity:name ?linkTitle .
+    ?linkSubjectUri bioentity:relates_to ?drugUri .
+
+    }
+WHERE {
+select * where { 
+#select (count(*) AS ?count) where { 
+    # Get drug primary ID
+    ?drugObj a x2rm:drugbank\/drug .
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/drugbank-id ; x2rm:hasAttribute [ a x2rm:drugbank\/drug\/drugbank-id\/\@primary ] ; x2rm:hasValue ?drugId ] .
+    BIND ( iri(concat("http://identifiers.org/drugbank:", ?drugId)) AS ?drugUri )
+
+
+    ### Get Drug single informations (id, name, description)
+
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/drugbank-id ; x2rm:hasValue ?systematicSynonym ] .
+
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/cas-number; x2rm:hasValue ?casNumber ] .
+    BIND ( iri(concat("http://identifiers.org/cas-number:", ?casNumber)) AS ?casNumberUri )
+
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/unii; x2rm:hasValue ?unii ] .
+    BIND ( iri(concat("http://identifiers.org/unii:", ?unii)) AS ?uniiUri )
+
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/name; x2rm:hasValue ?drugName] .
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/description ; x2rm:hasValue ?drugDescription ] .
+
+    # TODO: state (liquid)
+    # TODO: synthesis-reference = Patent how it is synthesis
+    # TODO: a lot of "text description" have not been done. Trouble to get where they should be defined... https://biolink.github.io/biolink-model/docs/Drug.html
+    # indication, pharmacodynamics, mechanism-of-action, toxicity, metabolism, absorption, half-life, protein-binding, route-of-elimination, volume-of-distribution
+    # clearance
+
+    # TODO: atc-codes, dosages, patents, sequences
+
+
+
+    ### Get publications
+    ?drugObj x2rm:hasChild ?generalReferenceObj .
+    ?generalReferenceObj a x2rm:drugbank\/drug\/general-references .
+
+    # Pubmed articles
+    ?generalReferenceObj x2rm:hasChild [ a x2rm:drugbank\/drug\/general-references\/articles ; 
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/general-references\/articles\/article ;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/general-references\/articles\/article\/pubmed-id ; x2rm:hasValue ?articlePmid ] ;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/general-references\/articles\/article\/citation ; x2rm:hasValue ?articleCitation ]
+    ] ] .
+    BIND ( iri(concat("http://identifiers.org/pmid:", ?articlePmid)) AS ?pubmedArticleUri ) .
+
+    # TODO: textbooks
+
+    # Links
+    ?generalReferenceObj x2rm:hasChild [ a x2rm:drugbank\/drug\/general-references\/links; 
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/general-references\/links\/link;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/general-references\/links\/link\/title; x2rm:hasValue ?linkTitle ];
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/general-references\/links\/link\/url; x2rm:hasValue ?linkUrl ]
+        ]
+    ] .
+    BIND ( iri(concat("http://identifiers.org/drugbank_link:", md5(?linkUrl))) AS ?linkSubjectUri ) .
+
+
+
+
+
+    ### Get EXPERIMENTAL PROPERTIES
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties; 
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property\/kind; x2rm:hasValue ?drugExpePropertiesKind ] ;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property\/value; x2rm:hasValue ?drugExpePropertiesValue ] ;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property\/source; x2rm:hasValue ?drugExpePropertiesSource ]
+     ] ] .
+     BIND ( iri(concat("http://data2services/vocab/experimental-properties/", md5(concat(?drugExpePropertiesKind,?drugExpePropertiesValue,?drugExpePropertiesSource) ) ) ) AS ?drugExpePropertiesUri )
+     BIND ( iri(concat("http://data2services/model/experimental-properties/", md5(?drugExpePropertiesKind)) ) AS ?drugExpePropertiesType )
+
+     #CHANGEIT BIND ( iri(concat("http://data2services/model/experimental-properties/", REPLACE(?drugExpePropertiesKind, " ", "", "i")) ) AS ?drugExpePropertiesType )
+
+
+
+    ### Get EXTERNAL IDENTIFIERS
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/external-identifiers; 
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/external-identifiers\/external-identifier;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/external-identifiers\/external-identifier\/resource; x2rm:hasValue ?drugIdentifierResource ] ;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/external-identifiers\/external-identifier\/identifier; x2rm:hasValue ?drugIdentifierId ]
+     ] ] .
+     BIND ( iri(concat("http://identifiers.org/", md5(?drugIdentifierResource), ?drugIdentifierId) ) AS ?drugIdentifierUri )
+
+     #CHANGEIT BIND ( iri(concat("http://identifiers.org/", ENCODE_FOR_URI(REPLACE(?drugIdentifierResource, " ", "", "i")), ":", ?drugIdentifierId) ) AS ?drugIdentifierUri )
+
+     # TODO: Get external-links
+
+
+
+    ### Get CATEGORIES (Mesh)
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/categories;
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/categories\/category;  
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/categories\/category\/mesh-id; x2rm:hasValue ?categoryMeshId ] ;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/categories\/category\/category; x2rm:hasValue ?categoryName ] 
+    ] ] .
+    BIND ( iri(concat("http://identifiers.org/mesh:", ?categoryMeshId)) AS ?categoryMeshUri )
+
+
+    # Get AFFECTED ORGANISM
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/affected-organism; x2rm:hasValue ?affectedOrganism ] .
+    BIND ( iri(concat("http://data2services/vocab/organism/", md5(?affectedOrganism))) AS ?affectedOrganismUri )
+
+
+
+
+    # Get PATHWAYS
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/pathways; 
+        x2rm:hasChild ?pathwayObj ] .
+    ?pathwayObj a x2rm:drugbank\/drug\/pathways\/pathway;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/pathways\/pathway\/smpdb-id; x2rm:hasValue ?drugPathwaySmpdbId ] ;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/pathways\/pathway\/name; x2rm:hasValue ?drugPathwayName ] .
+
+     BIND ( iri(concat("http://identifiers.org/smpdb:", ?drugPathwaySmpdbId) ) AS ?drugPathwayUri )
+     BIND ( iri(concat("http://data2services/vocab/pathway_association:", md5(concat(?drugId, ?drugPathwaySmpdbId)))) AS ?pathwayAssociationUri )
+
+
+    ### Really important association
+    # reactions (Enzyme)
+
+    # Get DRUG-DRUG interactions
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/drug-interactions; 
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/drug-interactions\/drug-interaction; 
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/drug-interactions\/drug-interaction\/drugbank-id; x2rm:hasValue ?drugInteractionId ] ;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/drug-interactions\/drug-interaction\/name; x2rm:hasValue ?drugInteractionName ] ;
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/drug-interactions\/drug-interaction\/description; x2rm:hasValue ?drugInteractionDescription ] 
+    ] ] .
+    BIND ( iri(concat("http://identifiers.org/drugbank:", ?drugInteractionId)) AS ?drugInteractionUri )
+    #BIND ( iri(concat("http://data2services/vocab/drugbank_association:", md5(concat(?drugId, ?drugInteractionId)))) AS ?drugInteractionAssociationUri )
+    BIND ( iri(concat("http://data2services/vocab/drugbank_association:", md5(concat(?drugId, ?drugInteractionId)))) AS ?drugInteractionAssociationUri )
+
+
+
+    # Get FOOD interactions
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/food-interactions; 
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/food-interactions\/food-interaction; x2rm:hasValue ?foodInteraction
+    ] ] .
+
+
+
+
+    ### Get drug-TARGETS association
+
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets; x2rm:hasChild ?targetObj ] .
+    ?targetObj a x2rm:drugbank\/drug\/targets\/target .
+
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/id ; x2rm:hasValue ?targetId ] .
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/name; x2rm:hasValue ?targetName ] .
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/organism; x2rm:hasValue ?targetOrganism ] .
+    BIND ( iri(concat("http://identifiers.org/drugbank:", ?targetId)) AS ?targetUri )
+    BIND ( iri(concat("http://identifiers.org/drugbank_association:", md5(concat(?drugId, ?targetId)))) AS ?targetAssociationUri )
+
+
+
+
+
+    # Get target action as qualifiers
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/actions; 
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/actions\/action; x2rm:hasValue ?targetAction
+    ] ] .
+    BIND ( iri(concat("http://data2services/vocab/drugbank:", ?targetAction)) AS ?targetActionUri )
+
+    # Get target organism
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/actions; 
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/actions\/action; x2rm:hasValue ?targetAction
+    ] ] .
+    BIND ( iri(concat("http://data2services/vocab/action/", ?targetAction)) AS ?targetActionUri )
+
+
+
+
+    # Get drug-targets publications
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/id; x2rm:hasValue ?targetId ] .
+
+    ?targetObj x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/references;
+        x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/references\/articles; 
+            x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/references\/articles\/article;
+                x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/references\/articles\/article\/pubmed-id; x2rm:hasValue ?targetArticlePubmedId ];
+                x2rm:hasChild [ a x2rm:drugbank\/drug\/targets\/target\/references\/articles\/article\/citation; x2rm:hasValue ?targetArticleCitation ]
+    ] ] ] .
+    BIND ( iri(concat("http://identifiers.org/pmid:", ?targetArticlePubmedId)) AS ?targetArticleUri ) .
+
+
+
+
+    # Get the HGNC identifier for the gene coding for the gene product which is in target/polypeptide/external-identifier
+    ?targetObj x2rm:hasChild ?polypeptideObj .
+    ?polypeptideObj a x2rm:drugbank\/drug\/targets\/target\/polypeptide .
+    ?polypeptideObj x2rm:hasChild ?extIdentifiersObj .
+    ?extIdentifiersObj a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/external-identifiers .   
+    ?extIdentifiersObj x2rm:hasChild ?extIdentifierObj .
+    ?extIdentifierObj a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/external-identifiers\/external-identifier .
+    ?extIdentifierObj x2rm:hasChild ?identifierObj .
+    ?identifierObj a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/external-identifiers\/external-identifier\/identifier .
+    ?identifierObj x2rm:hasValue ?hgncIdentifier .
+    #CHANGEIT FILTER( REGEX( ?hgncIdentifier, "^HGNC:" ) ) .
+    BIND ( iri(concat("http://identifiers.org/", lcase(?hgncIdentifier))) AS ?hgncUri )
+
+}
+
+}

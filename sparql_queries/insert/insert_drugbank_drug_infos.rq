@@ -1,0 +1,75 @@
+PREFIX x2rm: <http://ids.unimaas.nl/rdf2xml/model/>
+PREFIX d2s: <http://data2services/vocab/>
+PREFIX ido: <http://identifiers.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bioentity: <http://bioentity.io/vocab/>
+INSERT 
+{ 
+    GRAPH <http://data2services/biolink/drugbank/test> {  
+        ?drugUri a bioentity:Drug ;
+            bioentity:name ?drugName ;
+            bioentity:id ?drugId ;
+            bioentity:systematic_synonym ?drugAltId ;
+            bioentity:description ?drugDescription ;
+            bioentity:same_as ?drugAltIdUri ;
+            bioentity:same_as ?casNumberUri ;
+            bioentity:same_as ?uniiUri .
+
+        # X-refs
+        ?casNumberUri bioentity:id ?casNumber .
+        ?uniiUri bioentity:id ?unii .
+
+    }
+}
+WHERE {
+    GRAPH <http://kraken/graph/xml2rdf> {
+    
+        # Get drug primary ID
+        ?drugObj a x2rm:drugbank\/drug ;
+            # Get drug primary ID
+            x2rm:hasChild [
+                a x2rm:drugbank\/drug\/drugbank-id ;
+                x2rm:hasAttribute [ a x2rm:drugbank\/drug\/drugbank-id\/\@primary ] ;
+                x2rm:hasValue ?drugId
+            ] ;
+            # Get Drug single informations (id, name, description...)
+            x2rm:hasChild [ 
+                a x2rm:drugbank\/drug\/drugbank-id ; 
+                x2rm:hasValue ?drugAltId 
+            ] ;
+            x2rm:hasChild [ 
+                a x2rm:drugbank\/drug\/cas-number; 
+                x2rm:hasValue ?casNumber 
+            ] ;
+            x2rm:hasChild [ 
+                a x2rm:drugbank\/drug\/unii; 
+                x2rm:hasValue ?unii 
+            ] ;
+            x2rm:hasChild [ 
+                a x2rm:drugbank\/drug\/name; 
+                x2rm:hasValue ?drugName
+            ] ;
+            x2rm:hasChild [ 
+                a x2rm:drugbank\/drug\/description; 
+                x2rm:hasValue ?drugDescription 
+            ] .
+
+        # TODO: state (liquid)
+        # TODO: synthesis-reference = Patent how it is synthesis
+        # TODO: a lot of "text description" have not been done. Trouble to get where they should be defined... https://biolink.github.io/biolink-model/docs/Drug.html
+        # indication, pharmacodynamics, mechanism-of-action, toxicity, metabolism, absorption, half-life, protein-binding, route-of-elimination, volume-of-distribution
+        # clearance
+
+        # TODO: atc-codes, dosages, patents, sequences
+
+        BIND ( iri(concat("http://identifiers.org/drugbank:", ?drugId)) AS ?drugUri )
+        BIND ( iri(concat("http://identifiers.org/drugbank:", ?drugAltId)) AS ?drugAltIdUri )
+        BIND ( iri(concat("http://identifiers.org/cas-number:", ?casNumber)) AS ?casNumberUri )
+        BIND ( iri(concat("http://identifiers.org/unii:", ?unii)) AS ?uniiUri )
+    }
+}

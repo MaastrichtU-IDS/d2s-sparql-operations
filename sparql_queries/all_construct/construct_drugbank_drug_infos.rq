@@ -8,11 +8,8 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX bioentity: <http://bioentity.io/vocab/>
-INSERT 
+CONSTRUCT 
 { 
-  GRAPH <http://data2services/biolink/drugbank>
-  {
-    # WORKING
     ?drugUri a bioentity:Drug .
     ?drugUri bioentity:name ?drugName .
     ?drugUri bioentity:id ?drugId .
@@ -27,9 +24,9 @@ INSERT
     ?uniiUri bioentity:id ?unii .
 
     # Affected organism
-    #?drugUri bioentity:affects ?affectedOrganismUri .
-    #?affectedOrganismUri a bioentity:OrganismalEntity .
-    #?affectedOrganismUri bioentity:name ?affectedOrganism .
+    ?drugUri bioentity:affects ?affectedOrganismUri .
+    ?affectedOrganismUri a bioentity:OrganismalEntity .
+    ?affectedOrganismUri bioentity:name ?affectedOrganism .
 
     # TODO: category. Is using this predicate right? https://biolink.github.io/biolink-model/docs/category.html
     ?drugUri bioentity:category ?categoryMeshUri .
@@ -39,10 +36,11 @@ INSERT
 
     # TODO: extract enzymes (structure really similar to targets)
 
-  }
-}
+
+    }
 WHERE {
-GRAPH  <http://kraken/graph/xml2rdf> { 
+select * where { 
+#select (count(*) AS ?count) where { 
     # Get drug primary ID
     ?drugObj a x2rm:drugbank\/drug .
     ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/drugbank-id ; x2rm:hasAttribute [ a x2rm:drugbank\/drug\/drugbank-id\/\@primary ] ; x2rm:hasValue ?drugId ] .
@@ -81,8 +79,8 @@ GRAPH  <http://kraken/graph/xml2rdf> {
 
 
     # Get AFFECTED ORGANISM
-    #?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/affected-organism; x2rm:hasValue ?affectedOrganism ] .
-    #BIND ( iri(concat("http://data2services/vocab/organism/", md5(?affectedOrganism))) AS ?affectedOrganismUri )
+    ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/affected-organism; x2rm:hasValue ?affectedOrganism ] .
+    BIND ( iri(concat("http://data2services/vocab/organism/", md5(?affectedOrganism))) AS ?affectedOrganismUri )
 
 }
 

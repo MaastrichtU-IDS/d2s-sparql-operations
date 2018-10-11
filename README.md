@@ -42,7 +42,9 @@ docker run -it --rm -v /data/data-constructor:/data rdf-upload -rq "/data" -url 
 # Using GraphDB docker
 docker run -it --rm --link graphdb:graphdb -v /data/data-constructor:/data data-constructor -rq "/data" -url "http://graphdb:7200/repositories/test" -un import_user -pw test
 
-docker run -it --rm -v /data/data-constructor:/data data-constructor -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test" -un import_user -pw test
+nohup docker run -it --rm -v /data/drugbank-constructs:/data data-constructor -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test" -un import_user -pw test > construct.log 2> error.log &
+
+docker run -it --rm -v /data:/data data-constructor -rq "/data/data-constructor" -url "http://graphdb.dumontierlab.com/repositories/test" -un import_user -pw test
 ```
 * Windows
 

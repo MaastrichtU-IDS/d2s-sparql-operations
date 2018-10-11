@@ -1,20 +1,16 @@
 package nl.unimaas.ids.sparql;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
-import org.eclipse.rdf4j.model.Model;
-import org.eclipse.rdf4j.query.GraphQueryResult;
-import org.eclipse.rdf4j.query.QueryResults;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.Update;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
-import org.eclipse.rdf4j.rio.RDFFormat;
-import org.eclipse.rdf4j.rio.Rio;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * A class to upload to GraphDB SPARQL endpoint
@@ -23,7 +19,7 @@ public class SparqlInsert {
 
 	private static SPARQLRepository repo;
 
-	public static void executeConstructFiles(String filePath, String endpoint, String username, String password) throws Exception {
+	public static void executeInsertFiles(String filePath, String endpoint, String username, String password) throws Exception {
 		repo = new SPARQLRepository(endpoint);
 		repo.setUsernameAndPassword(username, password);
 		repo.initialize();
@@ -45,33 +41,19 @@ public class SparqlInsert {
 				Iterator<File> iterator = files.iterator();
 				while (iterator.hasNext()) {
 					File f = iterator.next();
-					System.out.println("Constructing: " + f);
-					System.out.println("Name: " + f.getName());
+					System.out.println("Inserting: " + f);
 					
 					// Query the SPARQL endpoint
-					GraphQueryResult graphResult = conn.prepareGraphQuery(FileUtils.readFileToString(f)).evaluate();
-					System.out.println("SPARQL endpoint query done");
-					// Convert query results to a RDF4J model
-					Model resultModel = QueryResults.asModel(graphResult);
-					System.out.println("Model generated");
-					// Write the model to a file
-					Rio.write(resultModel, new FileOutputStream("/data/data-constructor/" + f.getName() + ".ttl"), RDFFormat.TURTLE);
-					//Rio.write(resultModel, System.out, RDFFormat.TURTLE);
+					Update update = conn.prepareUpdate(QueryLanguage.SPARQL, FileUtils.readFileToString(f));
+					System.out.println("  SPARQL query prepared");
+					update.execute();
+					System.out.println("  Update executed");
 					
-					//conn.add(f, null, Rio.getParserFormatForFileName(f.getName()).get());
 				}
 			} else {
+				//TODO: if single file provided 
 				//conn.add(new File(filePath), null, Rio.getParserFormatForFileName(inputFile.getName()).get());
 			}
-			
-			
-			
-			//GraphQueryResult graphResult = conn.prepareGraphQuery("CONSTRUCT { ?s ?p ?o } WHERE {<http://ids.unimaas.nl/rdf2xml/model/drugbank/drug> ?p ?o . ?s ?p ?o }").evaluate();
-			
-			//Model resultModel = QueryResults.asModel(graphResult);
-			
-			//Rio.write(resultModel, new FileOutputStream("/data/test.txt"), RDFFormat.TURTLE);
-			//Rio.write(resultModel, System.out, RDFFormat.TURTLE);
 			
 		} catch (Exception e) {
 			throw e;
