@@ -10,32 +10,41 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX bioentity: <http://bioentity.io/vocab/>
 INSERT 
 { 
-    GRAPH <http://data2services/biolink/drugbank/test> {  
+    GRAPH <http://data2services/biolink/drugbank> {  
     ### experimental-properties
-    ?drugUri bioentity:filler [ a ?drugExpePropertiesType ;
+    ?drugUri bioentity:filler ?drugExpePropertiesIdUri .
+
+    ?drugExpePropertiesIdUri a ?drugExpePropertiesType ;
         d2s:kind ?drugExpePropertiesKind ;
         d2s:value ?drugExpePropertiesValue ;
-        d2s:source ?drugExpePropertiesSource ] .
+        d2s:source ?drugExpePropertiesSource .
     }
+
+    ?drugExpePropertiesType rdfs:subClassOf bioentity:Attribute .
 }
 WHERE {
-    GRAPH <http://kraken/graph/xml2rdf> {
-        # Get drug primary ID
-        ?drugObj a x2rm:drugbank\/drug .
-        ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/drugbank-id ; x2rm:hasAttribute [ a x2rm:drugbank\/drug\/drugbank-id\/\@primary ] ; x2rm:hasValue ?drugId ] .
-        BIND ( iri(concat("http://identifiers.org/drugbank:", ?drugId)) AS ?drugUri )
+    SERVICE <http://localhost:7200/repositories/test>  {
+        GRAPH <http://kraken/graph/xml2rdf> {
+            ?drugObj a x2rm:drugbank\/drug ;
+                # Get drug primary ID
+                x2rm:hasChild [
+                    a x2rm:drugbank\/drug\/drugbank-id ;
+                        x2rm:hasAttribute [ a x2rm:drugbank\/drug\/drugbank-id\/\@primary ] ;
+                        x2rm:hasValue ?drugId
+                ] ;
+                ### Get EXPERIMENTAL PROPERTIES
+                x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties; 
+                    x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property;
+                        x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property\/kind; x2rm:hasValue ?drugExpePropertiesKind ] ;
+                        x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property\/value; x2rm:hasValue ?drugExpePropertiesValue ] ;
+                        x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property\/source; x2rm:hasValue ?drugExpePropertiesSource ]
+                ] ] .
 
+             BIND ( iri(concat("http://identifiers.org/drugbank/", ?drugId)) AS ?drugUri )
+             BIND ( iri(concat("http://data2services/model/experimental-properties/", md5(concat(?drugUri, ?drugExpePropertiesKind))) ) AS ?drugExpePropertiesIdUri )
+             BIND ( iri(concat("http://data2services/model/experimental-properties/", REPLACE(?drugExpePropertiesKind, " ", "", "i")) ) AS ?drugExpePropertiesType )
+             # Generate type like: http://data2services/model/experimental-properties/MeltingPoint
 
-
-        ### Get EXPERIMENTAL PROPERTIES
-        ?drugObj x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties; 
-            x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property;
-                x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property\/kind; x2rm:hasValue ?drugExpePropertiesKind ] ;
-                x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property\/value; x2rm:hasValue ?drugExpePropertiesValue ] ;
-                x2rm:hasChild [ a x2rm:drugbank\/drug\/experimental-properties\/property\/source; x2rm:hasValue ?drugExpePropertiesSource ]
-         ] ] .
-         BIND ( iri(concat("http://data2services/model/experimental-properties/", REPLACE(?drugExpePropertiesKind, " ", "", "i")) ) AS ?drugExpePropertiesType )
-         # Generate type like: http://data2services/model/experimental-properties/MeltingPoint
-
+        }
     }
 }

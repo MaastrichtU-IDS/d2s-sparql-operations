@@ -45,9 +45,7 @@ public class SparqlInsert {
 					
 					// Query the SPARQL endpoint
 					Update update = conn.prepareUpdate(QueryLanguage.SPARQL, FileUtils.readFileToString(f));
-					System.out.println("  SPARQL query prepared");
 					update.execute();
-					System.out.println("  Update executed");
 					
 				}
 			} else {
