@@ -24,7 +24,11 @@ INSERT {
         ?drugInteractionUri a bioentity:Drug ;
             bioentity:name ?drugInteractionName .
 
-        ?drugUri bioentity:interacts_with ?foodInteraction .
+        # TODO: interacts_with should point to a URI
+        #?drugUri bioentity:interacts_with ?foodInteraction .
+        #?drugUri bioentity:interacts_with ?foodInteractionUri .
+        #?foodInteractionUri a bioentity:Association ;
+        #    bioentity:description ?foodInteraction .
 
     }
 

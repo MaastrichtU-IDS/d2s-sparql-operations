@@ -5,17 +5,17 @@ INSERT
 { 
     GRAPH <http://data2services/biolink/drugbank> {   
         # Pathways (use blank node)
-        [ a bioentity:ChemicalToPathwayAssociation ;
+        ?drugPathwayAssociationUri a bioentity:ChemicalToPathwayAssociation ;
          bioentity:relation bioentity:ChemicalToPathwayAssociation ;
          bioentity:subject ?drugUri ;
-         bioentity:object ?drugPathwayUri ] .
+         bioentity:object ?drugPathwayUri .
 
         ?drugPathwayUri a bioentity:Pathway ;
             bioentity:id ?drugPathwaySmpdbId ;
             bioentity:name ?drugPathwayName .
 
 
-        # TODO: add enzymes?
+        # TODO: add enzymes? And drugs?
     }
 }
 WHERE {
@@ -46,6 +46,7 @@ WHERE {
 
             BIND ( iri(concat("http://identifiers.org/drugbank/", ?drugId)) AS ?drugUri )
             BIND ( iri(concat("http://identifiers.org/smpdb/", ?drugPathwaySmpdbId) ) AS ?drugPathwayUri )
+            BIND ( iri(concat("http://data2services/model/association/pathway/", md5(concat(?drugId, ?drugPathwaySmpdbId)))) AS ?drugPathwayAssociationUri )
         }
     }
 }

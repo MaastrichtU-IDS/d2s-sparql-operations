@@ -15,10 +15,11 @@ INSERT
    ?hgncUri rdfs:label ?ApprovedName .
    ?hgncUri bioentity:systematic_synonym ?ApprovedSymbol .
    
-   ?hgncUri bioentity:filler ?drugStateUri ;
-   ?drugStateUri a bioentity:Attribute ;
-            bioentity:id ?drugState ;
-            bioentity:category <http://data2services/model/state> .
+   # Drug State (eg: liquid)
+   ?hgncUri bioentity:filler ?drugStateUri .
+   ?drugStateUri a <http://data2services/model/State> ;
+            rdfs:subClassOf bioentity:Attribute ;
+            bioentity:id ?drugState .
 
    ?hgncUri d2svocab:Status ?Status .
    # Use bioentity:ConfidenceLevel (Level of confidence in a statement)? Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
@@ -51,7 +52,7 @@ INSERT
 
    ?GenomicSequenceLocalizationUri a bioentity:GenomicSequenceLocalization ;
       bioentity:genomic_sequence_localization_subject ?hgncUri ;
-      bioentity:genomic_sequence_localization_object ?ChromosomeUri ;
+      bioentity:genomic_sequence_localization_object ?ChromosomeUri .
 
     ?ChromosomeUri a bioentity:GenomicEntity ;
       bioentity:id ?Chromosome ;
@@ -68,13 +69,14 @@ INSERT
       bioentity:iri ?PubmedIdsUri ;
       bioentity:relates_to ?hgncUri .
 
-    ?hgncUri bioentity:category ?GeneFamilyUri .
-    ?GeneFamilyUri a bioentity:Attribute ;
+    ?hgncUri bioentity:filler ?GeneFamilyUri .
+    ?GeneFamilyUri a <http://data2services/model/GeneFamily> ;
+      bioentity:subClassOf bioentity:Attribute ;
       bioentity:description ?GeneFamilyDescription ;
       bioentity:id ?GeneFamilyTag .
 
+    # Use bioentity:ConfidenceLevel? (Level of confidence in a statement) Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
     ?hgncUri bioentity:filler ?StatusUri .
-    # The Status of the Gene (approved, withdrawn...)
     ?StatusUri a <http://data2services/model/Status> ;
           rdfs:subClassOf bioentity:Attribute ;
           bioentity:name ?Status .

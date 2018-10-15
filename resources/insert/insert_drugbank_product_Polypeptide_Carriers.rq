@@ -11,7 +11,7 @@ PREFIX bioentity: <http://bioentity.io/vocab/>
 INSERT { 
     GRAPH <http://data2services/biolink/drugbank> {   
 
-        ?targetUri a bioentity:GeneOrGeneProduct ;
+        ?carrierUri a bioentity:GeneOrGeneProduct ;
             bioentity:same_as ?polypeptideAttrUri ;
             bioentity:in_taxon ?ncbiTaxonIdentifierUri ;
             bioentity:category ?polypeptidePfamUri .
@@ -19,7 +19,7 @@ INSERT {
         # Get GO TERM
         ?goTermAssociationUri a bioentity:GeneToGoTermAssociation ;
             bioentity:relation bioentity:GeneToGoTermAssociation ;
-            bioentity:gene_to_go_term_association_object ?targetUri ;
+            bioentity:gene_to_go_term_association_object ?carrierUri ;
             bioentity:gene_to_go_term_association_subject ?goTermUri .
 
         ?goTermUri a bioentity:GeneOntologyClass ;
@@ -37,7 +37,8 @@ INSERT {
         # Get TAXON
         ?ncbiTaxonIdentifierUri a bioentity:OrganismTaxon ;
             bioentity:id ?ncbiTaxonId ;
-            bioentity:name ?ncbiTaxonName .
+            bioentity:name ?ncbiTaxonName ;
+            bioentity:same_as ?ncbiTaxonUri .
 
         #?polypeptideAttrUri a bioentity:GeneOrGeneProduct ;
         #    bioentity:same_as ?polypeptideAttrUniprotUri .
@@ -48,71 +49,72 @@ WHERE {
     SERVICE <http://localhost:7200/repositories/test>  {
         GRAPH <http://kraken/graph/xml2rdf> {
 
-            # Iterate directly on targets
-            ?targetObj a x2rm:drugbank\/drug\/targets\/target ;
-                # Get target ID
+            # Iterate directly on carriers
+            ?carrierObj a x2rm:drugbank\/drug\/carriers\/carrier ;
+                # Get carrier ID
                 x2rm:hasChild [ 
-                    a x2rm:drugbank\/drug\/targets\/target\/id ; 
-                    x2rm:hasValue ?targetId
+                    a x2rm:drugbank\/drug\/carriers\/carrier\/id ; 
+                    x2rm:hasValue ?carrierId
                 ] ;
                 x2rm:hasChild [ 
-                    a x2rm:drugbank\/drug\/targets\/target\/polypeptide ;
+                    a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide ;
                     x2rm:hasAttribute [
-                        a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/\@id ;
+                        a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/\@id ;
                         x2rm:hasValue ?polypeptideAttrId
                     ] ;
                     x2rm:hasAttribute [
-                        a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/\@source ;
+                        a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/\@source ;
                         x2rm:hasValue "Swiss-Prot"
                     ] ;
                     x2rm:hasChild [ 
-                        a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/pfams ;
+                        a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/pfams ;
                         x2rm:hasChild [ 
-                            a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/pfams\/pfam ;
+                            a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/pfams\/pfam ;
                             x2rm:hasChild [ 
-                                a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/pfams\/pfam\/identifier ;
+                                a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/pfams\/pfam\/identifier ;
                                 x2rm:hasValue ?polyPfamId
                             ] ;
                             x2rm:hasChild [ 
-                                a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/pfams\/pfam\/name ;
+                                a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/pfams\/pfam\/name ;
                                 x2rm:hasValue ?polyPfamName
                             ]
                         ]
                     ] ;
                     x2rm:hasChild [ 
-                        a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/go-classifiers ;
+                        a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/go-classifiers ;
                         x2rm:hasChild [ 
-                            a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/go-classifiers\/go-classifier ;
+                            a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/go-classifiers\/go-classifier ;
                             x2rm:hasChild [ 
-                                a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/go-classifiers\/go-classifier\/category ;
+                                a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/go-classifiers\/go-classifier\/category ;
                                 x2rm:hasValue ?polyGoTermCategory
                             ] ;
                             x2rm:hasChild [ 
-                                a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/go-classifiers\/go-classifier\/description ;
+                                a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/go-classifiers\/go-classifier\/description ;
                                 x2rm:hasValue ?polyGoTermDescription
                             ]
                         ]
                     ] ;
                     x2rm:hasChild [ 
-                        a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/organism ;
+                        a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/organism ;
                         x2rm:hasAttribute [ 
-                            a x2rm:drugbank\/drug\/targets\/target\/polypeptide\/organism\/\@ncbi-taxonomy-id ;
+                            a x2rm:drugbank\/drug\/carriers\/carrier\/polypeptide\/organism\/\@ncbi-taxonomy-id ;
                             x2rm:hasValue ?ncbiTaxonId
                         ] ;
                         x2rm:hasValue ?ncbiTaxonName
                     ]
                 ]
 
-            BIND ( iri(concat("http://identifiers.org/drugbank/", ?targetId)) AS ?targetUri )
+            BIND ( iri(concat("http://identifiers.org/drugbank/", ?carrierId)) AS ?carrierUri )
             BIND ( iri(concat("http://identifiers.org/uniprot/", ?polypeptideAttrId)) AS ?polypeptideAttrUri )
             #BIND ( iri(concat("https://purl.uniprot.org/uniprot/", ?polypeptideAttrId)) AS ?polypeptideAttrUniprotUri )
 
-            BIND ( iri(concat("http://data2services/model/association/go-term/", md5(concat(?targetId, ?polyGoTermDescription)))) AS ?goTermAssociationUri )
+            BIND ( iri(concat("http://data2services/model/association/go-term/", md5(concat(?carrierId, ?polyGoTermDescription)))) AS ?goTermAssociationUri )
             BIND ( iri(concat("http://data2services/model/go-classifier/", md5(?polyGoTermDescription))) AS ?goTermUri )
             BIND ( iri(concat("http://data2services/model/go-category/", ?polyGoTermCategory)) AS ?goTermCategoryUri )
             BIND ( iri(concat("http://identifiers.org/pfam/", ?polyPfamId)) AS ?polypeptidePfamUri )
 
             BIND ( iri(concat("http://identifiers.org/taxonomy/", ?ncbiTaxonId)) AS ?ncbiTaxonIdentifierUri )
+            BIND ( iri(concat("https://www.ncbi.nlm.nih.gov/taxonomy/", ?ncbiTaxonId)) AS ?ncbiTaxonUri )
 
         }
     }

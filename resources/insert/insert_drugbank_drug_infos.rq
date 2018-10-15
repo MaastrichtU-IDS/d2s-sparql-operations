@@ -81,7 +81,6 @@ WHERE {
                     ]
                 ] .
 
-            # TODO: state (liquid)
             # TODO: synthesis-reference = Patent how it is synthesis
             # TODO: a lot of "text description" have not been done. Trouble to get where they should be defined... https://biolink.github.io/biolink-model/docs/Drug.html
             # indication, pharmacodynamics, mechanism-of-action, toxicity, metabolism, absorption, half-life, protein-binding, route-of-elimination, volume-of-distribution
