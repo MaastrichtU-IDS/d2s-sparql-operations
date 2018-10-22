@@ -1,5 +1,8 @@
 package nl.unimaas.ids;
 
+import javax.management.NotificationBroadcasterSupport;
+
+import nl.unimaas.ids.sparql.QueryOperations;
 import nl.unimaas.ids.sparql.SparqlConstruct;
 import nl.unimaas.ids.sparql.SparqlInsert;
 import picocli.CommandLine;
@@ -14,7 +17,17 @@ public class DataConstructor {
 				printUsageAndExit();
 
 			//SparqlConstruct.executeConstructFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
-			SparqlInsert.executeInsertFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
+
+			switch (cli.queryOperation) {
+	         case insert:
+	        	 SparqlInsert.executeFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
+	         case construct:
+	        	 SparqlConstruct.executeFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
+	         case select:
+	        	 throw new UnsupportedOperationException("select operation not supported at the moment. Supported operations: insert and construct");
+        	 default:
+        		 throw new UnsupportedOperationException("Supported operations: insert and construct. select coming soon.");
+			}
 
 		} catch (Exception e) {
 			printUsageAndExit(e);

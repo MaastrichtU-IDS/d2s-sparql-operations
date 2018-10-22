@@ -1,5 +1,6 @@
 package nl.unimaas.ids;
 
+import nl.unimaas.ids.sparql.QueryOperations;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -10,6 +11,9 @@ public class CliOptions {
 	
 	@Option(names= {"-rq", "--request-dir"}, description = "RDF file path.", required = true)
 	String inputFile = null;
+	
+	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (select, construct, insert). Default is insert")
+	QueryOperations queryOperation = QueryOperations.insert;
 
 	@Option(names= {"-url", "--database-url"}, description = "URL for Repository/Endpoint", required = true)
 	String dbUrl = null;

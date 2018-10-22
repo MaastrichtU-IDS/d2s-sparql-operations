@@ -19,7 +19,7 @@ public class SparqlInsert {
 
 	private static SPARQLRepository repo;
 
-	public static void executeInsertFiles(String filePath, String endpoint, String username, String password) throws Exception {
+	public static void executeFiles(String filePath, String endpoint, String username, String password) throws Exception {
 		repo = new SPARQLRepository(endpoint);
 		repo.setUsernameAndPassword(username, password);
 		repo.initialize();
