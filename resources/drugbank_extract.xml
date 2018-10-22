@@ -21032,7 +21032,9 @@ CTTATCTATGGATATTTTTCTCTGTGA</gene-sequence>
     <cellular-location>Secreted</cellular-location>
     <transmembrane-regions/>
     <signal-regions>1-18</signal-regions>
-
+  </polypeptide>
+</carrier>
+</carriers>
   <transporters/>
 </drug>
 <drug type="biotech" created="2005-06-13" updated="2018-07-03">

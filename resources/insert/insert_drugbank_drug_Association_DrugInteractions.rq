@@ -20,6 +20,7 @@ INSERT {
             bioentity:subject ?drugUri ;
             bioentity:object ?drugInteractionUri ;
             bioentity:description ?drugInteractionDescription .
+            # TODO: add RelationshipType
 
         ?drugInteractionUri a bioentity:Drug ;
             bioentity:name ?drugInteractionName .

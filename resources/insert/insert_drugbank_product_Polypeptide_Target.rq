@@ -26,7 +26,7 @@ INSERT {
             bioentity:description ?polyGoTermDescription ;
             bioentity:category ?goTermCategoryUri .
 
-        ?goTermCategoryUri a bioentity:LabelType ;
+        ?goTermCategoryUri a bioentity:OntologyClass ;
             bioentity:name ?polyGoTermCategory .
 
 

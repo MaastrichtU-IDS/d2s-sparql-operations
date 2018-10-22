@@ -8,35 +8,30 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX bioentity: <http://bioentity.io/vocab/>
+PREFIX sio: <http://semanticscience.org/resource/>
 INSERT { 
-    GRAPH <http://data2services/biolink/drugbank> {   
+    GRAPH <http://data2services/sio/drugbank> {   
 
         ### Represent target (Drug to protein or DNA) ChemicalToGeneAssociation
         #Should we use: ?drugUri bioentity:interacts_with ?targetUri .
-        ?targetAssociationUri a bioentity:ChemicalToGeneAssociation ;
-            bioentity:relation bioentity:ChemicalToGeneAssociation ;
-            bioentity:subject ?drugUri ;
-            bioentity:object ?targetUri ;
-            bioentity:publications ?targetArticleUri ;
-            bioentity:qualifiers ?targetActionUri ;
-            bioentity:affects ?targetOrganism ;
-            bioentity:relation ?targetActionPropertyUri .
+        ?targetAssociationUri a sio:association\/chemical-protein ;
+            sio:SIO_000115 ?drugUri ; # refers to
+            sio:SIO_000115 ?targetUri ;
+            sio:SIO_000772 ?targetArticleUri ; #  has evidence
+            sio:SIO_001403 ?targetOrganism ; #  is associated with  
+            sio:SIO_000008 ?targetActionPropertyUri . # has attribute: normality increased. 
+            # TODO: fix it. Should be better expressed
 
+        #?targetOrganism a sio:SIO_010000 . # organism
 
-        ?drugUri ?targetActionPropertyUri ?targetUri .
-
-        ?targetActionUri a bioentity:Attribute ;
-            bioentity:name ?targetAction .
-
-        ?targetUri a bioentity:GeneOrGeneProduct ;
-            bioentity:name ?targetName ;
-            bioentity:id ?targetId .
+        ?targetUri a sio:SIO_010043 ; # protein
+            rdfs:label ?targetName ;
+            sio:SIO_000115 ?targetId .
 
         # Publications
-        ?targetArticleUri a bioentity:Publication ;
-            bioentity:id ?targetArticlePubmedId ;
-            bioentity:name ?targetArticleCitation ;
-            bioentity:relates_to ?targetUri . 
+        ?targetArticleUri a sio:SIO_001029 ;    # peer reviewed article
+            sio:SIO_000115 ?targetArticlePubmedId ; # identifier
+            rdfs:label ?targetArticleCitation . 
 
     }
 }
@@ -103,16 +98,15 @@ WHERE {
             BIND ( iri(concat("http://identifiers.org/drugbank/", ?drugId)) AS ?drugUri )
             BIND ( iri(concat("http://identifiers.org/drugbank/", ?targetId)) AS ?targetUri )
             BIND ( iri(concat("http://data2services/model/association/target/", md5(concat(?drugId, ?targetId)))) AS ?targetAssociationUri )
-            BIND ( iri(concat("http://data2services/vocab/action/", ?targetAction)) AS ?targetActionUri )
 
             BIND ( iri(concat("http://identifiers.org/pubmed/", ?targetArticlePubmedId)) AS ?targetArticleUri ) .
 
             VALUES (?targetAction ?targetActionPropertyUri) {
-                ( "inhibitor" bioentity:decreases_activity_of )
-                ( "antagonist" bioentity:decreases_activity_of )
-                ( "agonist" bioentity:increases_activity_of )
-                ( "activator" bioentity:increases_activity_of )
-                (UNDEF bioentity:affects)
+                ( "inhibitor" sio:SIO_000751 )  # normality decreased or SIO_000499 to decrease the rate of formation
+                ( "antagonist" sio:SIO_000751 )
+                ( "agonist" sio:SIO_000640 )    # normality increased 
+                ( "activator" sio:SIO_000640 )
+                (UNDEF sio:SIO_000555)             # abnormal
             }
         }
     }
