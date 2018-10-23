@@ -14,12 +14,6 @@ INSERT
    ?hgncUri bioentity:name ?ApprovedName .
    ?hgncUri rdfs:label ?ApprovedName .
    ?hgncUri bioentity:systematic_synonym ?ApprovedSymbol .
-   
-   # Drug State (eg: liquid)
-   ?hgncUri bioentity:filler ?drugStateUri .
-   ?drugStateUri a <http://data2services/model/State> ;
-            rdfs:subClassOf bioentity:Attribute ;
-            bioentity:id ?drugState .
 
    ?hgncUri d2svocab:Status ?Status .
    # Use bioentity:ConfidenceLevel (Level of confidence in a statement)? Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
