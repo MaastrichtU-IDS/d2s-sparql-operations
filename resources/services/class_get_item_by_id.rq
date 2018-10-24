@@ -5,7 +5,7 @@ PREFIX bl: <http://bioentity.io/vocab/>
 SELECT ?predicate ?object
 WHERE 
 {
-    # Should be a variable
+    # Should be a variable (source)
     GRAPH <http://data2services/biolink/drugbank> 
     {
         # Should be a variable (type)

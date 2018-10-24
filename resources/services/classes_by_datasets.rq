@@ -10,10 +10,8 @@ WHERE
             graph ?g {
                 [] a ?class .
             }
-            # Should be a variable
+            # Should be a variable (source)
             FILTER(?g = <http://data2services/biolink/drugbank>)
-            # Should we use a property like dct:identifier or dc:title ?
-            #FILTER(?g dct:identifier "drugbank")
         }
         group by ?g ?class
         order by desc(?classCount)
