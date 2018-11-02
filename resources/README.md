@@ -4,6 +4,27 @@ http://docs.rdf4j.org/programming/#_evaluating_a_graph_query
 
 
 
+## ShEx validation
+
+### ShEx Java
+
+http://shexjava.lille.inria.fr/
+
+### Shex js
+
+NOT WORKING. 40 tests fail
+
+```shell
+# Install and test
+npm install --save shex
+npm explore shex 'npm install'
+
+# Tests (failing)
+npm explore shex 'npm test'
+```
+
+
+
 ## KGX validate
 
 ```shell
