@@ -7,7 +7,7 @@ PREFIX bioentity: <http://bioentity.io/vocab/>
 PREFIX d2svocab: <http://data2services/vocab/>
 INSERT
 {
-  GRAPH <http://data2services/biolink/hgnc> {  
+  GRAPH <http://data2services/biolink/test/hgnc/2> {  
    ?hgncUri a bioentity:Gene. 
    ?hgncUri bioentity:iri ?hgncUri .
    ?hgncUri bioentity:id ?hgncid .
@@ -31,18 +31,32 @@ INSERT
    ?hgncUri bioentity:same_as ?AccessionNumbersUri .
    ?hgncUri bioentity:same_as ?EntrezGeneUri .
    ?hgncUri bioentity:same_as ?EnsemblGeneUri .
-   ?hgncUri bioentity:same_as ?MouseGenomeDatabaseIdUri .
+
    ?hgncUri bioentity:same_as ?EntrezGeneIdSuppliedByNcbiUri .
    ?hgncUri bioentity:same_as ?OmimIdSuppliedByNcbiUri .
 
+   # https://www.ncbi.nlm.nih.gov/nuccore/NM_130786 
    ?hgncUri bioentity:same_as ?RefseqIdsUri .
    ?hgncUri bioentity:same_as ?RefseqSuppliedByNcbiUri .
 
-   ?hgncUri bioentity:same_as ?UniprotIdSuppliedByUniprotUri .
+   # https://biolink.github.io/biolink-model/docs/has_gene_product.html
+   ?hgncUri bioentity:has_gene_product ?UniprotIdSuppliedByUniprotUri .
+
    ?hgncUri bioentity:same_as ?EnsemblIdSuppliedByEnsemblUri .
-   ?hgncUri bioentity:same_as ?MouseGenomeDatabaseIdSuppliedByMgiUri .
+
+   # https://biolink.github.io/biolink-model/docs/GeneToGeneHomologyAssociation.html
+   ?mgiAssociationUri a bioentity:GeneToGeneHomologyAssociation ;
+            bioentity:relation bioentity:GeneToGeneHomologyAssociation ;
+            bioentity:gene_to_gene_association_subject ?hgncUri ;
+            bioentity:gene_to_gene_association_object ?MouseGenomeDatabaseIdUri .
+
+
+   ?hgncUri bioentity:homologous_to ?MouseGenomeDatabaseIdUri .
+   ?hgncUri bioentity:homologous_to ?MouseGenomeDatabaseIdSuppliedByMgiUri .
+   ?hgncUri bioentity:homologous_to ?RatGenomeDatabaseIdSuppliedByRgdUri .
 
    ?hgncUri bioentity:located_in ?GenomicSequenceLocalizationUri .
+   ?hgncUri bioentity:located_in ?CcdsIdsUri .
 
    ?GenomicSequenceLocalizationUri a bioentity:GenomicSequenceLocalization ;
       bioentity:genomic_sequence_localization_subject ?hgncUri ;
@@ -54,7 +68,6 @@ INSERT
       bioentity:category "chromosome" .
 
 
-   ?hgncUri bioentity:located_in ?CcdsIdsUri .
 
    # Publication
    ?hgncUri bioentity:publications ?PubmedIdsUri .
@@ -167,7 +180,13 @@ WHERE {
          BIND( iri(concat("https://www.ncbi.nlm.nih.gov/nuccore/", ?RefseqSuppliedByNcbi ) ) AS ?RefseqSuppliedByNcbiUri )
        } OPTIONAL {
          ?s kraken:UniprotIdSuppliedByUniprot ?UniprotIdSuppliedByUniprot .
-         BIND( iri(concat("http://identifiers.org/uniprot/", strbefore(?UniprotIdSuppliedByUniprot, ",") ) ) AS ?UniprotIdSuppliedByUniprotUri )
+         # If there is a comma we take only the first iteration.
+         # TODO: also take the STRAFTER?
+         BIND( if( contains(?UniprotIdSuppliedByUniprot, ","),
+              iri(concat("http://identifiers.org/uniprot/", strbefore(?UniprotIdSuppliedByUniprot, ",") ) ) ,
+              iri(concat("http://identifiers.org/uniprot/", ?UniprotIdSuppliedByUniprot ) ) ) 
+         AS ?UniprotIdSuppliedByUniprotUri )
+
        } OPTIONAL {
          ?s kraken:EnsemblIdSuppliedByEnsembl ?EnsemblIdSuppliedByEnsembl .
          BIND( iri(concat("http://identifiers.org/ensembl/", ?EnsemblIdSuppliedByEnsembl) ) AS ?EnsemblIdSuppliedByEnsemblUri )
