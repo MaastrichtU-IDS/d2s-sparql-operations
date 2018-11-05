@@ -7,7 +7,7 @@ PREFIX bioentity: <http://bioentity.io/vocab/>
 PREFIX d2svocab: <http://data2services/vocab/>
 INSERT
 {
-  GRAPH <http://data2services/biolink/hgnc> {  
+  GRAPH <http://data2services/biolink/hgnc/3> {  
    ?hgncUri a bioentity:Gene. 
    ?hgncUri bioentity:iri ?hgncUri .
    ?hgncUri bioentity:id ?hgncid .
@@ -149,8 +149,23 @@ WHERE {
        
        } OPTIONAL {
          ?s kraken:Chromosome ?Chromosome .
-         BIND( iri(concat("http://data2services/model/sequence-localization/", md5(concat(?hgncUri, ?Chromosome)))) AS ?GenomicSequenceLocalizationUri )
-         BIND( iri(concat("http://data2services/model/chromosome/", ?Chromosome) ) AS ?ChromosomeUri )
+         BIND( if( contains(?Chromosome, " "),
+              iri("") ,
+              iri(concat("http://data2services/model/sequence-localization/", md5(concat(?hgncid, ?Chromosome))))
+              ) 
+         AS ?GenomicSequenceLocalizationUri )
+
+         BIND( if( contains(?Chromosome, " "),
+              iri("") ,
+              iri(concat("http://data2services/model/chromosome/", ?Chromosome) )
+              ) 
+         AS ?ChromosomeUri )
+
+         #FILTER NOT EXISTS { contains(?Chromosome, " ")  }
+
+         #BIND( iri(concat("http://data2services/model/sequence-localization/", md5(concat(?hgncId, ?Chromosome)))) AS ?GenomicSequenceLocalizationUri )
+
+         #BIND( iri(concat("http://data2services/model/chromosome/", ?Chromosome) ) AS ?ChromosomeUri )
        
        } OPTIONAL {
          ?s kraken:DateApproved ?DateApproved .
@@ -304,6 +319,8 @@ WHERE {
        }
 
   BIND ( iri(concat("http://identifiers.org/", lcase(?hgncid))) AS ?hgncUri )
+
+  FILTER( !contains(?hgncid, " ") )
 }
 }
 }
