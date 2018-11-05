@@ -44,12 +44,14 @@ INSERT
 
    # https://biolink.github.io/biolink-model/docs/TranscriptToGeneRelationship.html
    ?refseqAssociationUri a bioentity:TranscriptToGeneRelationship ;
+            bioentity:relation bioentity:expresses ;
             bioentity:transcript_to_gene_relationship_subject ?RefseqIdsUri ;
             bioentity:transcript_to_gene_relationship_object ?hgncUri .
 
    ?RefseqIdsUri a bioentity:Transcript . # https://www.ncbi.nlm.nih.gov/nuccore/NM_004362
 
    ?suppliedRefseqAssociationUri a bioentity:TranscriptToGeneRelationship ;
+            bioentity:relation bioentity:expresses ;
             bioentity:transcript_to_gene_relationship_subject ?RefseqSuppliedByNcbiUri ;
             bioentity:transcript_to_gene_relationship_object ?hgncUri .
 
