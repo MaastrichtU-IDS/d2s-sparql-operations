@@ -44,16 +44,16 @@ INSERT
 
    # https://biolink.github.io/biolink-model/docs/TranscriptToGeneRelationship.html
    ?refseqAssociationUri a bioentity:TranscriptToGeneRelationship ;
-            bioentity:relation bioentity:expresses ;
             bioentity:transcript_to_gene_relationship_subject ?RefseqIdsUri ;
-            bioentity:transcript_to_gene_relationship_object ?hgncUri .
+            bioentity:transcript_to_gene_relationship_object ?hgncUri ;
+            bioentity:relation bioentity:expresses .
 
    ?RefseqIdsUri a bioentity:Transcript . # https://www.ncbi.nlm.nih.gov/nuccore/NM_004362
 
    ?suppliedRefseqAssociationUri a bioentity:TranscriptToGeneRelationship ;
-            bioentity:relation bioentity:expresses ;
             bioentity:transcript_to_gene_relationship_subject ?RefseqSuppliedByNcbiUri ;
-            bioentity:transcript_to_gene_relationship_object ?hgncUri .
+            bioentity:transcript_to_gene_relationship_object ?hgncUri ;
+            bioentity:relation bioentity:expresses .
 
    ?RefseqSuppliedByNcbiUri a bioentity:Transcript . # https://www.ncbi.nlm.nih.gov/nuccore/NM_001130675
 
@@ -200,10 +200,6 @@ WHERE {
          BIND( iri(concat("https://www.ncbi.nlm.nih.gov/gene/", ?EntrezGeneId) ) AS ?EntrezGeneIdUri )
        
        } OPTIONAL {
-         # "name": "stderr",
-         # "text": [
-         #  "http://identifiers.org/ensembl/<!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <a href=\"http:/cancer.sanger.ac.uk/cosmic/gene/overview?ln=FBXO28\">COSMIC</a><!--,--> <a href=\"http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Lng=GB&Expert=470322\">Orphanet</a><!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,-->  does not look like a valid URI, trying to serialize this will break.\n"
-
          ?s kraken:EnsemblGeneId ?EnsemblGeneId .
          BIND( iri(concat("http://identifiers.org/ensembl/", ?EnsemblGeneId) ) AS ?EnsemblGeneIdUri )
        
@@ -279,7 +275,7 @@ WHERE {
               iri(concat("http://identifiers.org/mim/", strbefore(?OmimIdSuppliedByNcbi, ",") ) ) ,
               iri(concat("http://identifiers.org/mim/", ?OmimIdSuppliedByNcbi ) ) ) 
          AS ?OmimIdSuppliedByNcbiUri )
-       
+                
        } OPTIONAL {
          ?s kraken:RefseqSuppliedByNcbi ?RefseqSuppliedByNcbi .
          BIND( iri(concat("https://www.ncbi.nlm.nih.gov/nuccore/", ?RefseqSuppliedByNcbi ) ) AS ?RefseqSuppliedByNcbiUri )
@@ -297,6 +293,11 @@ WHERE {
        } OPTIONAL {
          ?s kraken:EnsemblIdSuppliedByEnsembl ?EnsemblIdSuppliedByEnsembl .
          BIND( iri(concat("http://identifiers.org/ensembl/", ?EnsemblIdSuppliedByEnsembl) ) AS ?EnsemblIdSuppliedByEnsemblUri )
+
+         # "name": "stderr",
+         # "text": [
+         # "http://identifiers.org/ensembl/<!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <a href=\"http:/cancer.sanger.ac.uk/cosmic/gene/overview?ln=FBXO28\">COSMIC</a><!--,--> <a href=\"http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Lng=GB&Expert=470322\">Orphanet</a><!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,-->  does not look like a valid URI, trying to serialize this will break.\n"
+
        
        } OPTIONAL {
          ?s kraken:VegaIdSuppliedByVega ?VegaIdSuppliedByVega .
@@ -330,6 +331,7 @@ WHERE {
 
   BIND ( iri(concat("http://identifiers.org/", lcase(?hgncid))) AS ?hgncUri )
 
+  # Avoid taking the first row with columns labels
   FILTER( !contains(?hgncid, " ") )
 }
 }
