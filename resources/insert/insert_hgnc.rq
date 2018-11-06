@@ -200,6 +200,10 @@ WHERE {
          BIND( iri(concat("https://www.ncbi.nlm.nih.gov/gene/", ?EntrezGeneId) ) AS ?EntrezGeneIdUri )
        
        } OPTIONAL {
+         # "name": "stderr",
+         # "text": [
+         #  "http://identifiers.org/ensembl/<!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <a href=\"http:/cancer.sanger.ac.uk/cosmic/gene/overview?ln=FBXO28\">COSMIC</a><!--,--> <a href=\"http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Lng=GB&Expert=470322\">Orphanet</a><!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,-->  does not look like a valid URI, trying to serialize this will break.\n"
+
          ?s kraken:EnsemblGeneId ?EnsemblGeneId .
          BIND( iri(concat("http://identifiers.org/ensembl/", ?EnsemblGeneId) ) AS ?EnsemblGeneIdUri )
        
@@ -270,7 +274,11 @@ WHERE {
        
        } OPTIONAL {
          ?s kraken:OmimIdSuppliedByNcbi ?OmimIdSuppliedByNcbi .
-         BIND( iri(concat("http://identifiers.org/mim/", ?OmimIdSuppliedByNcbi ) ) AS ?OmimIdSuppliedByNcbiUri )
+         # TODO: also take the STRAFTER?
+         BIND( if( contains(?OmimIdSuppliedByNcbi, ","),
+              iri(concat("http://identifiers.org/mim/", strbefore(?OmimIdSuppliedByNcbi, ",") ) ) ,
+              iri(concat("http://identifiers.org/mim/", ?OmimIdSuppliedByNcbi ) ) ) 
+         AS ?OmimIdSuppliedByNcbiUri )
        
        } OPTIONAL {
          ?s kraken:RefseqSuppliedByNcbi ?RefseqSuppliedByNcbi .
