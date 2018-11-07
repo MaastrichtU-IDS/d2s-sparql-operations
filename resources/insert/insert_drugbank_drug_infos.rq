@@ -7,33 +7,33 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX bioentity: <http://bioentity.io/vocab/>
+PREFIX bl: <http://bioentity.io/vocab/>
 INSERT 
 { 
     GRAPH <http://data2services/biolink/drugbank> {  
-        ?drugUri a bioentity:Drug ;
-            bioentity:name ?drugName ;
-            bioentity:id ?drugId ;
-            bioentity:systematic_synonym ?drugAltId ;
-            bioentity:description ?drugDescription ;
-            #bioentity:same_as ?drugAltIdUri ;
-            bioentity:same_as ?casNumberUri ;
-            bioentity:same_as ?uniiUri ;
-            bioentity:filler ?drugStateUri ;
-            bioentity:filler ?drugGroupUri .
+        ?drugUri a bl:Drug ;
+            bl:name ?drugName ;
+            bl:id ?drugId ;
+            bl:systematic_synonym ?drugAltId ;
+            bl:description ?drugDescription ;
+            #bl:same_as ?drugAltIdUri ;
+            bl:same_as ?casNumberUri ;
+            bl:same_as ?uniiUri ;
+            bl:filler ?drugStateUri ;
+            bl:filler ?drugGroupUri .
 
         # X-refs
-        ?casNumberUri bioentity:id ?casNumber .
-        ?uniiUri bioentity:id ?unii .
+        ?casNumberUri bl:id ?casNumber .
+        ?uniiUri bl:id ?unii .
 
         # TODO: Make only the model/State type a subClassOf?
         ?drugStateUri a <http://data2services/model/State> ;
-            rdfs:subClassOf bioentity:Attribute ;
-            bioentity:id ?drugState .
+            rdfs:subClassOf bl:Attribute ;
+            bl:id ?drugState .
 
         ?drugGroupUri a <http://data2services/model/Group> ;
-            rdfs:subClassOf bioentity:Attribute ;
-            bioentity:id ?drugGroup .
+            rdfs:subClassOf bl:Attribute ;
+            bl:id ?drugGroup .
 
     }
 }

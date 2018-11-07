@@ -90,7 +90,7 @@ WHERE {
                 ( "Therapeutic Targets Database" bl:same_as )
                 ( "Drugs Product Database (DPD)" bl:same_as )
                 ( "Human Metabolome Database" bl:same_as )
-                ( undef iri("") )
+                ( undef undef )
             
                 # Not processed:
                 # ( "UniProtKB" iri("") ) # External link to UniProt is not exactly a same_as, even if it points to a protein similar to the one in the drug.
