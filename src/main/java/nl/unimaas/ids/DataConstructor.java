@@ -16,13 +16,14 @@ public class DataConstructor {
 			if(cli.help)
 				printUsageAndExit();
 
-			//SparqlConstruct.executeConstructFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
-
+			System.out.println("Performing operation: " + cli.queryOperation.toString());
 			switch (cli.queryOperation) {
 	         case insert:
 	        	 SparqlInsert.executeFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
+	        	 break;
 	         case construct:
 	        	 SparqlConstruct.executeFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
+	        	 break;
 	         case select:
 	        	 throw new UnsupportedOperationException("select operation not supported at the moment. Supported operations: insert and construct");
         	 default:

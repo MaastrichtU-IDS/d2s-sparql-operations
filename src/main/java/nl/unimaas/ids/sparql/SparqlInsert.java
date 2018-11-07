@@ -49,6 +49,7 @@ public class SparqlInsert {
 					
 				}
 			} else {
+				System.out.println("TODO: handle single files");
 				//TODO: if single file provided 
 				//conn.add(new File(filePath), null, Rio.getParserFormatForFileName(inputFile.getName()).get());
 			}

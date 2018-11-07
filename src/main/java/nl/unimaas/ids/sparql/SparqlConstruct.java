@@ -47,7 +47,6 @@ public class SparqlConstruct {
 				while (iterator.hasNext()) {
 					File f = iterator.next();
 					System.out.println("Constructing: " + f);
-					System.out.println("Name: " + f.getName());
 					
 					// Query the SPARQL endpoint
 					GraphQueryResult graphResult = conn.prepareGraphQuery(FileUtils.readFileToString(f)).evaluate();
