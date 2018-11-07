@@ -10,21 +10,22 @@ It is possible to optionally define username and password for the SPARQL endpoin
 # Docker
 ## Build
 ```shell
-docker build -t data-constructor .
+docker build -t sparql-dataformer .
 ```
 ## Usage
 ```shell
-docker run -it --rm data-constructor -?
+docker run -it --rm sparql-dataformer -?
 ```
 ## Run
 ```shell
 # Insert on graphdb.dumontierlab.com 
 # GraphDB requires to add /statements at the end of the endpoint URL for INSERT
-docker run -it --rm -v /data/data-constructor:/data data-constructor -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test/statements" -un username -pw password
+docker run -it --rm -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test/statements" -un username -pw password
 
 # Construct using local SPARQL endpoint
-docker run -it --rm -v /data/data-constructor:/data data-constructor -rq "/data" -url "http://localhost:7200/repositories/test" -op "construct"
+docker run -it --rm -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://localhost:7200/repositories/test" -op "construct"
 
 # Using GraphDB docker
-docker run -it --rm --link graphdb:graphdb -v /data/data-constructor:/data data-constructor -rq "/data" -url "http://graphdb:7200/repositories/test"
+docker run -it --rm --link graphdb:graphdb -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://graphdb:7200/repositories/test"
 ```
+
