@@ -1,18 +1,22 @@
 PREFIX x2rm: <http://ids.unimaas.nl/rdf2xml/model/>
 PREFIX d2s: <http://data2services/vocab/>
-PREFIX bioentity: <http://bioentity.io/vocab/>
+PREFIX bl: <http://bioentity.io/vocab/>
 INSERT 
 { 
     GRAPH <http://data2services/biolink/drugbank> {   
         # Pathways (use blank node)
-        ?drugPathwayAssociationUri a bioentity:ChemicalToPathwayAssociation ;
-         bioentity:relation bioentity:ChemicalToPathwayAssociation ;
-         bioentity:subject ?drugUri ;
-         bioentity:object ?drugPathwayUri .
+        ?drugPathwayAssociationUri a bl:ChemicalToPathwayAssociation ;
+             bl:relation bl:affects_activity_of ;
+             bl:subject ?drugUri ;
+             bl:object ?drugPathwayUri .
 
-        ?drugPathwayUri a bioentity:Pathway ;
-            bioentity:id ?drugPathwaySmpdbId ;
-            bioentity:name ?drugPathwayName .
+         # Direct link
+         #?drugUri bl:affects_activity_of ?drugPathwayUri .
+
+
+        ?drugPathwayUri a bl:Pathway ;
+            bl:id ?drugPathwaySmpdbId ;
+            bl:name ?drugPathwayName .
 
 
         # TODO: add enzymes? And drugs?

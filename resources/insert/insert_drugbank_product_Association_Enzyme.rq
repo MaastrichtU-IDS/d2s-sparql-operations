@@ -14,7 +14,7 @@ INSERT {
         ### Represent enzyme (Drug to protein or DNA) ChemicalToGeneAssociation
         #Should we use: ?drugUri bioentity:interacts_with ?enzymeUri .
         ?enzymeAssociationUri a bioentity:ChemicalToGeneAssociation ;
-            bioentity:relation bioentity:ChemicalToGeneAssociation ;
+            bioentity:relation ?enzymeActionPropertyUri ;
             bioentity:subject ?drugUri ;
             bioentity:object ?enzymeUri ;
             bioentity:publications ?enzymeArticleUri ;
@@ -22,7 +22,8 @@ INSERT {
             bioentity:affects ?enzymeOrganism .
 
 
-        ?drugUri ?enzymeActionPropertyUri ?enzymeUri .
+        # Direct link
+        #?drugUri ?enzymeActionPropertyUri ?enzymeUri .
 
         ?enzymeActionUri a bioentity:Attribute ;
             bioentity:name ?enzymeAction .

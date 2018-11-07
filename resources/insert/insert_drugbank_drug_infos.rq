@@ -26,6 +26,7 @@ INSERT
         ?casNumberUri bioentity:id ?casNumber .
         ?uniiUri bioentity:id ?unii .
 
+        # TODO: Make only the model/State type a subClassOf?
         ?drugStateUri a <http://data2services/model/State> ;
             rdfs:subClassOf bioentity:Attribute ;
             bioentity:id ?drugState .

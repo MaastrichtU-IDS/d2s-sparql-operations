@@ -7,19 +7,19 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX bioentity: <http://bioentity.io/vocab/>
+PREFIX bl: <http://bioentity.io/vocab/>
 INSERT { 
     GRAPH <http://data2services/biolink/drugbank>
     { 
         # Affected organism
-        ?drugUri bioentity:affects ?affectedOrganismUri .
-        ?affectedOrganismUri a bioentity:OrganismalEntity .
-        ?affectedOrganismUri bioentity:name ?affectedOrganism .
+        ?drugUri bl:affects ?affectedOrganismUri .
+        ?affectedOrganismUri a bl:OrganismalEntity .
+        ?affectedOrganismUri bl:name ?affectedOrganism .
 
         # TODO: category. Is using this predicate right? https://biolink.github.io/biolink-model/docs/category.html
-        ?drugUri bioentity:category ?categoryMeshUri .
-        ?categoryMeshUri bioentity:id ?categoryMeshId .
-        ?categoryMeshUri bioentity:name ?categoryName .
+        ?drugUri bl:category ?categoryMeshUri .
+        ?categoryMeshUri bl:id ?categoryMeshId .
+        ?categoryMeshUri bl:name ?categoryName .
     }
 }
 WHERE {

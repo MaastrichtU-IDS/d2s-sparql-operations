@@ -14,7 +14,7 @@ INSERT {
         ### Represent target (Drug to protein or DNA) ChemicalToGeneAssociation
         #Should we use: ?drugUri bioentity:interacts_with ?targetUri .
         ?targetAssociationUri a bioentity:ChemicalToGeneAssociation ;
-            bioentity:relation bioentity:ChemicalToGeneAssociation ;
+            bioentity:relation ?targetActionPropertyUri ;
             bioentity:subject ?drugUri ;
             bioentity:object ?targetUri ;
             bioentity:publications ?targetArticleUri ;
@@ -22,8 +22,8 @@ INSERT {
             bioentity:affects ?targetOrganism ;
             bioentity:relation ?targetActionPropertyUri .
 
-
-        ?drugUri ?targetActionPropertyUri ?targetUri .
+        # Direct link
+        #?drugUri ?targetActionPropertyUri ?targetUri .
 
         ?targetActionUri a bioentity:Attribute ;
             bioentity:name ?targetAction .

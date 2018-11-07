@@ -14,15 +14,15 @@ INSERT {
         ### Represent transporter (Drug to protein or DNA) ChemicalToGeneAssociation
         #Should we use: ?drugUri bioentity:interacts_with ?transporterUri .
         ?transporterAssociationUri a bioentity:ChemicalToGeneAssociation ;
-            bioentity:relation bioentity:ChemicalToGeneAssociation ;
+            bioentity:relation ?transporterActionPropertyUri ;
             bioentity:subject ?drugUri ;
             bioentity:object ?transporterUri ;
             bioentity:publications ?transporterArticleUri ;
             bioentity:qualifiers ?transporterActionUri ;
             bioentity:affects ?transporterOrganism .
 
-
-        ?drugUri ?transporterActionPropertyUri ?transporterUri .
+        # Direct link
+        #?drugUri ?transporterActionPropertyUri ?transporterUri .
 
         ?transporterActionUri a bioentity:Attribute ;
             bioentity:name ?transporterAction .

@@ -14,15 +14,15 @@ INSERT {
         ### Represent carrier (Drug to protein or DNA) ChemicalToGeneAssociation
         #Should we use: ?drugUri bioentity:interacts_with ?carrierUri .
         ?carrierAssociationUri a bioentity:ChemicalToGeneAssociation ;
-            bioentity:relation bioentity:ChemicalToGeneAssociation ;
+            bioentity:relation ?carrierActionPropertyUri ;
             bioentity:subject ?drugUri ;
             bioentity:object ?carrierUri ;
             bioentity:publications ?carrierArticleUri ;
             bioentity:qualifiers ?carrierActionUri ;
             bioentity:affects ?carrierOrganism .
 
-
-        ?drugUri ?carrierActionPropertyUri ?carrierUri .
+        # Direct link
+        #?drugUri ?carrierActionPropertyUri ?carrierUri .
 
         ?carrierActionUri a bioentity:Attribute ;
             bioentity:name ?carrierAction .

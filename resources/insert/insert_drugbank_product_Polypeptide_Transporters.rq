@@ -7,41 +7,44 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX bioentity: <http://bioentity.io/vocab/>
+PREFIX bl: <http://bioentity.io/vocab/>
 INSERT { 
     GRAPH <http://data2services/biolink/drugbank> {   
 
-        ?transporterUri a bioentity:GeneOrGeneProduct ;
-            bioentity:same_as ?polypeptideAttrUri ;
-            bioentity:in_taxon ?ncbiTaxonIdentifierUri ;
-            bioentity:category ?polypeptidePfamUri .
+        ?transporterUri a bl:GeneOrGeneProduct ;
+            bl:same_as ?polypeptideAttrUri ;
+            bl:in_taxon ?ncbiTaxonIdentifierUri ;
+            bl:category ?polypeptidePfamUri .
 
         # Get GO TERM
-        ?goTermAssociationUri a bioentity:GeneToGoTermAssociation ;
-            bioentity:relation bioentity:GeneToGoTermAssociation ;
-            bioentity:gene_to_go_term_association_object ?transporterUri ;
-            bioentity:gene_to_go_term_association_subject ?goTermUri .
+        ?goTermAssociationUri a bl:GeneToGoTermAssociation ;
+            bl:relation bl:category ;
+            bl:gene_to_go_term_association_object ?transporterUri ;
+            bl:gene_to_go_term_association_subject ?goTermUri .
 
-        ?goTermUri a bioentity:GeneOntologyClass ;
-            bioentity:description ?polyGoTermDescription ;
-            bioentity:category ?goTermCategoryUri .
+        # Direct link
+        #?transporterUri bl:category ?goTermUri .
 
-        ?goTermCategoryUri a bioentity:OntologyClass ;
-            bioentity:name ?polyGoTermCategory .
+        ?goTermUri a bl:GeneOntologyClass ;
+            bl:description ?polyGoTermDescription ;
+            bl:category ?goTermCategoryUri .
+
+        ?goTermCategoryUri a bl:OntologyClass ;
+            bl:name ?polyGoTermCategory .
 
 
         # Get Pfam
-        ?polypeptidePfamUri bioentity:id ?polyPfamId ;
-            bioentity:name ?polyPfamName . 
+        ?polypeptidePfamUri bl:id ?polyPfamId ;
+            bl:name ?polyPfamName . 
 
         # Get TAXON
-        ?ncbiTaxonIdentifierUri a bioentity:OrganismTaxon ;
-            bioentity:id ?ncbiTaxonId ;
-            bioentity:name ?ncbiTaxonName ;
-            bioentity:same_as ?ncbiTaxonUri .
+        ?ncbiTaxonIdentifierUri a bl:OrganismTaxon ;
+            bl:id ?ncbiTaxonId ;
+            bl:name ?ncbiTaxonName ;
+            bl:same_as ?ncbiTaxonUri .
 
-        #?polypeptideAttrUri a bioentity:GeneOrGeneProduct ;
-        #    bioentity:same_as ?polypeptideAttrUniprotUri .
+        #?polypeptideAttrUri a bl:GeneOrGeneProduct ;
+        #    bl:same_as ?polypeptideAttrUniprotUri .
 
     }
 }
