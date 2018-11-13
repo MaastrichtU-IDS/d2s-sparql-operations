@@ -356,7 +356,8 @@ WHERE {
   BIND ( iri(concat("http://identifiers.org/", ?Hgnc_id)) AS ?hgncUri )
 
   # Avoid taking the first row with columns labels
-  #FILTER( !contains(?Hgnc_id, " ") )
+  #FILTER( !contains(?Hgnc_id, "hgnc_id") )
+  FILTER( ?Hgnc_id != "hgnc_id") 
 }
 }
 }
