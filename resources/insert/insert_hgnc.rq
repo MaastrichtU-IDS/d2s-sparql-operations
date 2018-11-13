@@ -1,118 +1,110 @@
-PREFIX kraken: <http://kraken//data/ncats/hgnc/hgnc_complete_set.ts/>
+PREFIX kraken: <http://data2services/data/hgnc/hgnc_complete_set.tsv/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX bioentity: <http://bioentity.io/vocab/>
+PREFIX bl: <http://bioentity.io/vocab/>
 PREFIX d2svocab: <http://data2services/vocab/>
 INSERT
 {
   GRAPH <http://data2services/biolink/hgnc> {  
-   ?hgncUri a bioentity:Gene. 
-   ?hgncUri bioentity:iri ?hgncUri .
-   ?hgncUri bioentity:id ?hgncid .
-   ?hgncUri bioentity:name ?name .
-   ?hgncUri rdfs:label ?name .
-   ?hgncUri bioentity:systematic_synonym ?symbol .
+   ?hgncUri a bl:Gene. 
+   ?hgncUri bl:iri ?hgncUri .
+   ?hgncUri bl:id ?Hgnc_id .
+   ?hgncUri bl:Name ?Name .
+   ?hgncUri rdfs:label ?Name .
+   ?hgncUri bl:systematic_synonym ?Symbol .
+   ?hgncUri bl:systematic_synonym ?singleAlias_symbol .
 
    ?hgncUri d2svocab:Status ?Status .
-   # Use bioentity:ConfidenceLevel (Level of confidence in a statement)? Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
+   # Use bl:ConfidenceLevel (Level of confidence in a statement)? Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
 
-   ?hgncUri bioentity:category ?LocusType .
-   # Could it be bioentity:category? Values: "RNA, long non-coding", "gene with protein product", "pseudogene", "virus integration site"
-   ?hgncUri bioentity:category ?LocusGroup .
-   # Almost same as LocusType. Values: "non-coding RNA", "protein-coding gene", "pseudogene", "other"
+   ?hgncUri bl:category ?Locus_type .
+   # Could it be bl:category? Values: "RNA, long non-coding", "gene with protein product", "pseudogene", "virus integration site"
+   ?hgncUri bl:category ?Locus_group .
+   # Almost same as Locus_type. Values: "non-coding RNA", "protein-coding gene", "pseudogene", "other"
 
-   #?hgncUri bioentity:GenomicSequenceLocalization ?
+   #?hgncUri bl:GenomicSequenceLocalization ?
    # Should we use https://biolink.github.io/biolink-model/docs/located_in.html ?
 
-   ?hgncUri bioentity:update_date ?DateModified .
+   ?hgncUri bl:update_date ?DateModified .
 
 
    # https://www.ncbi.nlm.nih.gov/gene/1047
-   ?hgncUri bioentity:same_as ?EntrezGeneUri .
-   ?hgncUri bioentity:same_as ?EntrezGeneIdSuppliedByNcbiUri .
+   ?hgncUri bl:same_as ?EntrezIdUri .
 
    # http://identifiers.org/ensembl/ENSG00000153132
-   ?hgncUri bioentity:same_as ?EnsemblGeneUri .
+   ?hgncUri bl:same_as ?EnsemblGeneUri .
 
    # http://identifiers.org/mim/601858
-   ?hgncUri bioentity:same_as ?OmimIdSuppliedByNcbiUri .
+   ?hgncUri bl:same_as ?OmimIdUri .
 
    # https://www.ncbi.nlm.nih.gov/nuccore/D86322
-   ?hgncUri bioentity:same_as ?AccessionNumbersUri .
+   ?hgncUri bl:same_as ?AccessionNumbersUri .
 
    # https://biolink.github.io/biolink-model/docs/TranscriptToGeneRelationship.html
-   ?refseqAssociationUri a bioentity:TranscriptToGeneRelationship ;
-            bioentity:transcript_to_gene_relationship_subject ?RefseqIdsUri ;
-            bioentity:transcript_to_gene_relationship_object ?hgncUri ;
-            bioentity:relation bioentity:expresses .
+   ?refseqAssociationUri a bl:TranscriptToGeneRelationship ;
+            bl:transcript_to_gene_relationship_subject ?RefseqAccessionUri ;
+            bl:transcript_to_gene_relationship_object ?hgncUri ;
+            bl:relation bl:expresses .
 
-   ?RefseqIdsUri a bioentity:Transcript . # https://www.ncbi.nlm.nih.gov/nuccore/NM_004362
-
-   ?suppliedRefseqAssociationUri a bioentity:TranscriptToGeneRelationship ;
-            bioentity:transcript_to_gene_relationship_subject ?RefseqSuppliedByNcbiUri ;
-            bioentity:transcript_to_gene_relationship_object ?hgncUri ;
-            bioentity:relation bioentity:expresses .
-
-   ?RefseqSuppliedByNcbiUri a bioentity:Transcript . # https://www.ncbi.nlm.nih.gov/nuccore/NM_001130675
-
+   ?RefseqAccessionUri a bl:Transcript . # https://www.ncbi.nlm.nih.gov/nuccore/NM_004362
 
    # https://biolink.github.io/biolink-model/docs/has_gene_product.html
-   ?hgncUri bioentity:has_gene_product ?UniprotIdSuppliedByUniprotUri .
+   ?hgncUri bl:has_gene_product ?UniprotIdsUri .
 
-   ?hgncUri bioentity:same_as ?EnsemblIdSuppliedByEnsemblUri .
+   ?hgncUri bl:same_as ?EnsemblIdSuppliedByEnsemblUri .
 
    # https://biolink.github.io/biolink-model/docs/GeneToGeneHomologyAssociation.html
-   ?mgiAssociationUri a bioentity:GeneToGeneHomologyAssociation ;
-            bioentity:relation bioentity:homologous_to ;
-            bioentity:gene_to_gene_association_subject ?hgncUri ;
-            bioentity:gene_to_gene_association_object ?MouseGenomeDatabaseIdUri .
+   ?mgiAssociationUri a bl:GeneToGeneHomologyAssociation ;
+            bl:relation bl:homologous_to ;
+            bl:gene_to_gene_association_subject ?hgncUri ;
+            bl:gene_to_gene_association_object ?MouseGenomeDatabaseIdUri .
 
-   ?suppliedMgiAssociationUri a bioentity:GeneToGeneHomologyAssociation ;
-            bioentity:relation bioentity:homologous_to ;
-            bioentity:gene_to_gene_association_subject ?hgncUri ;
-            bioentity:gene_to_gene_association_object ?MouseGenomeDatabaseIdSuppliedByMgiUri .
+   ?suppliedMgiAssociationUri a bl:GeneToGeneHomologyAssociation ;
+            bl:relation bl:homologous_to ;
+            bl:gene_to_gene_association_subject ?hgncUri ;
+            bl:gene_to_gene_association_object ?MouseGenomeDatabaseIdSuppliedByMgiUri .
 
-   ?rgdAssociationUri a bioentity:GeneToGeneHomologyAssociation ;
-            bioentity:relation bioentity:homologous_to ;
-            bioentity:gene_to_gene_association_subject ?hgncUri ;
-            bioentity:gene_to_gene_association_object ?RatGenomeDatabaseIdSuppliedByRgdUri .
+   ?rgdAssociationUri a bl:GeneToGeneHomologyAssociation ;
+            bl:relation bl:homologous_to ;
+            bl:gene_to_gene_association_subject ?hgncUri ;
+            bl:gene_to_gene_association_object ?RgdIdUri .
 
 
 
-   ?hgncUri bioentity:located_in ?GenomicSequenceLocalizationUri .
-   ?hgncUri bioentity:located_in ?CcdsIdsUri .
+   ?hgncUri bl:located_in ?GenomicSequenceLocalizationUri .
+   ?hgncUri bl:located_in ?CcdsIdUri .
 
-   ?GenomicSequenceLocalizationUri a bioentity:GenomicSequenceLocalization ;
-      bioentity:genomic_sequence_localization_subject ?hgncUri ;
-      bioentity:genomic_sequence_localization_object ?locationUri .
+   ?GenomicSequenceLocalizationUri a bl:GenomicSequenceLocalization ;
+      bl:genomic_sequence_localization_subject ?hgncUri ;
+      bl:genomic_sequence_localization_object ?LocationUri .
 
-    ?locationUri a bioentity:GenomicEntity ;
-      bioentity:id ?location ;
-      bioentity:name ?location ;
-      bioentity:category "chromosome" .
+    ?LocationUri a bl:GenomicEntity ;
+      bl:id ?Location ;
+      bl:Name ?Location ;
+      bl:category "chromosome" .
 
 
 
    # Publication
-   ?hgncUri bioentity:publications ?PubmedIdsUri .
-   ?PubmedIdsUri a bioentity:Publication ;
-      bioentity:id ?PubmedIds ;
-      bioentity:iri ?PubmedIdsUri ;
-      bioentity:relates_to ?hgncUri .
+   ?hgncUri bl:publications ?PubmedIdUri .
+   ?PubmedIdUri a bl:Publication ;
+      bl:id ?Pubmed_id ;
+      bl:iri ?PubmedIdUri ;
+      bl:relates_to ?hgncUri .
 
-    ?hgncUri bioentity:filler ?GeneFamilyUri .
+    ?hgncUri bl:filler ?GeneFamilyUri .
     ?GeneFamilyUri a <http://data2services/model/GeneFamily> ;
-      bioentity:subClassOf bioentity:Attribute ;
-      bioentity:description ?GeneFamilyDescription ;
-      bioentity:id ?GeneFamilyTag .
+      bl:subClassOf bl:Attribute ;
+      bl:description ?GeneFamilyDescription ;
+      bl:id ?GeneFamilyTag .
 
-    # Use bioentity:ConfidenceLevel? (Level of confidence in a statement) Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
-    ?hgncUri bioentity:filler ?StatusUri .
+    # Use bl:ConfidenceLevel? (Level of confidence in a statement) Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
+    ?hgncUri bl:filler ?StatusUri .
     ?StatusUri a <http://data2services/model/Status> ;
-          rdfs:subClassOf bioentity:Attribute ;
-          bioentity:name ?Status .
+          rdfs:subClassOf bl:Attribute ;
+          bl:Name ?Status .
 
 
  }
@@ -120,28 +112,56 @@ INSERT
 WHERE {
   SERVICE <http://localhost:7200/repositories/test>  {
     GRAPH <http://data2services/graph/autor2rml> {
-      ?s kraken:HgncId ?hgncid .
+      ?s kraken:Hgnc_id ?Hgnc_id .
        OPTIONAL { 
-         ?s kraken:name ?name .
+         ?s kraken:Name ?Name .
        
        } OPTIONAL {
-         ?s kraken:symbol ?symbol .
+         ?s kraken:Symbol ?Symbol .
        
        } OPTIONAL { 
          ?s kraken:Status ?Status .
          BIND ( iri(concat("http://data2services/model/status/", REPLACE(?Status, " ", "", "i")) ) AS ?StatusUri )
        
        } OPTIONAL { 
-         ?s kraken:LocusType ?LocusType .
+         ?s kraken:Locus_type ?Locus_type .
        
        } OPTIONAL { 
-         ?s kraken:LocusGroup ?LocusGroup .
+         ?s kraken:Locus_group ?Locus_group .
        
        } OPTIONAL {
-         ?s kraken:PreviousSymbols ?PreviousSymbols .
+         ?s kraken:Alias_symbol ?Alias_symbol . # array
+         BIND( if( contains(?Alias_symbol, "|"),
+              strbefore(?Alias_symbol, "|") ,
+              ?Alias_symbol )
+         AS ?singleAlias_symbol )
        
        } OPTIONAL {
-         ?s kraken:PreviousNames ?PreviousNames .
+         ?s kraken:Alias_name ?Alias_name . # array
+         BIND( if( contains(?Alias_name, "|"),
+              strbefore(?Alias_name, "|") ,
+              ?Alias_name )
+         AS ?singleAlias_name )
+
+       } OPTIONAL {
+         ?s kraken:Prev_symbol ?Prev_symbol . # array
+         BIND( if( contains(?Prev_symbol, "|"),
+              strbefore(?Prev_symbol, "|") ,
+              ?Prev_symbol )
+         AS ?singlePrev_symbol )
+       
+       } OPTIONAL {
+         ?s kraken:Prev_name ?Prev_name . # array
+
+       } OPTIONAL {
+         ?s kraken:Gene_family ?Gene_family . # array
+         BIND( if( contains(?Gene_family, ","),
+              iri(concat("https://data2services/model/gene-family/", strbefore(?Gene_family, ",") ) ) ,
+              iri(concat("https://data2services/model/gene-family/", ?Gene_family ) ) ) 
+         AS ?GeneFamilyUri ) # TODO: not good for URI
+
+       } OPTIONAL {
+         ?s kraken:Gene_family_id ?Gene_family_id . # array
        
        } OPTIONAL {
          ?s kraken:Synonyms ?Synonyms .
@@ -150,189 +170,193 @@ WHERE {
          ?s kraken:NameSynonyms ?NameSynonyms .
        
        } OPTIONAL {
-         ?s kraken:location ?location .
-         BIND( if( contains(?location, " "),
+         # TODO: also do Location_sortable?
+         ?s kraken:Location ?Location .
+         BIND( if( contains(?Location, " "),
               iri("") ,
-              iri(concat("http://data2services/model/sequence-localization/", md5(concat(?hgncid, ?location))))
+              iri(concat("http://data2services/model/sequence-localization/", md5(concat(?Hgnc_id, ?Location))))
               ) 
          AS ?GenomicSequenceLocalizationUri )
 
-         BIND( if( contains(?location, " "),
+         BIND( if( contains(?Location, " "),
               iri("") ,
-              iri(concat("http://data2services/model/chromosome/", ?location) )
+              iri(concat("http://data2services/model/chromosome/", ?Location) )
               ) 
-         AS ?locationUri )
+         AS ?LocationUri )
 
-         #FILTER NOT EXISTS { contains(?location, " ")  }
+         #FILTER NOT EXISTS { contains(?Location, " ")  }
 
-         #BIND( iri(concat("http://data2services/model/sequence-localization/", md5(concat(?hgncId, ?location)))) AS ?GenomicSequenceLocalizationUri )
+         #BIND( iri(concat("http://data2services/model/sequence-localization/", md5(concat(?Hgnc_id, ?Location)))) AS ?GenomicSequenceLocalizationUri )
 
-         #BIND( iri(concat("http://data2services/model/chromosome/", ?location) ) AS ?locationUri )
+         #BIND( iri(concat("http://data2services/model/chromosome/", ?Location) ) AS ?LocationUri )
        
        } OPTIONAL {
-         ?s kraken:DateApproved ?DateApproved .
-       
-       } OPTIONAL {
-         ?s kraken:DateModified ?DateModified .
-       
-       } OPTIONAL {
-         ?s kraken:DateSymbolChanged ?DateSymbolChanged .
-       
-       } OPTIONAL {
-         ?s kraken:DateNameChanged ?DateNameChanged .
-       
-       } OPTIONAL {
-         ?s kraken:AccessionNumbers ?AccessionNumbers .
-         BIND( if( contains(?AccessionNumbers, ","),
-              iri(concat("https://www.ncbi.nlm.nih.gov/nuccore/", strbefore(?AccessionNumbers, ",") ) ) ,
-              iri(concat("https://www.ncbi.nlm.nih.gov/nuccore/", ?AccessionNumbers ) ) ) 
-         AS ?AccessionNumbersUri )
-       
-       } OPTIONAL {
-         ?s kraken:EnzymeIds ?EnzymeIds .
-         BIND( if( contains(?EnzymeIds, ","),
-              iri(concat("http://identifiers.org/ec-code/", strbefore(?EnzymeIds, ",") ) ) ,
-              iri(concat("http://identifiers.org/ec-code/", ?EnzymeIds ) ) ) 
-         AS ?EnzymeIdsUri )
-       
-       } OPTIONAL {
-         ?s kraken:EntrezGeneId ?EntrezGeneId .
-         BIND( iri(concat("https://www.ncbi.nlm.nih.gov/gene/", ?EntrezGeneId) ) AS ?EntrezGeneIdUri )
-       
-       } OPTIONAL {
-         ?s kraken:EnsemblGeneId ?EnsemblGeneId .
-         BIND( iri(concat("http://identifiers.org/ensembl/", ?EnsemblGeneId) ) AS ?EnsemblGeneIdUri )
-       
-       } OPTIONAL {
-         ?s kraken:MouseGenomeDatabaseId ?MouseGenomeDatabaseId .
-         BIND( if( contains(?MouseGenomeDatabaseId, ","),
-              iri(concat("http://identifiers.org/mgi/", strbefore(?MouseGenomeDatabaseId, ",") ) ) ,
-              iri(concat("http://identifiers.org/mgi/", ?MouseGenomeDatabaseId ) ) ) 
-         AS ?MouseGenomeDatabaseIdUri )
-         BIND ( iri(concat("http://data2services/model/association/homology/", md5(concat(?hgncid, ?MouseGenomeDatabaseId)))) AS ?mgiAssociationUri )
+         ?s kraken:Date_approved_reserved ?Date_approved_reserved . # Format: 2009-07-20
 
        } OPTIONAL {
-         ?s kraken:SpecialistDatabaseLinks ?SpecialistDatabaseLinks .
+         ?s kraken:Date_symbol_changed ?Date_symbol_changed . # Format: 2009-07-20
+
+       } OPTIONAL {
+         ?s kraken:Date_name_changed ?Date_name_changed . # Format: 2009-07-20
+
+       } OPTIONAL {
+         ?s kraken:Date_modified ?Date_modified . # Format: 2009-07-20
        
        } OPTIONAL {
-         ?s kraken:SpecialistDatabaseIds ?SpecialistDatabaseIds .
-       
+         ?s kraken:Entrez_id ?Entrez_id .
+         BIND( iri(concat("https://www.ncbi.nlm.nih.gov/gene/", ?Entrez_id) ) AS ?EntrezIdUri )
+
        } OPTIONAL {
-         ?s kraken:PubmedIds ?PubmedIds .
-         BIND( if( contains(?PubmedIds, ","),
-              iri(concat("http://identifiers.org/pubmed/", strbefore(?PubmedIds, ",") ) ) ,
-              iri(concat("http://identifiers.org/pubmed/", ?PubmedIds ) ) ) 
-         AS ?PubmedIdsUri )
-       
+         ?s kraken:Ensembl_gene_id ?Ensembl_gene_id .
+         BIND( iri(concat("http://identifiers.org/ensembl/", ?Ensembl_gene_id) ) AS ?EnsemblGeneIdUri )
+
        } OPTIONAL {
-         ?s kraken:RefseqIds ?RefseqIds .
-         BIND( if( contains(?RefseqIds, ","),
-              iri(concat("https://www.ncbi.nlm.nih.gov/nuccore/", strbefore(?RefseqIds, ",") ) ) ,
-              iri(concat("https://www.ncbi.nlm.nih.gov/nuccore/", ?RefseqIds ) ) ) 
-         AS ?RefseqIdsUri )
-         BIND ( iri(concat("http://data2services/model/association/transcript/", md5(concat(?hgncid, ?RefseqIds)))) AS ?refseqAssociationUri )
-       
+         ?s kraken:Vega_id ?Vega_id .
+
        } OPTIONAL {
-         ?s kraken:GeneFamilyTag ?GeneFamilyTag .
-         BIND( if( contains(?GeneFamilyTag, ","),
-              iri(concat("https://data2services/model/gene-family/", strbefore(?GeneFamilyTag, ",") ) ) ,
-              iri(concat("https://data2services/model/gene-family/", ?GeneFamilyTag ) ) ) 
-         AS ?GeneFamilyUri )
-       
+         ?s kraken:Ucsc_id ?Ucsc_id .
+
+       } OPTIONAL { 
+         ?s kraken:Ena ?Ena .
+         BIND( if( contains(?Ena, "|"),
+              strbefore(?Ena, "|") ,
+              ?Ena )
+         AS ?singleEna )
+
        } OPTIONAL {
-         ?s kraken:GeneFamilyDescription ?GeneFamilyDescription .
-       
+         ?s kraken:Refseq_accession ?Refseq_accession .
+         BIND( if( contains(?Refseq_accession, "|"),
+              iri(concat("https://www.ncbi.nlm.nih.gov/nuccore/", strbefore(?Refseq_accession, "|") ) ) ,
+              iri(concat("https://www.ncbi.nlm.nih.gov/nuccore/", ?Refseq_accession ) ) ) 
+         AS ?RefseqAccessionUri )
+         BIND ( iri(concat("http://data2services/model/association/transcript/", md5(concat(?Hgnc_id, ?Refseq_accession)))) AS ?refseqAssociationUri )
+
        } OPTIONAL {
-         ?s kraken:RecordType ?RecordType .
-       
+         ?s kraken:Ccds_id ?Ccds_id .
+         BIND( if( contains(?Ccds_id, "|"),
+              iri(concat("http://identifiers.org/ccds/", strbefore(?Ccds_id, "|") ) ) ,
+              iri(concat("http://identifiers.org/ccds/", ?Ccds_id ) ) ) 
+         AS ?CcdsIdUri )
+
        } OPTIONAL {
-         ?s kraken:PrimaryIds ?PrimaryIds .
-       
-       } OPTIONAL {
-         ?s kraken:SecondaryIds ?SecondaryIds .
-       
-       } OPTIONAL {
-         ?s kraken:CcdsIds ?CcdsIds .
-         BIND( if( contains(?CcdsIds, ","),
-              iri(concat("http://identifiers.org/ccds/", strbefore(?CcdsIds, ",") ) ) ,
-              iri(concat("http://identifiers.org/ccds/", ?CcdsIds ) ) ) 
-         AS ?CcdsIdsUri )
-       
-       } OPTIONAL {
-         ?s kraken:VegaIds ?VegaIds .
-       
-       } OPTIONAL {
-         ?s kraken:LocusSpecificDatabases ?LocusSpecificDatabases .
-       
-       } OPTIONAL {
-         ?s kraken:EntrezGeneIdSuppliedByNcbi ?EntrezGeneIdSuppliedByNcbi .
-         BIND( iri(concat("https://www.ncbi.nlm.nih.gov/gene/", ?EntrezGeneIdSuppliedByNcbi ) ) AS ?EntrezGeneIdSuppliedByNcbiUri )
-       
-       } OPTIONAL {
-         ?s kraken:OmimIdSuppliedByNcbi ?OmimIdSuppliedByNcbi .
-         # TODO: also take the STRAFTER?
-         BIND( if( contains(?OmimIdSuppliedByNcbi, ","),
-              iri(concat("http://identifiers.org/mim/", strbefore(?OmimIdSuppliedByNcbi, ",") ) ) ,
-              iri(concat("http://identifiers.org/mim/", ?OmimIdSuppliedByNcbi ) ) ) 
-         AS ?OmimIdSuppliedByNcbiUri )
-                
-       } OPTIONAL {
-         ?s kraken:RefseqSuppliedByNcbi ?RefseqSuppliedByNcbi .
-         BIND( iri(concat("https://www.ncbi.nlm.nih.gov/nuccore/", ?RefseqSuppliedByNcbi ) ) AS ?RefseqSuppliedByNcbiUri )
-         BIND( iri(concat("http://data2services/model/association/transcript/", md5(concat(?hgncid, ?RefseqSuppliedByNcbi)))) AS ?suppliedRefseqAssociationUri )
-       
-       } OPTIONAL {
-         ?s kraken:UniprotIdSuppliedByUniprot ?UniprotIdSuppliedByUniprot .
+         ?s kraken:Uniprot_ids ?Uniprot_ids .
          # If there is a comma we take only the first iteration.
          # TODO: also take the STRAFTER?
-         BIND( if( contains(?UniprotIdSuppliedByUniprot, ","),
-              iri(concat("http://identifiers.org/uniprot/", strbefore(?UniprotIdSuppliedByUniprot, ",") ) ) ,
-              iri(concat("http://identifiers.org/uniprot/", ?UniprotIdSuppliedByUniprot ) ) ) 
-         AS ?UniprotIdSuppliedByUniprotUri )
+         BIND( if( contains(?Uniprot_ids, "|"),
+              iri(concat("http://identifiers.org/uniprot/", strbefore(?Uniprot_ids, "|") ) ) ,
+              iri(concat("http://identifiers.org/uniprot/", ?Uniprot_ids ) ) ) 
+         AS ?UniprotIdsUri )
+
 
        } OPTIONAL {
-         ?s kraken:EnsemblIdSuppliedByEnsembl ?EnsemblIdSuppliedByEnsembl .
-         BIND( iri(concat("http://identifiers.org/ensembl/", ?EnsemblIdSuppliedByEnsembl) ) AS ?EnsemblIdSuppliedByEnsemblUri )
-
-         # "name": "stderr",
-         # "text": [
-         # "http://identifiers.org/ensembl/<!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <a href=\"http:/cancer.sanger.ac.uk/cosmic/gene/overview?ln=FBXO28\">COSMIC</a><!--,--> <a href=\"http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Lng=GB&Expert=470322\">Orphanet</a><!--,--> <!--,--> <!--,--> <!--,--> <!--,--> <!--,-->  does not look like a valid URI, trying to serialize this will break.\n"
-
-       
-       } OPTIONAL {
-         ?s kraken:VegaIdSuppliedByVega ?VegaIdSuppliedByVega .
-       
-       } OPTIONAL {
-         ?s kraken:UcscIdSuppliedByUcsc ?UcscIdSuppliedByUcsc .
-       
-       } OPTIONAL {
-         ?s kraken:MouseGenomeDatabaseIdSuppliedByMgi ?MouseGenomeDatabaseIdSuppliedByMgi .
-         BIND( if( contains(?MouseGenomeDatabaseIdSuppliedByMgi, ","),
-              iri(concat("http://identifiers.org/mgi/", strbefore(?MouseGenomeDatabaseIdSuppliedByMgi, ",") ) ) ,
-              iri(concat("http://identifiers.org/mgi/", ?MouseGenomeDatabaseIdSuppliedByMgi ) ) ) 
-         AS ?MouseGenomeDatabaseIdSuppliedByMgiUri )
-         BIND ( iri(concat("http://data2services/model/association/homology/", md5(concat(?hgncid, ?MouseGenomeDatabaseIdSuppliedByMgi)))) AS ?suppliedMgiAssociationUri )
+         ?s kraken:Pubmed_id ?Pubmed_id .
+         BIND( if( contains(?Pubmed_id, "|"),
+              iri(concat("http://identifiers.org/pubmed/", strbefore(?Pubmed_id, "|") ) ) ,
+              iri(concat("http://identifiers.org/pubmed/", ?Pubmed_id ) ) ) 
+         AS ?PubmedIdUri )
 
        } OPTIONAL {
-         ?s kraken:RatGenomeDatabaseIdSuppliedByRgd ?RatGenomeDatabaseIdSuppliedByRgd .
-         BIND( if( contains(?RatGenomeDatabaseIdSuppliedByRgd, ","),
-              iri(concat("http://identifiers.org/mgi/", strbefore(?RatGenomeDatabaseIdSuppliedByRgd, ",") ) ) ,
-              iri(concat("http://identifiers.org/mgi/", ?RatGenomeDatabaseIdSuppliedByRgd ) ) ) 
-         AS ?RatGenomeDatabaseIdSuppliedByRgdUri )
-         BIND ( iri(concat("http://data2services/model/association/homology/", md5(concat(?hgncid, ?RatGenomeDatabaseIdSuppliedByRgd)))) AS ?rgdAssociationUri )
+         ?s kraken:Mgd_id ?Mgd_id .
+         BIND( if( contains(?Mgd_id, "|"),
+              iri(concat("http://identifiers.org/", strbefore(?Mgd_id, "|") ) ) ,
+              iri(concat("http://identifiers.org/", ?Mgd_id ) ) ) 
+         AS ?MouseGenomeDatabaseIdUri )
+         BIND ( iri(concat("http://data2services/model/association/homology/", md5(concat(?Hgnc_id, ?Mgd_id)))) AS ?mgiAssociationUri )
+
+       } OPTIONAL {
+         ?s kraken:Rgd_id ?Rgd_id .
+         BIND( if( contains(?Rgd_id, "|"),
+              iri(concat("http://identifiers.org/", strbefore(?Rgd_id, "|") ) ) ,
+              iri(concat("http://identifiers.org/", ?Rgd_id ) ) ) 
+         AS ?RgdIdUri )
+         BIND ( iri(concat("http://data2services/model/association/homology/", md5(concat(?Hgnc_id, ?Rgd_id)))) AS ?rgdAssociationUri )
+
+       } OPTIONAL {
+         ?s kraken:Lsdb ?Lsdb .
+         BIND( if( contains(?Lsdb, "|"),
+              iri(concat("http://identifiers.org/", strafter(?Lsdb, "|") ) ) ,
+              iri(concat("http://identifiers.org/", ?Lsdb ) ) ) 
+         AS ?LsdbUri ) # TODO: LRG_359|http://ftp.ebi.ac.uk/pub/databases/lrgex/LRG_359.xml
+
        
        } OPTIONAL {
-         ?s kraken:RnacentralIdsSuppliedByRnacentral ?RnacentralIdsSuppliedByRnacentral .
-         BIND( iri(concat("https://rnacentral.org/rna/", ?RnacentralIdsSuppliedByRnacentral) ) AS ?RnacentralIdsSuppliedByRnacentralUri )
+         ?s kraken:Cosmic ?Cosmic .
+
+       } OPTIONAL {
+         ?s kraken:Omim_id ?Omim_id .
+         # TODO: also take the STRAFTER?
+         BIND( if( contains(?Omim_id, "|"),
+              iri(concat("http://identifiers.org/mim/", strbefore(?Omim_id, "|") ) ) ,
+              iri(concat("http://identifiers.org/mim/", ?Omim_id ) ) ) 
+         AS ?OmimIdUri )
+
+       } OPTIONAL {
+         ?s kraken:Mirbase ?Mirbase .
+         # TODO: identifiers.org/mirbase:MI0000651
+         BIND( iri(concat("http://identifiers.org/mirbase/", ?Mirbase ) ) 
+         AS ?MirbaseUri )
+
+       } OPTIONAL {
+         ?s kraken:Homeodb ?Homeodb .
+         # TODO: 8553
+
+       } OPTIONAL {
+         ?s kraken:Snornabase ?Snornabase .
+         # Not really interesting DB https://www-snorna.biotoul.fr/plus.php?id=U8 (SR0000002)
+
+       } OPTIONAL {
+         ?s kraken:Bioparadigms_slc ?Bioparadigms_slc . # TODO: SLC49A1
        
        } OPTIONAL {
-         ?s kraken:LncipediaSymbolSuppliedByLncipedia ?LncipediaSymbolSuppliedByLncipedia .
+         ?s kraken:Orphanet ?Orphanet . # TODO: 246647
+
+       } OPTIONAL {
+         ?s kraken:PseudogeneOrg ?PseudogeneOrg . # TODO: PGOHUM00000291221
+
+       } OPTIONAL {
+         ?s kraken:Horde_id ?Horde_id . # TODO: OR1A1
+
+       } OPTIONAL {
+         ?s kraken:Merops ?Merops . # TODO: I43.950
+
+       } OPTIONAL {
+         ?s kraken:Imgt ?Imgt . # TODO: IGHA2
+
+       } OPTIONAL {
+         ?s kraken:Iuphar ?Iuphar . # TODO: objectId:763
+
+       } OPTIONAL {
+         ?s kraken:Kznf_gene_catalog ?Kznf_gene_catalog . # TODO: 1226
+
+       } OPTIONAL {
+         ?s kraken:MamitTrnadb ?MamitTrnadb . # TODO: 13
+
+       } OPTIONAL {
+         ?s kraken:Cd ?Cd . # TODO: CD243
+
+
+       } OPTIONAL {
+         ?s kraken:Lncrnadb ?Lncrnadb . # TODO: AFAP1AS
+
+       } OPTIONAL {
+         ?s kraken:Enzyme_id ?Enzyme_id . # array TODO: 6.2.1.16
+         BIND( if( contains(?Enzyme_id, "|"),
+              iri(concat("http://identifiers.org/ec-code/", strbefore(?Enzyme_id, "|") ) ) ,
+              iri(concat("http://identifiers.org/ec-code/", ?Enzyme_id ) ) ) 
+         AS ?EnzymeIdsUri )
+
+       } OPTIONAL {
+         ?s kraken:Intermediate_filament_db ?Intermediate_filament_db . # TODO: HGNC:1040
+
+       } OPTIONAL {
+         ?s kraken:Rna_central_ids ?Rna_central_ids . # TODO: URS00007E4F6E
+         BIND( iri(concat("https://rnacentral.org/rna/", ?Rna_central_ids) ) AS ?RnaCentralIdsUri )
        }
 
-  BIND ( iri(concat("http://identifiers.org/", lcase(?hgncid))) AS ?hgncUri )
+  BIND ( iri(concat("http://identifiers.org/", ?HgncId)) AS ?hgncUri )
 
   # Avoid taking the first row with columns labels
-  FILTER( !contains(?hgncid, " ") )
+  FILTER( !contains(?HgncId, " ") )
 }
 }
 }
