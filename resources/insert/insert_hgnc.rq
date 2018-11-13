@@ -7,13 +7,13 @@ PREFIX bioentity: <http://bioentity.io/vocab/>
 PREFIX d2svocab: <http://data2services/vocab/>
 INSERT
 {
-  GRAPH <http://data2services/biolink/hgnc/3> {  
+  GRAPH <http://data2services/biolink/hgnc> {  
    ?hgncUri a bioentity:Gene. 
    ?hgncUri bioentity:iri ?hgncUri .
    ?hgncUri bioentity:id ?hgncid .
-   ?hgncUri bioentity:name ?ApprovedName .
-   ?hgncUri rdfs:label ?ApprovedName .
-   ?hgncUri bioentity:systematic_synonym ?ApprovedSymbol .
+   ?hgncUri bioentity:name ?name .
+   ?hgncUri rdfs:label ?name .
+   ?hgncUri bioentity:systematic_synonym ?symbol .
 
    ?hgncUri d2svocab:Status ?Status .
    # Use bioentity:ConfidenceLevel (Level of confidence in a statement)? Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
@@ -86,11 +86,11 @@ INSERT
 
    ?GenomicSequenceLocalizationUri a bioentity:GenomicSequenceLocalization ;
       bioentity:genomic_sequence_localization_subject ?hgncUri ;
-      bioentity:genomic_sequence_localization_object ?ChromosomeUri .
+      bioentity:genomic_sequence_localization_object ?locationUri .
 
-    ?ChromosomeUri a bioentity:GenomicEntity ;
-      bioentity:id ?Chromosome ;
-      bioentity:name ?Chromosome ;
+    ?locationUri a bioentity:GenomicEntity ;
+      bioentity:id ?location ;
+      bioentity:name ?location ;
       bioentity:category "chromosome" .
 
 
@@ -119,13 +119,13 @@ INSERT
 }
 WHERE {
   SERVICE <http://localhost:7200/repositories/test>  {
-    GRAPH <http://ncats.org> {
+    GRAPH <http://data2services/graph/autor2rml> {
       ?s kraken:HgncId ?hgncid .
        OPTIONAL { 
-         ?s kraken:ApprovedName ?ApprovedName .
+         ?s kraken:name ?name .
        
        } OPTIONAL {
-         ?s kraken:ApprovedSymbol ?ApprovedSymbol .
+         ?s kraken:symbol ?symbol .
        
        } OPTIONAL { 
          ?s kraken:Status ?Status .
@@ -150,24 +150,24 @@ WHERE {
          ?s kraken:NameSynonyms ?NameSynonyms .
        
        } OPTIONAL {
-         ?s kraken:Chromosome ?Chromosome .
-         BIND( if( contains(?Chromosome, " "),
+         ?s kraken:location ?location .
+         BIND( if( contains(?location, " "),
               iri("") ,
-              iri(concat("http://data2services/model/sequence-localization/", md5(concat(?hgncid, ?Chromosome))))
+              iri(concat("http://data2services/model/sequence-localization/", md5(concat(?hgncid, ?location))))
               ) 
          AS ?GenomicSequenceLocalizationUri )
 
-         BIND( if( contains(?Chromosome, " "),
+         BIND( if( contains(?location, " "),
               iri("") ,
-              iri(concat("http://data2services/model/chromosome/", ?Chromosome) )
+              iri(concat("http://data2services/model/chromosome/", ?location) )
               ) 
-         AS ?ChromosomeUri )
+         AS ?locationUri )
 
-         #FILTER NOT EXISTS { contains(?Chromosome, " ")  }
+         #FILTER NOT EXISTS { contains(?location, " ")  }
 
-         #BIND( iri(concat("http://data2services/model/sequence-localization/", md5(concat(?hgncId, ?Chromosome)))) AS ?GenomicSequenceLocalizationUri )
+         #BIND( iri(concat("http://data2services/model/sequence-localization/", md5(concat(?hgncId, ?location)))) AS ?GenomicSequenceLocalizationUri )
 
-         #BIND( iri(concat("http://data2services/model/chromosome/", ?Chromosome) ) AS ?ChromosomeUri )
+         #BIND( iri(concat("http://data2services/model/chromosome/", ?location) ) AS ?locationUri )
        
        } OPTIONAL {
          ?s kraken:DateApproved ?DateApproved .
