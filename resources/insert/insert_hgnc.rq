@@ -3,108 +3,108 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX bioentity: <http://bioentity.io/vocab/>
+PREFIX bl: <http://bioentity.io/vocab/>
 PREFIX d2svocab: <http://data2services/vocab/>
 INSERT
 {
   GRAPH <http://data2services/biolink/hgnc/1> {  
-   ?hgncUri a bioentity:Gene. 
-   ?hgncUri bioentity:iri ?hgncUri .
-   ?hgncUri bioentity:id ?Hgnc_id .
-   ?hgncUri bioentity:Name ?Name .
+   ?hgncUri a bl:Gene. 
+   ?hgncUri bl:iri ?hgncUri .
+   ?hgncUri bl:id ?Hgnc_id .
+   ?hgncUri bl:Name ?Name .
    ?hgncUri rdfs:label ?Name .
-   ?hgncUri bioentity:systematic_synonym ?Symbol .
-   ?hgncUri bioentity:systematic_synonym ?singleAlias_symbol .
+   ?hgncUri bl:systematic_synonym ?Symbol .
+   ?hgncUri bl:systematic_synonym ?singleAlias_symbol .
 
    ?hgncUri d2svocab:Status ?Status .
-   # Use bioentity:ConfidenceLevel (Level of confidence in a statement)? Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
+   # Use bl:ConfidenceLevel (Level of confidence in a statement)? Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
 
-   ?hgncUri bioentity:category ?Locus_type .
-   # Could it be bioentity:category? Values: "RNA, long non-coding", "gene with protein product", "pseudogene", "virus integration site"
-   ?hgncUri bioentity:category ?Locus_group .
+   ?hgncUri bl:category ?Locus_type .
+   # Could it be bl:category? Values: "RNA, long non-coding", "gene with protein product", "pseudogene", "virus integration site"
+   ?hgncUri bl:category ?Locus_group .
    # Almost same as Locus_type. Values: "non-coding RNA", "protein-coding gene", "pseudogene", "other"
 
-   #?hgncUri bioentity:GenomicSequenceLocalization ?
+   #?hgncUri bl:GenomicSequenceLocalization ?
    # Should we use https://biolink.github.io/biolink-model/docs/located_in.html ?
 
-   ?hgncUri bioentity:update_date ?DateModified .
+   ?hgncUri bl:update_date ?DateModified .
 
 
    # https://www.ncbi.nlm.nih.gov/gene/1047
-   ?hgncUri bioentity:same_as ?EntrezIdUri .
+   ?hgncUri bl:same_as ?EntrezIdUri .
 
    # http://identifiers.org/ensembl/ENSG00000153132
-   ?hgncUri bioentity:same_as ?EnsemblGeneUri .
+   ?hgncUri bl:same_as ?EnsemblGeneUri .
 
    # http://identifiers.org/mim/601858
-   ?hgncUri bioentity:same_as ?OmimIdUri .
+   ?hgncUri bl:same_as ?OmimIdUri .
 
    # https://www.ncbi.nlm.nih.gov/nuccore/D86322
-   ?hgncUri bioentity:same_as ?AccessionNumbersUri .
+   ?hgncUri bl:same_as ?AccessionNumbersUri .
 
    # https://biolink.github.io/biolink-model/docs/TranscriptToGeneRelationship.html
-   ?refseqAssociationUri a bioentity:TranscriptToGeneRelationship ;
-            bioentity:transcript_to_gene_relationship_subject ?RefseqAccessionUri ;
-            bioentity:transcript_to_gene_relationship_object ?hgncUri ;
-            bioentity:relation bioentity:expresses .
+   ?refseqAssociationUri a bl:TranscriptToGeneRelationship ;
+            bl:transcript_to_gene_relationship_subject ?RefseqAccessionUri ;
+            bl:transcript_to_gene_relationship_object ?hgncUri ;
+            bl:relation bl:expresses .
 
-   ?RefseqAccessionUri a bioentity:Transcript . # https://www.ncbi.nlm.nih.gov/nuccore/NM_004362
+   ?RefseqAccessionUri a bl:Transcript . # https://www.ncbi.nlm.nih.gov/nuccore/NM_004362
 
    # https://biolink.github.io/biolink-model/docs/has_gene_product.html
-   ?hgncUri bioentity:has_gene_product ?UniprotIdsUri .
+   ?hgncUri bl:has_gene_product ?UniprotIdsUri .
 
-   ?hgncUri bioentity:same_as ?EnsemblIdSuppliedByEnsemblUri .
+   ?hgncUri bl:same_as ?EnsemblIdSuppliedByEnsemblUri .
 
    # https://biolink.github.io/biolink-model/docs/GeneToGeneHomologyAssociation.html
-   ?mgiAssociationUri a bioentity:GeneToGeneHomologyAssociation ;
-            bioentity:relation bioentity:homologous_to ;
-            bioentity:gene_to_gene_association_subject ?hgncUri ;
-            bioentity:gene_to_gene_association_object ?MouseGenomeDatabaseIdUri .
+   ?mgiAssociationUri a bl:GeneToGeneHomologyAssociation ;
+            bl:relation bl:homologous_to ;
+            bl:gene_to_gene_association_subject ?hgncUri ;
+            bl:gene_to_gene_association_object ?MouseGenomeDatabaseIdUri .
 
-   ?suppliedMgiAssociationUri a bioentity:GeneToGeneHomologyAssociation ;
-            bioentity:relation bioentity:homologous_to ;
-            bioentity:gene_to_gene_association_subject ?hgncUri ;
-            bioentity:gene_to_gene_association_object ?MouseGenomeDatabaseIdSuppliedByMgiUri .
+   ?suppliedMgiAssociationUri a bl:GeneToGeneHomologyAssociation ;
+            bl:relation bl:homologous_to ;
+            bl:gene_to_gene_association_subject ?hgncUri ;
+            bl:gene_to_gene_association_object ?MouseGenomeDatabaseIdSuppliedByMgiUri .
 
-   ?rgdAssociationUri a bioentity:GeneToGeneHomologyAssociation ;
-            bioentity:relation bioentity:homologous_to ;
-            bioentity:gene_to_gene_association_subject ?hgncUri ;
-            bioentity:gene_to_gene_association_object ?RgdIdUri .
+   ?rgdAssociationUri a bl:GeneToGeneHomologyAssociation ;
+            bl:relation bl:homologous_to ;
+            bl:gene_to_gene_association_subject ?hgncUri ;
+            bl:gene_to_gene_association_object ?RgdIdUri .
 
 
 
-   ?hgncUri bioentity:located_in ?GenomicSequenceLocalizationUri .
-   ?hgncUri bioentity:located_in ?CcdsIdUri .
+   ?hgncUri bl:located_in ?GenomicSequenceLocalizationUri .
+   ?hgncUri bl:located_in ?CcdsIdUri .
 
-   ?GenomicSequenceLocalizationUri a bioentity:GenomicSequenceLocalization ;
-      bioentity:genomic_sequence_localization_subject ?hgncUri ;
-      bioentity:genomic_sequence_localization_object ?LocationUri .
+   ?GenomicSequenceLocalizationUri a bl:GenomicSequenceLocalization ;
+      bl:genomic_sequence_localization_subject ?hgncUri ;
+      bl:genomic_sequence_localization_object ?LocationUri .
 
-    ?LocationUri a bioentity:GenomicEntity ;
-      bioentity:id ?Location ;
-      bioentity:Name ?Location ;
-      bioentity:category "chromosome" .
+    ?LocationUri a bl:GenomicEntity ;
+      bl:id ?Location ;
+      bl:Name ?Location ;
+      bl:category "chromosome" .
 
 
 
    # Publication
-   ?hgncUri bioentity:publications ?PubmedIdUri .
-   ?PubmedIdUri a bioentity:Publication ;
-      bioentity:id ?Pubmed_id ;
-      bioentity:iri ?PubmedIdUri ;
-      bioentity:relates_to ?hgncUri .
+   ?hgncUri bl:publications ?PubmedIdUri .
+   ?PubmedIdUri a bl:Publication ;
+      bl:id ?Pubmed_id ;
+      bl:iri ?PubmedIdUri ;
+      bl:relates_to ?hgncUri .
 
-    ?hgncUri bioentity:filler ?GeneFamilyUri .
+    ?hgncUri bl:filler ?GeneFamilyUri .
     ?GeneFamilyUri a <http://data2services/model/GeneFamily> ;
-      bioentity:subClassOf bioentity:Attribute ;
-      bioentity:description ?GeneFamilyDescription ;
-      bioentity:id ?GeneFamilyTag .
+      bl:subClassOf bl:Attribute ;
+      bl:description ?GeneFamilyDescription ;
+      bl:id ?GeneFamilyTag .
 
-    # Use bioentity:ConfidenceLevel? (Level of confidence in a statement) Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
-    ?hgncUri bioentity:filler ?StatusUri .
+    # Use bl:ConfidenceLevel? (Level of confidence in a statement) Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
+    ?hgncUri bl:filler ?StatusUri .
     ?StatusUri a <http://data2services/model/Status> ;
-          rdfs:subClassOf bioentity:Attribute ;
-          bioentity:Name ?Status .
+          rdfs:subClassOf bl:Attribute ;
+          bl:Name ?Status .
 
 
  }
@@ -356,7 +356,7 @@ WHERE {
   BIND ( iri(concat("http://identifiers.org/", ?Hgnc_id)) AS ?hgncUri )
 
   # Avoid taking the first row with columns labels
-  FILTER( !contains(?Hgnc_id, " ") )
+  #FILTER( !contains(?Hgnc_id, " ") )
 }
 }
 }
