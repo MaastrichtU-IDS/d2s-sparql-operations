@@ -30,6 +30,6 @@ docker run -it --rm -v /data/dataformer:/data sparql-dataformer -rq "/data" -url
 docker run -it --rm -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://localhost:7200/repositories/test" -op "construct"
 
 # Using GraphDB docker
-docker run -it --rm --link graphdb:graphdb -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://graphdb:7200/repositories/test"
+docker run -it --rm --link graphdb:graphdb -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://graphdb:7200/repositories/test/statements"
 ```
 
