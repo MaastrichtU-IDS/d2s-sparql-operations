@@ -7,6 +7,10 @@ The user has to provide the path to the directory where the queries are stored i
 
 It is possible to optionally define username and password for the SPARQL endpoint.
 
+
+
+TODO: If doing an insert we will generate Metadata for the generated dataset using  
+
 # Docker
 ## Build
 ```shell
