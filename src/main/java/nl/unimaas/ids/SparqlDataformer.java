@@ -1,13 +1,10 @@
 package nl.unimaas.ids;
 
-import javax.management.NotificationBroadcasterSupport;
-
-import nl.unimaas.ids.sparql.QueryOperations;
 import nl.unimaas.ids.sparql.SparqlConstruct;
 import nl.unimaas.ids.sparql.SparqlInsert;
 import picocli.CommandLine;
 
-public class DataConstructor {
+public class SparqlDataformer {
 
 	public static void main(String[] args) throws Exception {
 		try {
