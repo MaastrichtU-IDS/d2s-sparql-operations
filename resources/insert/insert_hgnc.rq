@@ -7,7 +7,7 @@ PREFIX bl: <http://bioentity.io/vocab/>
 PREFIX d2svocab: <http://data2services/vocab/>
 INSERT
 {
-  GRAPH <http://data2services/biolink/hgnc/1> {  
+  GRAPH <http://data2services/biolink/hgnc> {  
    ?hgncUri a bl:Gene. 
    ?hgncUri bl:iri ?hgncUri .
    ?hgncUri bl:id ?Hgnc_id .
