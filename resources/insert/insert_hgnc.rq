@@ -74,7 +74,7 @@ INSERT
 
 
    ?hgncUri bl:located_in ?GenomicSequenceLocalizationUri .
-   ?hgncUri bl:located_in ?CcdsIdUri .
+   ?hgncUri bl:located_in ?CcdsIdUri . # TODO: atm it generates http://identifiers.org/ccds/CCDS7241 but this does not resolve. It would need to be http://identifiers.org/ccds/CCDS7241.1
 
    ?GenomicSequenceLocalizationUri a bl:GenomicSequenceLocalization ;
       bl:genomic_sequence_localization_subject ?hgncUri ;
@@ -97,8 +97,7 @@ INSERT
     ?hgncUri bl:filler ?GeneFamilyUri .
     ?GeneFamilyUri a <http://data2services/model/GeneFamily> ;
       bl:subClassOf bl:Attribute ;
-      bl:description ?GeneFamilyDescription ;
-      bl:id ?GeneFamilyTag .
+      bl:name ?Gene_family .
 
     # Use bl:ConfidenceLevel? (Level of confidence in a statement) Values: "Approved", "Symbol Withdrawn", "Entry Withdrawn"
     ?hgncUri bl:filler ?StatusUri .
@@ -155,13 +154,14 @@ WHERE {
 
        } OPTIONAL {
          ?s kraken:Gene_family ?Gene_family . # array
-         BIND( if( contains(?Gene_family, ","),
-              iri(concat("https://data2services/model/gene-family/", strbefore(?Gene_family, ",") ) ) ,
-              iri(concat("https://data2services/model/gene-family/", ?Gene_family ) ) ) 
+         BIND( if( contains(?Gene_family, "|"),
+              iri(concat("https://data2services/model/gene-family/", md5(strbefore(?Gene_family, "|")) ) ) ,
+              iri(concat("https://data2services/model/gene-family/", md5(?Gene_family) ) ) ) 
          AS ?GeneFamilyUri ) # TODO: not good for URI
 
        } OPTIONAL {
          ?s kraken:Gene_family_id ?Gene_family_id . # array
+         # TODO: Generate URI fropm this one instead of using md5?!
        
        } OPTIONAL {
          ?s kraken:Synonyms ?Synonyms .
@@ -170,7 +170,7 @@ WHERE {
          ?s kraken:NameSynonyms ?NameSynonyms .
        
        } OPTIONAL {
-         # TODO: also do Location_sortable?
+         # TODO: also do Location_sortable? WHY this if statement???
          ?s kraken:Location ?Location .
          BIND( if( contains(?Location, " "),
               iri("") ,
@@ -233,9 +233,10 @@ WHERE {
 
        } OPTIONAL {
          ?s kraken:Ccds_id ?Ccds_id .
+
          BIND( if( contains(?Ccds_id, "|"),
-              iri(concat("http://identifiers.org/ccds/", strbefore(?Ccds_id, "|") ) ) ,
-              iri(concat("http://identifiers.org/ccds/", ?Ccds_id ) ) ) 
+                iri(concat("http://identifiers.org/ccds/", strbefore(?Ccds_id, "|") ) ) ,
+                iri(concat("http://identifiers.org/ccds/", ?Ccds_id ) ) )
          AS ?CcdsIdUri )
 
        } OPTIONAL {
