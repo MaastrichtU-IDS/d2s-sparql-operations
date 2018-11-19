@@ -1,5 +1,5 @@
-BASE <http://rdf.ebi.ac.uk/chembl/>
-PREFIX : <http://rdf.ebi.ac.uk/chembl/>
+#BASE <http://rdf.ebi.ac.uk/chembl/>
+#PREFIX : <http://rdf.ebi.ac.uk/chembl/>
 PREFIX ncit: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX cito: <http://purl.org/spar/cito/>
@@ -31,7 +31,7 @@ PREFIX d2sdata: <http://data2services/data/>
 # Complete example at https://www.w3.org/TR/hcls-dataset/#appendix_1
 
 INSERT {
-    GRAPH <http://data2services/metadata/datasets/test>
+    GRAPH <http://data2services/metadata/datasets>
     {
         ### Summary Level (Complete)
         ?summaryUri
@@ -80,31 +80,31 @@ WHERE
     ##### User input
 
     ### MUST
-    BIND(<http://identifiers.org/drugbank/> AS ?summaryUri)  # user input
+    BIND(<http://identifiers.org/hgnc/> AS ?summaryUri)  # user input
     # Careful, ido uses it as void:uriSpace for a dcat:CatalogRecord
     
-    BIND("DrugBank"@en AS ?dctTitle) # user input
-    BIND("The DrugBank database is a unique bioinformatics and cheminformatics resource that combines detailed drug data with comprehensive drug target information."@en AS ?dctDescription) # user input
+    BIND("HUGO Gene Nomenclature Committee"@en AS ?dctTitle) # user input
+    BIND("HGNC is responsible for approving unique symbols and names for human loci, including protein coding genes, ncRNA genes and pseudogenes, to allow unambiguous scientific communication."@en AS ?dctDescription) # user input
 
     # Use https://orcid.org/ for researchers when possible or generate a new agent URI (like here)
-    BIND("DrugBank" AS ?dctPublisherName) # Optional, to store publisher name in our graph if the URI already resolves
-    BIND(<https://www.drugbank.ca/> AS ?dctPublisherPage) # Optional, to store publisher info in our graph if the URI already resolves
+    BIND("HUGO Gene Nomenclature Committee at the European Bioinformatics Institute" AS ?dctPublisherName) # Optional, to store publisher name in our graph if the URI already resolves
+    BIND(<https://www.genenames.org/> AS ?dctPublisherPage) # Optional, to store publisher info in our graph if the URI already resolves
     BIND(iri(concat("http://data2services/agent/", md5(?dctPublisherName))) AS ?dctPublisher)
 
-    BIND("drugbank" AS ?idotPreferredPrefix) # Usually a May but required for data2services since it used as source ID to generate the graph URI.
+    BIND("hgnc" AS ?idotPreferredPrefix) # Usually a May but required for data2services since it used as source ID to generate the graph URI.
 
     BIND(<http://graphdb.dumontierlab.com/repositories/ncats-red-graph> AS ?voidSparqlEndpoint) # Usually a Should but required for data2services.
 
 
     ### SHOULD
-    #BIND(iri("http://www.ebi.ac.uk/chembl/") AS ?foafPage)
+    BIND(<https://www.genenames.org/> AS ?foafPage)
     #BIND(iri("http://www.ebi.ac.uk/rdf/sites/ebi.ac.uk.rdf/files/resize/images/rdf/chembl_service_logo-146x48.gif") AS ?schemaorgLogo)
     #BIND(freq:quarterly AS ?dctAccrualPeriodicity) # Use freq: <http://purl.org/cld/freq/>
 
 
     ### MAY
     #BIND("Alternative label for dataset" AS ?dctAlternative)
-    BIND(iri("http://creativecommons.org/licenses/by-sa/3.0/") AS ?dctLicense) 
+    #BIND(iri("http://creativecommons.org/licenses/by-sa/3.0/") AS ?dctLicense) # See https://www.genenames.org/about/
     #BIND("The data in ChEMBL is covered by the Creative Commons By Attribution." AS ?dctRights)
     #BIND(ncit:C48807 AS ?dcatTheme)  # uri. Example is chemical
     #VALUES (?dcatKeyword) { ( "assay" ) ( "chemical" ) } # array
@@ -120,6 +120,6 @@ WHERE
 
     ##### Automatically generated
 
-    BIND(iri(concat("http://data2services/graph/biolink/", ?idotPreferredPrefix)) AS ?dcatAccessURL) # May. uri
+    BIND(iri(concat("http://data2services/biolink/", ?idotPreferredPrefix)) AS ?dcatAccessURL) # May. uri
 
 }

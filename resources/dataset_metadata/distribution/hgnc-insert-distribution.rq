@@ -31,16 +31,15 @@ PREFIX d2sdata: <http://data2services/data/>
 # Complete example at https://www.w3.org/TR/hcls-dataset/#appendix_1
 
 INSERT {
-    GRAPH <http://data2services/metadata/datasets/test> {
+    GRAPH <http://data2services/metadata/datasets> {
 
         ?dctPublisher a dct:Agent ;
             foaf:name ?dctPublisherName ;
             foaf:page ?dctPublisherPage ;
         .
 
-        ?rdfCreator a dct:Agent ;
-            foaf:name ?rdfCreatorName ;
-            foaf:page ?rdfCreatorPage ;
+        ?dctCreator a dct:Agent ;
+            foaf:name ?dctCreatorName
         .
 
         ?dctPublisherRdf a dct:Agent ;
@@ -48,9 +47,8 @@ INSERT {
             foaf:page ?dctPublisherPageRdf ;
         .
 
-        ?rdfCreatorRdf a dct:Agent ;
-            foaf:name ?rdfCreatorNameRdf ;
-            foaf:page ?rdfCreatorPageRdf ;
+        ?dctCreatorRdf a dct:Agent ;
+            foaf:name ?dctCreatorNameRdf
         .
 
         ### Version Level (Complete)
@@ -243,9 +241,7 @@ INSERT {
 }
 WHERE 
 {
-  GRAPH <http://data2services/metadata/datasets/test> {
-
-    BIND(<http://identifiers.org/drugbank/> AS ?summaryUri) # user input. Careful, for drugbank ido uses it as void:uriSpace for a dcat:CatalogRecord
+    BIND(<http://identifiers.org/hgnc/> AS ?summaryUri) # user input. Careful, for drugbank ido uses it as void:uriSpace for a dcat:CatalogRecord
     BIND("1"^^xsd:string AS ?pavVersion) # Increment it from the latest version? Or user input
     BIND("1"^^xsd:string AS ?pavVersionRdf) # Increment it from the latest version? Or user input
 
@@ -278,7 +274,7 @@ WHERE
     #BIND(<https://www.drugbank.ca/> AS ?dctPublisherPage) # Optional, to store publisher info in our graph if the URI already resolves
     #BIND(iri(concat("http://data2services/agent/", md5(?dctPublisherName))) AS ?dctPublisher) # Get from summary. But let the possibility to redefine it for a dataset
 
-    BIND("DrugBank" AS ?dctCreatorName) # Optional if external URI, to store creator name in our graph if the URI already resolves
+    BIND("HUGO Gene Nomenclature Committee at the European Bioinformatics Institute" AS ?dctCreatorName) # Optional if external URI, to store creator name in our graph if the URI already resolves
     BIND(iri(concat("http://data2services/agent/", md5(?dctCreatorName))) AS ?dctCreator)
 
     #BIND(iri("http://creativecommons.org/licenses/by-sa/3.0/") AS ?dctLicense) # Get from summary. But let the possibility to redefine it for a dataset
@@ -305,7 +301,7 @@ WHERE
     ##############
 
     #BIND("2013-08"^^xsd:gYearMonth AS ?dctCreated)
-    BIND("2013-08-29"^^xsd:date AS ?dctIssued) # Same for version and source distribution
+    BIND("2018-11-19"^^xsd:date AS ?dctIssued) # Same for version and source distribution
     #BIND(iri("http://www.ebi.ac.uk/chembl/") AS ?foafPage)
     #BIND(iri("http://www.ebi.ac.uk/rdf/sites/ebi.ac.uk.rdf/files/resize/images/rdf/chembl_service_logo-146x48.gif") AS ?schemaorgLogo)
     BIND(<http://lexvo.org/id/iso639-3/eng> AS ?dctLanguage)
@@ -313,7 +309,7 @@ WHERE
     #BIND(:pubchem-bioassay-09-01-2014 AS ?dctSource)
 
     ## Source distribution
-    BIND(<https://www.drugbank.ca/releases/5-1-1/downloads/all-full-database> AS ?dcatDownloadURLSource) # user input
+    BIND(<ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/tsv/hgnc_complete_set.txt> AS ?dcatDownloadURLSource) # user input
     #BIND("1"^^xsd:string AS ?pavVersionSource) # user input
     #BIND(<http://identifiers.org/drugbank/version#0> AS ?pavPreviousVersion)
     #BIND(<http://example.com/madeUp/editor> AS ?pavCreatedWith )
@@ -334,6 +330,9 @@ WHERE
     #### MAY ####
     #############
 
+    BIND(<http://www.w3.org/2001/sw/hcls/notes/hcls-dataset/> AS ?dctConformsTo)  # constant. uri
+    BIND("HGNC:7720"^^xsd:string AS ?idotExampleIdentifier)
+    
     #BIND("Alternative label for dataset" AS ?dctAlternative)
     #BIND("The data in ChEMBL is covered by the Creative Commons By Attribution." AS ?dctRights)
     #BIND(<ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_17/chembl_17_release_notes.txt> AS ?dcatLandingPage) 
@@ -348,15 +347,12 @@ WHERE
     #BIND(iri("http://orcid.org/0000-0002-8011-0300") AS ?pavAuthoredBy)
     #BIND(iri("http://orcid.org/0000-0002-8011-0300") AS ?pavCuratedBy)
 
-    BIND("DB00003"^^xsd:string AS ?idotExampleIdentifier)
-
     ## Source
     #BIND(<ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_17/> AS ?dcatAccessURLSource) 
     #BIND(<ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_17/chembl_17_release_notes.txt> AS ?dcatLandingPageSource) 
 
     #BIND(ncit:C48807 AS ?dcatTheme)  # uri. Example is chemical
     #VALUES (?dcatKeyword) { ( "assay" ) ( "chemical" ) } # array
-    BIND(iri("<http://www.w3.org/2001/sw/hcls/notes/hcls-dataset/") AS ?dctConformsTo)  # constant. uri
     #BIND(iri("http://dx.doi.org/10.1093/bioinformatics/btt765") AS ?dctReferences)  # uri
     #BIND(iri("http://en.wikipedia.org/wiki/ChEMBL") AS ?rdfsSeeAlso)  # uri
     #BIND(iri("http://nar.oxfordjournals.org/content/40/D1/D1100") AS ?citoCitesAsAuthority)  # uri
@@ -366,6 +362,12 @@ WHERE
     #VALUES (?idotAccessPatternSource) { ( "http://bio2rdf.org/chembl ) ( "http://identifiers.org/chembl.compound/" ) } # array
 
     ## RDF distribution
+    BIND(<http://identifiers.org/HGNC:7720> AS ?voidExampleResourceRdf) # TODO: automate
+    BIND(<http://identifiers.org/HGNC:7720> AS ?sioHasDataItem)
+    #VALUES (?voidSubset) { ( :chembl17_rdf_molecule_dataset ) ( :chembl17_rdf_target_dataset ) } # uri array of distributions
+    #BIND("CHEMBL\\d+"^^xsd:string AS ?idotIdentifierPatternRdf)
+    #VALUES (?idotAccessPatternRdf) { ( "http://bio2rdf.org/chembl ) ( "http://identifiers.org/chembl.compound/" ) } # array
+
     # Additional dates and actors
     #BIND("2013-08"^^xsd:gYearMonth AS ?pavCreatedOnRdf)
     #BIND("2013-08"^^xsd:gYearMonth AS ?pavAuthoredOnRdf)
@@ -376,18 +378,7 @@ WHERE
     #BIND(iri("http://orcid.org/0000-0002-8011-0300") AS ?pavAuthoredByRdf)
     #BIND(iri("http://orcid.org/0000-0002-8011-0300") AS ?pavCuratedByRdf)
 
-    #VALUES (?voidSubset) { ( :chembl17_rdf_molecule_dataset ) ( :chembl17_rdf_target_dataset ) } # uri array of distributions
-    #BIND("CHEMBL\\d+"^^xsd:string AS ?idotIdentifierPatternRdf)
-    #VALUES (?idotAccessPatternRdf) { ( "http://bio2rdf.org/chembl ) ( "http://identifiers.org/chembl.compound/" ) } # array
-    BIND(<http://identifiers.org/drugbank/DB00003> AS ?voidExampleResourceRdf)
-    BIND(<http://identifiers.org/drugbank/DB00003> AS ?sioHasDataItem)
     # TODO: Automate those
 
-
-    ##### Automatically generated
-
-    BIND(<http://www.w3.org/2001/sw/hcls/notes/hcls-dataset/> AS ?conformsTo) # constant
-
-  }
 }
 
