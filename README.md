@@ -33,3 +33,17 @@ docker run -it --rm -v /data/dataformer:/data sparql-dataformer -rq "/data" -url
 docker run -it --rm --link graphdb:graphdb -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://graphdb:7200/repositories/test/statements"
 ```
 
+
+
+# ShEx validation
+
+http://shexjava.lille.inria.fr/
+
+```shell
+# Start the UI
+java -jar shexjapp-0.0.1.jar
+
+# Commandline
+mvn exec:java -Dexec.classpathScope=test -Dexec.mainClass="fr.inria.lille.shexjava.commandLine.Validate" -Dexec.args="-s ../../shexTest/schemas/1dotSemi.shex -d file:///home/jdusart/Documents/Shex/workspace/shexTest/validation/Is1_Ip1_Io1.ttl -l http://a.example/S1 -f http://a.example/s1 -a recursive"
+```
+

@@ -110,10 +110,9 @@ WHERE
     #BIND(iri("http://en.wikipedia.org/wiki/ChEMBL") AS ?rdfsSeeAlso)  # uri
     #BIND(iri("http://nar.oxfordjournals.org/content/40/D1/D1100") AS ?citoCitesAsAuthority)  # uri
     #VALUES (?dctHasPart) { ( :chembl17_rdf_molecule_dataset ) ( :chembl17_rdf_target_dataset ) } # uri array of distributions
-
     #BIND("chembldb" AS ?idotAlternatePrefix) # string
 
-    #BIND(iri("http://data2services/dataset/drugbank/version#1") AS ?dctLicense)  # We will automatically generate it, atm only using isVersionOf in the version item
+    #BIND(iri("http://data2services/dataset/drugbank/version#1") AS ?pavHasCurrentVersion)  # We will automatically generate it, atm only using isVersionOf in the version item
 
 
 
