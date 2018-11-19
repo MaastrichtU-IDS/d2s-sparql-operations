@@ -31,7 +31,7 @@ PREFIX d2sdata: <http://data2services/data/>
 # Complete example at https://www.w3.org/TR/hcls-dataset/#appendix_1
 
 INSERT {
-    GRAPH <http://data2services/metadata/datasets>
+    GRAPH <http://data2services/metadata/datasets/test>
     {
         ### Summary Level (Complete)
         ?summaryUri
@@ -66,7 +66,8 @@ INSERT {
 
             ### Availability/Distributions
             dcat:accessURL ?dcatAccessURL ; # May. Use this to define the graph (A landing page, feed, SPARQL endpoint or other type of resource that gives access to the distribution of the dataset)
-            void:sparqlEndpoint ?sparqlEndpoint; # Should. Only in summary
+            void:sparqlEndpoint ?sparqlEndpoint # Should. Only in summary
+        .
 
         ?dctPublisher a dct:Agent ;
             foaf:name ?dctPublisherName ;
@@ -103,7 +104,7 @@ WHERE
 
     ### MAY
     #BIND("Alternative label for dataset" AS ?dctAlternative)
-    #BIND(iri("http://creativecommons.org/licenses/by-sa/3.0/") AS ?dctLicense) 
+    BIND(iri("http://creativecommons.org/licenses/by-sa/3.0/") AS ?dctLicense) 
     #BIND("The data in ChEMBL is covered by the Creative Commons By Attribution." AS ?dctRights)
     #BIND(ncit:C48807 AS ?dcatTheme)  # uri. Example is chemical
     #VALUES (?dcatKeyword) { ( "assay" ) ( "chemical" ) } # array

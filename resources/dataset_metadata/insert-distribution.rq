@@ -31,17 +31,26 @@ PREFIX d2sdata: <http://data2services/data/>
 # Complete example at https://www.w3.org/TR/hcls-dataset/#appendix_1
 
 INSERT {
-    GRAPH <http://data2services/metadata/datasets>
-    {
+    GRAPH <http://data2services/metadata/datasets/test> {
 
         ?dctPublisher a dct:Agent ;
             foaf:name ?dctPublisherName ;
             foaf:page ?dctPublisherPage ;
         .
 
-        ?rdfCreatorUri a dct:Agent ;
+        ?rdfCreator a dct:Agent ;
             foaf:name ?rdfCreatorName ;
             foaf:page ?rdfCreatorPage ;
+        .
+
+        ?dctPublisherRdf a dct:Agent ;
+            foaf:name ?dctPublisherNameRdf ;
+            foaf:page ?dctPublisherPageRdf ;
+        .
+
+        ?rdfCreatorRdf a dct:Agent ;
+            foaf:name ?rdfCreatorNameRdf ;
+            foaf:page ?rdfCreatorPageRdf ;
         .
 
         ### Version Level (Complete)
@@ -77,7 +86,7 @@ INSERT {
             dct:language ?dctLanguage ;
             dcat:theme ?dcatTheme ; #chemical
             dcat:keyword ?dcatKeyword ;
-
+            void:vocabulary ?voidVocabulary ;
             dct:conformsTo ?dctConformsTo ;
             dct:references ?dctReferences ;
 
@@ -100,7 +109,8 @@ INSERT {
             #Availability/Distributions
             dcat:distribution ?distributionRdfUri, ?distributionSourceUri ;
             dcat:accessURL ?dcatAccessURL ;
-            dcat:landingPage ?dcatLandingPage ;
+            dcat:landingPage ?dcatLandingPage 
+        .
 
 
         ### Distribution (non-RDF) description (Complete)
@@ -222,10 +232,10 @@ INSERT {
             pav:createdWith ?pavCreatedWithRdf ;
 
             #Availability/Distributions
-            dct:format ?dctFormatSource ;
-            dcat:accessURL ?dcatAccessURLSource ;
-            dcat:landingPage ?dcatLandingPageSource ;
-            dcat:downloadURL ?dcatDownloadURLSource ;
+            dct:format ?dctFormatRdf ;
+            dcat:accessURL ?dcatAccessURL ;
+            dcat:landingPage ?dcatLandingPageRdf ;
+            dcat:downloadURL ?dcatDownloadURLRdf ;
             void:dataDump ?voidDataDump
         .
 
@@ -233,24 +243,46 @@ INSERT {
 }
 WHERE 
 {
+  GRAPH <http://data2services/metadata/datasets/test> {
+
+    BIND(<http://identifiers.org/drugbank/> AS ?summaryUri) # user input. Careful, for drugbank ido uses it as void:uriSpace for a dcat:CatalogRecord
+    BIND("1"^^xsd:string AS ?pavVersion) # Increment it from the latest version? Or user input
+    BIND("1"^^xsd:string AS ?pavVersionRdf) # Increment it from the latest version? Or user input
+
+    OPTIONAL {
+      ?summaryUri dct:title ?dctTitle ;
+        dct:description ?dctDescription ;
+        dct:license ?dctLicense ;
+        dct:publisher ?dctPublisher ;
+        idot:preferredPrefix ?idotPreferredPrefix ;
+        idot:alternatePrefix ?idotAlternatePrefix ;
+        dcat:accessURL ?dcatAccessURL .
+    }
+
+    # Needs to be at the beginning
+    BIND(iri(concat(str(?summaryUri), "version#", str(?pavVersion))) AS ?versionUri)
+    #getsum: BIND(iri("http://test/") AS ?versionUri)
+    BIND(iri(concat(str(?summaryUri), "distribution/source#", str(?pavVersion))) AS ?distributionSourceUri)
+    BIND(iri(concat(str(?summaryUri), "distribution/rdf#", str(?pavVersionRdf))) AS ?distributionRdfUri)
+
+
     ##### User input
 
-    ### MUST
+    ##############
+    #### MUST ####
+    ##############
 
-    BIND(<http://identifiers.org/drugbank/> AS ?summaryUri) # user input    
-    # Careful, for drugbank ido uses it as void:uriSpace for a dcat:CatalogRecord
-    
-    BIND("1"^^xsd:string AS ?pavVersion) # Increment it from the latest version? Or user input
 
-    # TODO: Get from summary? Use https://orcid.org/ for researchers when possible or generate a new agent URI (like here)
-    BIND("DrugBank" AS ?dctPublisherName) # Optional if external URI, to store publisher name in our graph if the URI already resolves
-    BIND(<https://www.drugbank.ca/> AS ?dctPublisherPage) # Optional, to store publisher info in our graph if the URI already resolves
-    BIND(iri(concat("http://data2services/agent/", md5(?dctPublisherName))) AS ?dctPublisher)
+    # Use https://orcid.org/ for researchers when possible or generate a new agent URI (like here)
+    #BIND("DrugBank" AS ?dctPublisherName) # Optional if external URI, to store publisher name in our graph if the URI already resolves
+    #BIND(<https://www.drugbank.ca/> AS ?dctPublisherPage) # Optional, to store publisher info in our graph if the URI already resolves
+    #BIND(iri(concat("http://data2services/agent/", md5(?dctPublisherName))) AS ?dctPublisher) # Get from summary. But let the possibility to redefine it for a dataset
 
     BIND("DrugBank" AS ?dctCreatorName) # Optional if external URI, to store creator name in our graph if the URI already resolves
     BIND(iri(concat("http://data2services/agent/", md5(?dctCreatorName))) AS ?dctCreator)
 
-    BIND(iri("http://creativecommons.org/licenses/by-sa/3.0/") AS ?dctLicense) # Must from sum. But let the possibility to redefine it for a dataset
+    #BIND(iri("http://creativecommons.org/licenses/by-sa/3.0/") AS ?dctLicense) # Get from summary. But let the possibility to redefine it for a dataset
+
 
     ## Source Distribution 
     BIND(concat(?versionTitle, " Database Distribution") AS ?sourceDistributionTitle)
@@ -259,14 +291,13 @@ WHERE
     ## RDF Distribution
     BIND(concat(?versionTitle, " RDF Distribution") AS ?rdfDistributionTitle)
     BIND(concat("Converted to BioLink RDF using data2services framework. ", ?description) AS ?rdfDistributionDescription)
+    VALUES (?dctFormatRdf) { ( <http://www.w3.org/ns/formats/Turtle> ) ( "application/n-quads" ) ( "application/rdf+xml" ) ( "application/n3" ) ( "application/ld+json" ) ( "text/turtle" ) }
     BIND("Institute of Data Science at Maastricht University" AS ?dctPublisherNameRdf) # Optional if external URI, to store publisher name in our graph if the URI already resolves
     BIND(<https://www.maastrichtuniversity.nl/research/institute-data-science> AS ?dctPublisherPageRdf) # Optional, to store publisher info in our graph if the URI already resolves
     BIND(iri(concat("http://data2services/agent/", md5(?dctPublisherNameRdf))) AS ?dctPublisherRdf)
 
     BIND("Institute of Data Science at Maastricht University" AS ?dctCreatorNameRdf) # Optional if external URI, to store creator name in our graph if the URI already resolves
     BIND(iri(concat("http://data2services/agent/", md5(?dctCreatorNameRdf))) AS ?dctCreatorRdf)
-
-    BIND("1"^^xsd:string AS ?pavVersionRdf) # Increment it from the latest version? Or user input
 
 
     ##############
@@ -277,7 +308,7 @@ WHERE
     BIND("2013-08-29"^^xsd:date AS ?dctIssued) # Same for version and source distribution
     #BIND(iri("http://www.ebi.ac.uk/chembl/") AS ?foafPage)
     #BIND(iri("http://www.ebi.ac.uk/rdf/sites/ebi.ac.uk.rdf/files/resize/images/rdf/chembl_service_logo-146x48.gif") AS ?schemaorgLogo)
-    #BIND(<http://lexvo.org/id/iso639-3/eng> AS ?dctLanguage)
+    BIND(<http://lexvo.org/id/iso639-3/eng> AS ?dctLanguage)
     #BIND(<http://identifiers.org/drugbank/version#0> AS ?pavPreviousVersion)
     #BIND(:pubchem-bioassay-09-01-2014 AS ?dctSource)
 
@@ -291,15 +322,20 @@ WHERE
 
     ## RDF distribution
     BIND(now() AS ?dctIssuedRdf)
+    BIND(<http://bioentity.io/vocab/> AS ?voidVocabulary)
     #BIND(<http://identifiers.org/drugbank/version#0> AS ?pavPreviousVersionRdf)
+    BIND(<http://graphdb.dumontierlab.com/> AS ?dcatLandingPageRdf) 
     BIND(<https://github.com/MaastrichtU-IDS/data2services-pipeline> AS ?pavCreatedWithRdf )
-    #BIND(<ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBL-RDF/17.0/chembl_17_molecule.ttl.gz> AS ?voidDataDump )
+    BIND(<http://graphdb.dumontierlab.com/graphs> AS ?dcatDownloadURLRdf)
+    BIND(<http://graphdb.dumontierlab.com/graphs> AS ?voidDataDump )
 
 
-    ### MAY
+    #############
+    #### MAY ####
+    #############
+
     #BIND("Alternative label for dataset" AS ?dctAlternative)
     #BIND("The data in ChEMBL is covered by the Creative Commons By Attribution." AS ?dctRights)
-    #BIND(<ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_17/> AS ?dcatAccessURL) 
     #BIND(<ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_17/chembl_17_release_notes.txt> AS ?dcatLandingPage) 
 
     # Additional dates and actors. Same for version and RDF distribution
@@ -347,39 +383,11 @@ WHERE
     BIND(<http://identifiers.org/drugbank/DB00003> AS ?sioHasDataItem)
     # TODO: Automate those
 
+
     ##### Automatically generated
-
-    # TODO: needs to be at the beginning
-    BIND(iri(concat(str(?summaryUri), "version#", str(?version))) AS ?versionUri)
-    BIND(iri(concat(str(?summaryUri), "distribution/source#", str(?version))) AS ?distributionSourceUri)
-    BIND(iri(concat(str(?summaryUri), "distribution/rdf#", str(?version))) AS ?distributionRdfUri)
-
-
-    BIND(iri(concat("http://data2services/graph/biolink/", ?idotPreferredPrefix)) AS ?dcatAccessURL) # May. uri
 
     BIND(<http://www.w3.org/2001/sw/hcls/notes/hcls-dataset/> AS ?conformsTo) # constant
 
-    # TODO: get from summary
-    BIND("DrugBank"@en AS ?dctTitle)
-    BIND("The DrugBank database is a unique bioinformatics and cheminformatics resource that combines detailed drug data with comprehensive drug target information."@en AS ?dctDescription) # user input
-    BIND("drugbank" AS ?idotPreferredPrefix) # Usually a May but required for data2services since it used as source ID to generate the graph URI.
-    BIND("drugbank" AS ?idotAlternatePrefix) # Usually a May but required for data2services since it used as source ID to generate the graph URI.
-    BIND(<http://graphdb.dumontierlab.com/repositories/ncats-red-graph> AS ?voidSparqlEndpoint) # Usually a Should but required for data2services.
-
-
-
-    ############################### TO REMOVE: 
-
-#        ?summaryUri dct:title ?title ;
-#            dct:description ?description ;
-#            dct:publisher ?publisherUri ;
-#            idot:preferredPrefix ?datasetPrefix ;
-#            dcat:accessURL ?accessURL ;
-#            dct:license ?license .
-
-
-
-
-
+  }
 }
 
