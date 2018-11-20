@@ -12,8 +12,8 @@ public class CliOptions {
 	@Option(names= {"-rq", "--request-dir"}, description = "RDF file path.", required = true)
 	String inputFile = null;
 	
-	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (select, construct, insert). Default is insert")
-	QueryOperations queryOperation = QueryOperations.insert;
+	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select). Default is update")
+	QueryOperations queryOperation = QueryOperations.update;
 
 	@Option(names= {"-url", "--database-url"}, description = "URL for Repository/Endpoint", required = true)
 	String dbUrl = null;

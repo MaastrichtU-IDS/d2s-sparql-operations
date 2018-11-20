@@ -8,7 +8,7 @@ public class SparqlQueryFactory {
 		SparqlQueryInterface q;
 		
 		switch (operation) {
-        case insert:
+        case update:
  		 q = new SparqlUpdate(endpoint, username, password);
        	 break;
         case construct:
@@ -18,7 +18,7 @@ public class SparqlQueryFactory {
        	 q = new SparqlSelect(endpoint, username, password);
        	 break;
    	 	default:
-   		 throw new UnsupportedOperationException("Supported operations: insert and construct. select coming soon.");
+   		 throw new UnsupportedOperationException("Supported operations: update, construct and select.");
 		}
 		return q;
 	}
