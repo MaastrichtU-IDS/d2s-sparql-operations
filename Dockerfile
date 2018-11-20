@@ -11,9 +11,9 @@ COPY . .
 
 RUN mvn clean install && \
     mkdir $APP_DIR && \
-    mv target/sparql-rdf4j-operations-0.0.1-SNAPSHOT-jar-with-dependencies.jar $APP_DIR/sparql-rdf4j-operations.jar && \
+    mv target/rdf4j-sparql-operations-0.0.1-SNAPSHOT-jar-with-dependencies.jar $APP_DIR/rdf4j-sparql-operations.jar && \
     rm -rf $TMP_DIR
     
 WORKDIR $APP_DIR
 
-ENTRYPOINT ["java","-jar","sparql-rdf4j-operations.jar"]
+ENTRYPOINT ["java","-jar","rdf4j-sparql-operations.jar"]
