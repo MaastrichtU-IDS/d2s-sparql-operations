@@ -53,9 +53,8 @@ public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 			} else if (FilenameUtils.getExtension(inputFile.getPath()).equals("yaml")) { 
 				parseYaml(conn, inputFile);
 			} else {
-				System.out.println("TODO: handle single files");
-				//TODO: if single file provided 
-				//conn.add(new File(filePath), null, Rio.getParserFormatForFileName(inputFile.getName()).get());
+				// Single file provided
+				executeQuery(conn, FileUtils.readFileToString(inputFile));
 			}
 			
 		} catch (Exception e) {
