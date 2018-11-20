@@ -9,7 +9,7 @@ public class SparqlQueryFactory {
 		
 		switch (operation) {
         case insert:
- 		 q = new SparqlInsert(endpoint, username, password);
+ 		 q = new SparqlUpdate(endpoint, username, password);
        	 break;
         case construct:
     	 q = new SparqlConstruct(endpoint, username, password);
