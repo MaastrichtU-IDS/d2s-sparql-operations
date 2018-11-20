@@ -1,7 +1,7 @@
 package nl.unimaas.ids;
 
-import nl.unimaas.ids.sparql.SparqlConstruct;
-import nl.unimaas.ids.sparql.SparqlInsert;
+import nl.unimaas.ids.sparql.SparqlQueryFactory;
+import nl.unimaas.ids.sparql.SparqlQueryInterface;
 import picocli.CommandLine;
 
 public class SparqlDataformer {
@@ -12,20 +12,12 @@ public class SparqlDataformer {
 			CliOptions cli = CommandLine.populateCommand(new CliOptions(), args);
 			if(cli.help)
 				printUsageAndExit();
-
+			
 			System.out.println("Performing operation: " + cli.queryOperation.toString());
-			switch (cli.queryOperation) {
-	         case insert:
-	        	 SparqlInsert.executeFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
-	        	 break;
-	         case construct:
-	        	 SparqlConstruct.executeFiles(cli.inputFile, cli.dbUrl, cli.username, cli.password);
-	        	 break;
-	         case select:
-	        	 throw new UnsupportedOperationException("select operation not supported at the moment. Supported operations: insert and construct");
-        	 default:
-        		 throw new UnsupportedOperationException("Supported operations: insert and construct. select coming soon.");
-			}
+			
+			SparqlQueryInterface sparqlQuery = SparqlQueryFactory.getSparqlQuery(cli.queryOperation, cli.dbUrl, cli.username, cli.password);
+			
+			sparqlQuery.executeFiles(cli.inputFile);
 
 		} catch (Exception e) {
 			printUsageAndExit(e);
