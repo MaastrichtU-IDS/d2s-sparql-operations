@@ -22,7 +22,7 @@ import org.eclipse.rdf4j.rio.Rio;
 /**
  * A class to upload to GraphDB SPARQL endpoint
  */
-public class SparqlSelect extends AbstractSparqlQuery {
+public class SparqlSelect extends AbstractSparqlOperation {
 
 	public SparqlSelect(String endpoint, String username, String password) {
 		super(endpoint, username, password);

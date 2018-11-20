@@ -13,7 +13,7 @@ import org.eclipse.rdf4j.repository.RepositoryException;
 /**
  * A class to upload to GraphDB SPARQL endpoint
  */
-public class SparqlUpdate extends AbstractSparqlQuery {
+public class SparqlUpdate extends AbstractSparqlOperation {
 
 	public SparqlUpdate(String endpoint, String username, String password) {
 		super(endpoint, username, password);

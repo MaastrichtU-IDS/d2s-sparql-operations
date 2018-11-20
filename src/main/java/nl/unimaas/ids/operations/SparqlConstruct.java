@@ -17,7 +17,7 @@ import org.eclipse.rdf4j.rio.Rio;
 /**
  * A class to upload to GraphDB SPARQL endpoint
  */
-public class SparqlConstruct extends AbstractSparqlQuery {
+public class SparqlConstruct extends AbstractSparqlOperation {
 
 	public SparqlConstruct(String endpoint, String username, String password) {
 		super(endpoint, username, password);

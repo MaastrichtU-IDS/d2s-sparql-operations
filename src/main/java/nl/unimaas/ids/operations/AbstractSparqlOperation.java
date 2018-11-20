@@ -10,11 +10,11 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
 
-public abstract class AbstractSparqlQuery implements SparqlQueryInterface {
+public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 	
 	private SPARQLRepository repo;
 	
-	public AbstractSparqlQuery(String endpoint, String username, String password) {
+	public AbstractSparqlOperation(String endpoint, String username, String password) {
 		repo = new SPARQLRepository(endpoint);
 		repo.setUsernameAndPassword(username, password);
 		repo.initialize();
