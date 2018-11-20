@@ -3,7 +3,7 @@ A project to execute a set of SPARQL queries using rdf4j.
 
 The user has to provide the path to the directory where the queries are stored in `.rq` text files.
 
-*Insert* and *construct* queries are currently supported, *select* to come soon. 
+*Update*, *construct* and *select* queries are currently supported. 
 
 It is possible to optionally define username and password for the SPARQL endpoint.
 
@@ -22,7 +22,7 @@ docker run -it --rm sparql-dataformer -?
 ```
 ## Run
 ```shell
-# Insert on graphdb.dumontierlab.com 
+# Update (insert) on graphdb.dumontierlab.com 
 # GraphDB requires to add /statements at the end of the endpoint URL for INSERT
 docker run -it --rm -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test/statements" -un username -pw password
 
