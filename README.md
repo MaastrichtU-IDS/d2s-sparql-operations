@@ -7,6 +7,8 @@ The user has to provide the path to the directory where the queries are stored i
 
 It is possible to optionally define username and password for the SPARQL endpoint.
 
+Examples queries: https://github.com/vemonet/insert-data2services
+
 
 
 # Docker
