@@ -1,10 +1,10 @@
-package nl.unimaas.ids.sparql;
+package nl.unimaas.ids.operations;
 
 import java.sql.SQLException;
 
-public class SparqlQueryFactory {
+public class SparqlOperationFactory {
 	
-	public static SparqlQueryInterface getSparqlQuery(QueryOperations operation, String endpoint, String username, String password) throws SQLException, ClassNotFoundException {
+	public static SparqlQueryInterface getSparqlQuery(QueryOperation operation, String endpoint, String username, String password) throws SQLException, ClassNotFoundException {
 		SparqlQueryInterface q;
 		
 		switch (operation) {

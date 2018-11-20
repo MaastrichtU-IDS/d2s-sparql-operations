@@ -1,4 +1,4 @@
-package nl.unimaas.ids.sparql;
+package nl.unimaas.ids.operations;
 
 import java.io.File;
 import java.util.Collection;

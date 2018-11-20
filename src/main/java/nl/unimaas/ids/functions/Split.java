@@ -1,4 +1,4 @@
-package nl.unimaas.ids.sparql;
+package nl.unimaas.ids.functions;
 
 public class Split {
 
