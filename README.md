@@ -14,21 +14,21 @@ Examples queries: https://github.com/vemonet/insert-data2services
 # Docker
 ## Build
 ```shell
-docker build -t sparql-dataformer .
+docker build -t sparql-rdf4j-operations .
 ```
 ## Usage
 ```shell
-docker run -it --rm sparql-dataformer -?
+docker run -it --rm sparql-rdf4j-operations -?
 ```
 ## Run
 ```shell
 # Update (insert) on graphdb.dumontierlab.com 
 # GraphDB requires to add /statements at the end of the endpoint URL for INSERT
-docker run -it --rm -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test/statements" -un username -pw password
+docker run -it --rm -v /data/operations:/data sparql-rdf4j-operations -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test/statements" -un username -pw password
 
 # Construct using local SPARQL endpoint
-docker run -it --rm -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://localhost:7200/repositories/test" -op "construct"
+docker run -it --rm -v /data/operations:/data sparql-rdf4j-operations -rq "/data" -url "http://localhost:7200/repositories/test" -op "construct"
 
 # Using GraphDB docker
-docker run -it --rm --link graphdb:graphdb -v /data/dataformer:/data sparql-dataformer -rq "/data" -url "http://graphdb:7200/repositories/test/statements"
+docker run -it --rm --link graphdb:graphdb -v /data/operations:/data sparql-rdf4j-operations -rq "/data" -url "http://graphdb:7200/repositories/test/statements"
 ```
