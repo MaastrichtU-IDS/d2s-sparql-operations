@@ -17,8 +17,8 @@ public class SparqlUpdate extends AbstractSparqlOperation {
 		super(endpoint, username, password);
 	}
 
-	public void executeQuery(RepositoryConnection conn, String queryString) throws RepositoryException, MalformedQueryException, IOException {
-		System.out.println("Inserting: " + queryString);
+	public void executeQuery(RepositoryConnection conn, String queryString, String filepath) throws RepositoryException, MalformedQueryException, IOException {
+		System.out.println("Inserting: " + filepath);
 		
 		// Query the SPARQL endpoint
 		Update update = conn.prepareUpdate(QueryLanguage.SPARQL, queryString);

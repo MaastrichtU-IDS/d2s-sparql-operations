@@ -47,14 +47,14 @@ public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 				while (iterator.hasNext()) {
 					File f = iterator.next();
 					
-					executeQuery(conn, FileUtils.readFileToString(f));
+					executeQuery(conn, FileUtils.readFileToString(f), f.getPath());
 				}
 				
 			} else if (FilenameUtils.getExtension(inputFile.getPath()).equals("yaml")) { 
 				parseYaml(conn, inputFile);
 			} else {
 				// Single file provided
-				executeQuery(conn, FileUtils.readFileToString(inputFile));
+				executeQuery(conn, FileUtils.readFileToString(inputFile), inputFile.getPath());
 			}
 			
 		} catch (Exception e) {
@@ -71,8 +71,9 @@ public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 		Map<String, Object> yamlFile = (Map<String, Object>)yaml.load(new FileInputStream(inputFile));
 		
 		List<String> queries = (List<String>)yamlFile.get("queries");
+		int queryCount = 0;
 		for(String queryString : queries) {
-			executeQuery(conn, queryString);
+			executeQuery(conn, queryString, FilenameUtils.removeExtension(inputFile.getPath()) + "_query" + queryCount++);
 		}		
 	}
 }
