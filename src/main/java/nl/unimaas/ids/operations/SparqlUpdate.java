@@ -1,9 +1,7 @@
 package nl.unimaas.ids.operations;
 
-import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.QueryLanguage;
 import org.eclipse.rdf4j.query.Update;
@@ -19,11 +17,11 @@ public class SparqlUpdate extends AbstractSparqlOperation {
 		super(endpoint, username, password);
 	}
 
-	public void executeQuery(RepositoryConnection conn, File f) throws RepositoryException, MalformedQueryException, IOException {
-		System.out.println("Inserting: " + f);
+	public void executeQuery(RepositoryConnection conn, String queryString) throws RepositoryException, MalformedQueryException, IOException {
+		System.out.println("Inserting: " + queryString);
 		
 		// Query the SPARQL endpoint
-		Update update = conn.prepareUpdate(QueryLanguage.SPARQL, FileUtils.readFileToString(f));
+		Update update = conn.prepareUpdate(QueryLanguage.SPARQL, queryString);
 		update.execute();
 	}
 }

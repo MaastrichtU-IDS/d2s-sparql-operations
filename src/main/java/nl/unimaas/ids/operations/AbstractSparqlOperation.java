@@ -1,14 +1,19 @@
 package nl.unimaas.ids.operations;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
+import org.yaml.snakeyaml.Yaml;
 
 public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 	
@@ -29,6 +34,8 @@ public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 			if(!inputFile.canRead())
 				throw new SecurityException("Can not read from input file \"" + inputFile.getAbsolutePath() + "\"");
 			
+			// TODO: if input file is yaml. then check how Alex was doing
+			
 			if (inputFile.isDirectory()) {
 				Collection<File> files = FileUtils.listFiles(
 						inputFile,
@@ -40,8 +47,11 @@ public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 				while (iterator.hasNext()) {
 					File f = iterator.next();
 					
-					executeQuery(conn, f);
+					executeQuery(conn, FileUtils.readFileToString(f));
 				}
+				
+			} else if (FilenameUtils.getExtension(inputFile.getPath()).equals("yaml")) { 
+				parseYaml(conn, inputFile);
 			} else {
 				System.out.println("TODO: handle single files");
 				//TODO: if single file provided 
@@ -53,5 +63,17 @@ public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 		}
 
 		//repo.shutDown();
+	}
+
+	@SuppressWarnings("unchecked")
+	public void parseYaml(RepositoryConnection conn, File inputFile) throws Exception {
+
+		Yaml yaml = new Yaml();
+		Map<String, Object> yamlFile = (Map<String, Object>)yaml.load(new FileInputStream(inputFile));
+		
+		List<String> queries = (List<String>)yamlFile.get("queries");
+		for(String queryString : queries) {
+			executeQuery(conn, queryString);
+		}		
 	}
 }

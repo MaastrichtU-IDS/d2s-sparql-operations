@@ -1,6 +1,5 @@
 package nl.unimaas.ids.operations;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.rdf4j.query.MalformedQueryException;
@@ -11,6 +10,6 @@ public interface SparqlQueryInterface {
 	
 	public void executeFiles(String filePath) throws Exception;
 	
-	public void executeQuery(RepositoryConnection conn, File f) throws RepositoryException, MalformedQueryException, IOException ;
+	public void executeQuery(RepositoryConnection conn, String queryString) throws RepositoryException, MalformedQueryException, IOException ;
 
 }
