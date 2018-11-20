@@ -8,7 +8,7 @@ public class SparqlOperation {
 
 	public static void main(String[] args) throws Exception {
 		try {
-			
+			// TODO: logger
 			CliOptions cli = CommandLine.populateCommand(new CliOptions(), args);
 			if(cli.help)
 				printUsageAndExit();

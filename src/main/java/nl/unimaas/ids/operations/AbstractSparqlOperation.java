@@ -50,7 +50,7 @@ public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 					executeQuery(conn, FileUtils.readFileToString(f), f.getPath());
 				}
 				
-			} else if (FilenameUtils.getExtension(inputFile.getPath()).equals("yaml")) { 
+			} else if (FilenameUtils.getExtension(inputFile.getName()).equals("yaml")) { 
 				parseYaml(conn, inputFile);
 			} else {
 				// Single file provided
@@ -66,7 +66,7 @@ public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 
 	@SuppressWarnings("unchecked")
 	public void parseYaml(RepositoryConnection conn, File inputFile) throws Exception {
-
+		System.out.println("Parsing YAML...");
 		Yaml yaml = new Yaml();
 		Map<String, Object> yamlFile = (Map<String, Object>)yaml.load(new FileInputStream(inputFile));
 		
