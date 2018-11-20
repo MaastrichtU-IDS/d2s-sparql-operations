@@ -13,10 +13,12 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
-	
+	protected Logger logger = LoggerFactory.getLogger(AbstractSparqlOperation.class.getName());
 	private SPARQLRepository repo;
 	
 	public AbstractSparqlOperation(String endpoint, String username, String password) {
@@ -66,7 +68,7 @@ public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 
 	@SuppressWarnings("unchecked")
 	public void parseYaml(RepositoryConnection conn, File inputFile) throws Exception {
-		System.out.println("Parsing YAML...");
+		logger.info("Parsing YAML...");
 		Yaml yaml = new Yaml();
 		Map<String, Object> yamlFile = (Map<String, Object>)yaml.load(new FileInputStream(inputFile));
 		

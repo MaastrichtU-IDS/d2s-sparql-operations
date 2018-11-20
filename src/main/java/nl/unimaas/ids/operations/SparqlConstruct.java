@@ -11,6 +11,7 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
+import org.slf4j.LoggerFactory;
 
 /**
  * A class to upload to GraphDB SPARQL endpoint
@@ -19,17 +20,20 @@ public class SparqlConstruct extends AbstractSparqlOperation {
 
 	public SparqlConstruct(String endpoint, String username, String password) {
 		super(endpoint, username, password);
+		logger = LoggerFactory.getLogger(SparqlConstruct.class.getName());
 	}
 
 	public void executeQuery(RepositoryConnection conn, String queryString, String filepath) throws RepositoryException, MalformedQueryException, IOException {
-		System.out.println("Constructing: " + filepath);
+		logger.info("Constructing: " + filepath);
 		
 		// Query the SPARQL endpoint
 		GraphQueryResult graphResult = conn.prepareGraphQuery(queryString).evaluate();
-		System.out.println("SPARQL endpoint query done");
+		logger.info("SPARQL endpoint query done");
+		
 		// Convert query results to a RDF4J model
 		Model resultModel = QueryResults.asModel(graphResult);
-		System.out.println("Model generated");
+		logger.info("Model generated");
+		
 		// Write the model to a file
 		Rio.write(resultModel, new FileOutputStream(filepath + ".ttl"), RDFFormat.TURTLE); // TODO: fix the name definition
 		//Rio.write(resultModel, System.out, RDFFormat.TURTLE);

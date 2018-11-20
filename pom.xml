@@ -20,6 +20,13 @@
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-runtime</artifactId>
 			<version>2.3.2</version>
+			<exclusions>
+				<!-- To remove multiple SLF4J bindings warnings -->
+			    <exclusion>
+			        <groupId>ch.qos.logback</groupId>
+			        <artifactId>logback-classic</artifactId>
+			    </exclusion>
+			</exclusions> 
 		</dependency>
 		<dependency>
 			<groupId>info.picocli</groupId>
@@ -27,6 +34,7 @@
 			<version>3.1.0</version>
 		</dependency>
 	</dependencies>
+	
 
 	<build>
 		<plugins>

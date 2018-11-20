@@ -8,6 +8,7 @@ import org.eclipse.rdf4j.query.TupleQueryResultHandler;
 import org.eclipse.rdf4j.query.resultio.text.tsv.SPARQLResultsTSVWriter;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
+import org.slf4j.LoggerFactory;
 
 /**
  * A class to upload to GraphDB SPARQL endpoint
@@ -16,10 +17,11 @@ public class SparqlSelect extends AbstractSparqlOperation {
 
 	public SparqlSelect(String endpoint, String username, String password) {
 		super(endpoint, username, password);
+		logger = LoggerFactory.getLogger(SparqlConstruct.class.getName());
 	}
 
 	public void executeQuery(RepositoryConnection conn, String queryString, String filepath) throws RepositoryException, MalformedQueryException, IOException {
-		System.out.println("Selecting: " + filepath);
+		logger.info("Selecting: " + filepath);
 		
 		TupleQuery query = conn.prepareTupleQuery(queryString);
 	    // A QueryResult is also an AutoCloseable resource, so make sure it gets

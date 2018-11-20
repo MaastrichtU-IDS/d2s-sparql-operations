@@ -13,7 +13,7 @@ public class SparqlOperation {
 			if(cli.help)
 				printUsageAndExit();
 			
-			System.out.println("Performing operation: " + cli.queryOperation.toString());
+			//System.out.println("Performing operation: " + cli.queryOperation.toString());
 			
 			SparqlQueryInterface sparqlQuery = SparqlOperationFactory.getSparqlQuery(cli.queryOperation, cli.dbUrl, cli.username, cli.password);
 			

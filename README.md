@@ -35,5 +35,5 @@ docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data
 docker run -it --rm --link graphdb:graphdb -v /data/operations:/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb:7200/repositories/test/statements"
 
 # Run on a YAML with construct
-docker run -it --rm -v "/path/to/rdf4j-sparql-operations/src/main/resources/describe_statistics-drugbank.yaml":/data/describe_statistics-drugbank.yaml sparql-rdf4j-operations -rq "/data/describe_statistics-drugbank.yaml" -url "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" -un import_user -pw test -op construct
+docker run -it --rm -v "/path/to/rdf4j-sparql-operations/src/main/resources/describe_statistics-drugbank.yaml":/data/describe_statistics-drugbank.yaml sparql-rdf4j-operations -rq "/data/describe_statistics-drugbank.yaml" -url "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" -un username -pw password -op construct
 ```
