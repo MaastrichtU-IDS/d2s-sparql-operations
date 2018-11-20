@@ -75,7 +75,7 @@ public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
 		List<String> queries = (List<String>)yamlFile.get("queries");
 		int queryCount = 0;
 		for(String queryString : queries) {
-			executeQuery(conn, queryString, FilenameUtils.removeExtension(inputFile.getPath()) + "_query" + queryCount++);
+			executeQuery(conn, queryString, FilenameUtils.removeExtension(inputFile.getPath()) + "_query_" + queryCount++);
 		}		
 	}
 }
