@@ -15,7 +15,8 @@ public class SparqlQueryFactory {
     	 q = new SparqlConstruct(endpoint, username, password);
        	 break;
         case select:
-       	 throw new UnsupportedOperationException("select operation not supported at the moment. Supported operations: insert and construct");
+       	 q = new SparqlSelect(endpoint, username, password);
+       	 break;
    	 	default:
    		 throw new UnsupportedOperationException("Supported operations: insert and construct. select coming soon.");
 		}
