@@ -4,7 +4,7 @@ import nl.unimaas.ids.operations.SparqlOperationFactory;
 import nl.unimaas.ids.operations.SparqlQueryInterface;
 import picocli.CommandLine;
 
-public class SparqlDataformer {
+public class SparqlOperation {
 
 	public static void main(String[] args) throws Exception {
 		try {
