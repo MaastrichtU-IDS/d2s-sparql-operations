@@ -7,7 +7,7 @@ import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 
-public interface SparqlQueryInterface {
+public interface SparqlExecutorInterface {
 	
 	public void executeFiles(String filePath) throws Exception;
 	

@@ -1,7 +1,7 @@
 package nl.unimaas.ids;
 
 import nl.unimaas.ids.operations.SparqlOperationFactory;
-import nl.unimaas.ids.operations.SparqlQueryInterface;
+import nl.unimaas.ids.operations.SparqlExecutorInterface;
 import picocli.CommandLine;
 
 public class SparqlOperation {
@@ -15,9 +15,9 @@ public class SparqlOperation {
 			
 			//System.out.println("Performing operation: " + cli.queryOperation.toString());
 			
-			SparqlQueryInterface sparqlQuery = SparqlOperationFactory.getSparqlQuery(cli.queryOperation, cli.dbUrl, cli.username, cli.password);
+			SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.dbUrl, cli.username, cli.password);
 			
-			sparqlQuery.executeFiles(cli.inputFile);
+			sparqlExecutor.executeFiles(cli.inputFile);
 
 		} catch (Exception e) {
 			printUsageAndExit(e);

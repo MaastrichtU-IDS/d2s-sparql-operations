@@ -4,8 +4,8 @@ import java.sql.SQLException;
 
 public class SparqlOperationFactory {
 	
-	public static SparqlQueryInterface getSparqlQuery(QueryOperation operation, String endpoint, String username, String password) throws SQLException, ClassNotFoundException {
-		SparqlQueryInterface q;
+	public static SparqlExecutorInterface getSparqlExecutor(QueryOperation operation, String endpoint, String username, String password) throws SQLException, ClassNotFoundException {
+		SparqlExecutorInterface q;
 		
 		switch (operation) {
         case update:

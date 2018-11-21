@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
-public abstract class AbstractSparqlOperation implements SparqlQueryInterface {
+public abstract class AbstractSparqlOperation implements SparqlExecutorInterface {
 	protected Logger logger = LoggerFactory.getLogger(AbstractSparqlOperation.class.getName());
 	private SPARQLRepository repo;
 	
