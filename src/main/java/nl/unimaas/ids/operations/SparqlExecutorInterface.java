@@ -13,6 +13,6 @@ public interface SparqlExecutorInterface {
 	
 	public void executeQuery(RepositoryConnection conn, String queryString, String outputFilepath) throws RepositoryException, MalformedQueryException, IOException ;
 		
-	public void parseYaml(RepositoryConnection conn, File inputFile) throws Exception ;
+	public void parseQueriesYaml(RepositoryConnection conn, File inputFile) throws Exception ;
 
 }

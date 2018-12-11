@@ -36,8 +36,7 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 			if(!inputFile.canRead())
 				throw new SecurityException("Can not read from input file \"" + inputFile.getAbsolutePath() + "\"");
 			
-			// TODO: if input file is yaml. then check how Alex was doing
-			
+			// if input file is yaml. 
 			if (inputFile.isDirectory()) {
 				Collection<File> files = FileUtils.listFiles(
 						inputFile,
@@ -53,7 +52,8 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 				}
 				
 			} else if (FilenameUtils.getExtension(inputFile.getName()).equals("yaml")) { 
-				parseYaml(conn, inputFile);
+				// YAML is provided
+				parseQueriesYaml(conn, inputFile);
 			} else {
 				// Single file provided
 				executeQuery(conn, FileUtils.readFileToString(inputFile), inputFile.getPath());
@@ -67,7 +67,7 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	}
 
 	@SuppressWarnings("unchecked")
-	public void parseYaml(RepositoryConnection conn, File inputFile) throws Exception {
+	public void parseQueriesYaml(RepositoryConnection conn, File inputFile) throws Exception {
 		logger.info("Parsing YAML...");
 		Yaml yaml = new Yaml();
 		Map<String, Object> yamlFile = (Map<String, Object>)yaml.load(new FileInputStream(inputFile));
