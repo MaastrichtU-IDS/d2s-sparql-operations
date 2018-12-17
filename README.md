@@ -30,9 +30,6 @@ docker run -it --rm rdf4j-sparql-operations -?
 # GraphDB requires to add /statements at the end of the endpoint URL for INSERT
 docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test/statements" -un username -pw password
 
-# Construct using local SPARQL endpoint
-docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data" -url "http://localhost:7200/repositories/test" -op "construct"
-
 # Using local GraphDB docker
 docker run -it --rm --link graphdb:graphdb -v /data/operations:/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb:7200/repositories/test/statements"
 
