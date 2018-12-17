@@ -98,12 +98,10 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	// We replace ?_myVar with the corresponding value
 	private String resolveVariables(String query) {
 		String replacedQuery = query;
-	    Iterator it = variablesHash.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
-	        //System.out.println(pair.getKey() + " = " + pair.getValue());
-	        replacedQuery = replacedQuery.replaceAll(pair.getKey().toString(), pair.getValue().toString());
-	    }
+		for (Map.Entry<String, String> entry : variablesHash.entrySet()) {
+	        //System.out.println(entry.getKey() + " = " + entry.getValue());
+			replacedQuery = replacedQuery.replaceAll(entry.getKey().toString(), entry.getValue().toString());
+		}
 	    return replacedQuery;
 	}
 }
