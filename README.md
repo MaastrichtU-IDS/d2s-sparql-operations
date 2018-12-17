@@ -65,3 +65,13 @@ docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data
 
  ## Execute on specific datasets
 
+From https://github.com/vemonet/insert-data2services 
+
+```shell
+# DrugBank
+docker run -it --rm -v "$PWD/insert-biolink/drugbank":/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/ncats-red-kg/statements" -un $LOGIN -pw $PASSWORD -var inputGraph:http://data2services/graph/xml2rdf outputGraph:http://data2services/biolink/drugbank
+
+# HGNC
+docker run -it --rm -v "$PWD/insert-biolink/hgnc":/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/ncats-red-kg/statements" -un $LOGIN -pw $PASSWORD -var inputGraph:http://data2services/graph/autor2rml outputGraph:http://data2services/biolink/hgnc
+```
+
