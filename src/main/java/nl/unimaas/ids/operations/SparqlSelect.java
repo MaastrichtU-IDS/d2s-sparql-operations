@@ -15,13 +15,13 @@ import org.slf4j.LoggerFactory;
  */
 public class SparqlSelect extends AbstractSparqlOperation {
 
-	public SparqlSelect(String endpoint, String username, String password) {
-		super(endpoint, username, password);
+	public SparqlSelect(String endpoint, String username, String password, String[] variables) {
+		super(endpoint, username, password, variables);
 		logger = LoggerFactory.getLogger(SparqlConstruct.class.getName());
 	}
 
 	public void executeQuery(RepositoryConnection conn, String queryString, String filepath) throws RepositoryException, MalformedQueryException, IOException {
-		logger.info("Selecting: " + filepath);
+		logger.info("Selecting from " + filepath);
 		
 		TupleQuery query = conn.prepareTupleQuery(queryString);
 	    // A QueryResult is also an AutoCloseable resource, so make sure it gets

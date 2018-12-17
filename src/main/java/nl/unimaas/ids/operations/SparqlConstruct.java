@@ -18,13 +18,13 @@ import org.slf4j.LoggerFactory;
  */
 public class SparqlConstruct extends AbstractSparqlOperation {
 
-	public SparqlConstruct(String endpoint, String username, String password) {
-		super(endpoint, username, password);
+	public SparqlConstruct(String endpoint, String username, String password, String[] variables) {
+		super(endpoint, username, password, variables);
 		logger = LoggerFactory.getLogger(SparqlConstruct.class.getName());
 	}
 
 	public void executeQuery(RepositoryConnection conn, String queryString, String filepath) throws RepositoryException, MalformedQueryException, IOException {
-		logger.info("Constructing: " + filepath);
+		logger.info("Constructing from " + filepath);
 		
 		// Query the SPARQL endpoint
 		GraphQueryResult graphResult = conn.prepareGraphQuery(queryString).evaluate();

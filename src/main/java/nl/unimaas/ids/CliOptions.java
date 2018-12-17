@@ -14,6 +14,9 @@ public class CliOptions {
 	
 	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select). Default is update")
 	QueryOperation queryOperation = QueryOperation.update;
+	
+	@Option(names= {"-var", "--variables"}, arity = "0..*", paramLabel = "STRING", description = "Variables to replace in the SPARQL query. E.g.: varGraphInput:http://data2services/input varGraphOutput:http://data2services/output")
+	String[] variables;
 
 	@Option(names= {"-url", "--database-url"}, description = "URL for Repository/Endpoint", required = true)
 	String dbUrl = null;

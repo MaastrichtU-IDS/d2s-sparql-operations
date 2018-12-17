@@ -15,7 +15,7 @@ public class SparqlOperation {
 			
 			//System.out.println("Performing operation: " + cli.queryOperation.toString());
 			
-			SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.dbUrl, cli.username, cli.password);
+			SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.dbUrl, cli.username, cli.password, cli.variables);
 			
 			sparqlExecutor.executeFiles(cli.inputFile);
 

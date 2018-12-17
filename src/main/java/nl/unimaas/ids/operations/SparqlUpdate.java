@@ -14,13 +14,13 @@ import org.slf4j.LoggerFactory;
  */
 public class SparqlUpdate extends AbstractSparqlOperation {
 
-	public SparqlUpdate(String endpoint, String username, String password) {
-		super(endpoint, username, password);
+	public SparqlUpdate(String endpoint, String username, String password, String[] variables) {
+		super(endpoint, username, password, variables);
 		logger = LoggerFactory.getLogger(SparqlConstruct.class.getName());
 	}
 
 	public void executeQuery(RepositoryConnection conn, String queryString, String filepath) throws RepositoryException, MalformedQueryException, IOException {
-		logger.info("Updating: " + filepath);
+		logger.info("Updating from " + filepath);
 		
 		// Query the SPARQL endpoint
 		Update update = conn.prepareUpdate(QueryLanguage.SPARQL, queryString);

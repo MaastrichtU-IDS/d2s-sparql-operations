@@ -3,6 +3,7 @@ package nl.unimaas.ids.operations;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +21,21 @@ import org.yaml.snakeyaml.Yaml;
 public abstract class AbstractSparqlOperation implements SparqlExecutorInterface {
 	protected Logger logger = LoggerFactory.getLogger(AbstractSparqlOperation.class.getName());
 	private SPARQLRepository repo;
+	HashMap<String, String> variablesHash = new HashMap<String, String>();
 	
-	public AbstractSparqlOperation(String endpoint, String username, String password) {
+	public AbstractSparqlOperation(String endpoint, String username, String password, String[] variables) {
 		repo = new SPARQLRepository(endpoint);
 		repo.setUsernameAndPassword(username, password);
 		repo.initialize();
+		
+        for (int i=0; i<variables.length; i++)
+        {
+            String[] variableSplitted = variables[i].split(":", 2);
+            if (variableSplitted != null) {
+	            // Split on first : (varGraph:http://graph gives {"?_varGraph": "http://graph"}
+            	variablesHash.put("\\?_" + variableSplitted[0], variableSplitted[1]);
+            }
+        }
 	}
 
 	public void executeFiles(String filePath) throws Exception {
@@ -47,8 +58,9 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 				Iterator<File> iterator = files.iterator();
 				while (iterator.hasNext()) {
 					File f = iterator.next();
-					
-					executeQuery(conn, FileUtils.readFileToString(f), f.getPath());
+					logger.info("Executing: ");
+					logger.info(resolveVariables(FileUtils.readFileToString(f)));
+					executeQuery(conn, resolveVariables(FileUtils.readFileToString(f)), f.getPath());
 				}
 				
 			} else if (FilenameUtils.getExtension(inputFile.getName()).equals("yaml")) { 
@@ -56,7 +68,9 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 				parseQueriesYaml(conn, inputFile);
 			} else {
 				// Single file provided
-				executeQuery(conn, FileUtils.readFileToString(inputFile), inputFile.getPath());
+				logger.info("Executing: ");
+				logger.info(resolveVariables(FileUtils.readFileToString(inputFile)));
+				executeQuery(conn, resolveVariables(FileUtils.readFileToString(inputFile)), inputFile.getPath());
 			}
 			
 		} catch (Exception e) {
@@ -75,7 +89,21 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		List<String> queries = (List<String>)yamlFile.get("queries");
 		int queryCount = 0;
 		for(String queryString : queries) {
-			executeQuery(conn, queryString, FilenameUtils.removeExtension(inputFile.getPath()) + "_query_" + queryCount++);
+			logger.info("Executing: ");
+			logger.info(resolveVariables(queryString));
+			executeQuery(conn, resolveVariables(queryString), FilenameUtils.removeExtension(inputFile.getPath()) + "_query_" + queryCount++);
 		}		
+	}
+	
+	// We replace ?_myVar with the corresponding value
+	private String resolveVariables(String query) {
+		String replacedQuery = query;
+	    Iterator it = variablesHash.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        //System.out.println(pair.getKey() + " = " + pair.getValue());
+	        replacedQuery = replacedQuery.replaceAll(pair.getKey().toString(), pair.getValue().toString());
+	    }
+	    return replacedQuery;
 	}
 }

@@ -1,4 +1,6 @@
 # About
+**WARNING:** select not test
+
 A project to execute SPARQL queries using rdf4j. 
 
 * The user has to provide the path to the directory where the queries are stored in `.rq` text files. 
@@ -31,9 +33,36 @@ docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data
 # Construct using local SPARQL endpoint
 docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data" -url "http://localhost:7200/repositories/test" -op "construct"
 
-# Using GraphDB docker
+# Using local GraphDB docker
 docker run -it --rm --link graphdb:graphdb -v /data/operations:/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb:7200/repositories/test/statements"
 
 # Run on a YAML with construct
 docker run -it --rm -v "/path/to/rdf4j-sparql-operations/src/main/resources/describe_statistics-drugbank.yaml":/data/describe_statistics-drugbank.yaml sparql-rdf4j-operations -rq "/data/describe_statistics-drugbank.yaml" -url "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" -un username -pw password -op construct
 ```
+
+## Variables
+
+Variables can be set in the SPARQL queries. For example:
+
+construct.rq in /data/operations
+
+```sql
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+CONSTRUCT 
+{ 
+    ?class a <?_classType> .
+}
+WHERE {
+    GRAPH <?_graphUri> {
+        [] a ?class .
+    }
+}
+```
+
+Execute
+
+```shell
+docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data/operations/construct.rq" -url "http://localhost:7200/repositories/test" -op "construct" -var graphUri:http://graph classType:http://test/class
+
+```
+
