@@ -124,9 +124,8 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	    
 	    logger.info("This SPARQL query variables:");
 	    while (m.find()) {
-	        // ...then you can use group() methods.
-	        //System.out.println(m.group(0)); // whole matched expression
-	    	logger.info(m.group(1)); // first expression from round brackets (Testing)
+	    	// Get first group. Use m.group(0) for the whole match expression
+	    	logger.info(m.group(1));
 	        queryVariables.add(m.group(1));
 	    }
 		
