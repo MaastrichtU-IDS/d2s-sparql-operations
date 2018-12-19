@@ -81,10 +81,10 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		} catch (Exception e) {
 			throw e;
 		}
-
 		//repo.shutDown();
 	}
 
+	// Execute queries from a YAML file.
 	@SuppressWarnings("unchecked")
 	public void parseQueriesYaml(RepositoryConnection conn, File inputFile) throws Exception {
 		logger.info("Parsing YAML...");
@@ -103,7 +103,6 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	
 	// We replace ?_myVar with the corresponding value
 	private String resolveVariables(String query) {
-		// TODO: first scan for variables?
 		scanForVariables(query);
 		
 		String replacedQuery = query;
