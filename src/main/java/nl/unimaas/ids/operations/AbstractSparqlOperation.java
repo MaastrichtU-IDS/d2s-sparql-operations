@@ -2,11 +2,14 @@ package nl.unimaas.ids.operations;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -58,9 +61,10 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 				Iterator<File> iterator = files.iterator();
 				while (iterator.hasNext()) {
 					File f = iterator.next();
+					String queryString = resolveVariables(FileUtils.readFileToString(f));
 					logger.info("Executing: ");
-					logger.info(resolveVariables(FileUtils.readFileToString(f)));
-					executeQuery(conn, resolveVariables(FileUtils.readFileToString(f)), f.getPath());
+					logger.info(queryString);
+					executeQuery(conn, queryString, f.getPath());
 				}
 				
 			} else if (FilenameUtils.getExtension(inputFile.getName()).equals("yaml")) { 
@@ -68,9 +72,10 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 				parseQueriesYaml(conn, inputFile);
 			} else {
 				// Single file provided
+				String queryString = resolveVariables(FileUtils.readFileToString(inputFile));
 				logger.info("Executing: ");
-				logger.info(resolveVariables(FileUtils.readFileToString(inputFile)));
-				executeQuery(conn, resolveVariables(FileUtils.readFileToString(inputFile)), inputFile.getPath());
+				logger.info(queryString);
+				executeQuery(conn, queryString, inputFile.getPath());
 			}
 			
 		} catch (Exception e) {
@@ -88,20 +93,43 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		
 		List<String> queries = (List<String>)yamlFile.get("queries");
 		int queryCount = 0;
-		for(String queryString : queries) {
+		for(String query : queries) {
+			String queryString = resolveVariables(query);
 			logger.info("Executing: ");
-			logger.info(resolveVariables(queryString));
-			executeQuery(conn, resolveVariables(queryString), FilenameUtils.removeExtension(inputFile.getPath()) + "_query_" + queryCount++);
+			logger.info(queryString);
+			executeQuery(conn, queryString, FilenameUtils.removeExtension(inputFile.getPath()) + "_query_" + queryCount++);
 		}		
 	}
 	
 	// We replace ?_myVar with the corresponding value
 	private String resolveVariables(String query) {
+		// TODO: first scan for variables?
+		scanForVariables(query);
+		
 		String replacedQuery = query;
 		for (Map.Entry<String, String> entry : variablesHash.entrySet()) {
 	        //System.out.println(entry.getKey() + " = " + entry.getValue());
 			replacedQuery = replacedQuery.replaceAll(entry.getKey().toString(), entry.getValue().toString());
 		}
 	    return replacedQuery;
+	}
+	
+	// Scan files to check for the variables
+	public ArrayList<String> scanForVariables(String query) {
+		ArrayList<String> queryVariables = new ArrayList<String>();
+		
+		Pattern p = Pattern.compile("<\\?_(.*?)>");
+	    // create matcher for pattern p and given string
+	    Matcher m = p.matcher(query);
+	    
+	    logger.info("This SPARQL query variables:");
+	    while (m.find()) {
+	        // ...then you can use group() methods.
+	        //System.out.println(m.group(0)); // whole matched expression
+	    	logger.info(m.group(1)); // first expression from round brackets (Testing)
+	        queryVariables.add(m.group(1));
+	    }
+		
+	    return queryVariables;
 	}
 }
