@@ -117,12 +117,10 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	// Scan files to check for the variables
 	public ArrayList<String> scanForVariables(String query) {
 		ArrayList<String> queryVariables = new ArrayList<String>();
-		
 		Pattern p = Pattern.compile("<\\?_(.*?)>");
-	    // create matcher for pattern p and given string
 	    Matcher m = p.matcher(query);
 	    
-	    logger.info("This SPARQL query variables:");
+	    logger.info("    VARIABLES of the query:");
 	    while (m.find()) {
 	    	// Get first group. Use m.group(0) for the whole match expression
 	    	logger.info(m.group(1));

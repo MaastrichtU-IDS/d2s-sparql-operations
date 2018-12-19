@@ -18,5 +18,4 @@ public interface SparqlExecutorInterface {
 	
 	public ArrayList<String> scanForVariables(String query) ;
 
-
 }
