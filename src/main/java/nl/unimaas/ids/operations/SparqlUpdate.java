@@ -16,7 +16,7 @@ public class SparqlUpdate extends AbstractSparqlOperation {
 
 	public SparqlUpdate(String endpoint, String username, String password, String[] variables) {
 		super(endpoint, username, password, variables);
-		logger = LoggerFactory.getLogger(SparqlConstruct.class.getName());
+		logger = LoggerFactory.getLogger(SparqlUpdate.class.getName());
 	}
 
 	public void executeQuery(RepositoryConnection conn, String queryString, String filepath) throws RepositoryException, MalformedQueryException, IOException {
