@@ -126,7 +126,6 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	    	logger.info(m.group(1));
 	        queryVariables.add(m.group(1));
 	    }
-		
 	    return queryVariables;
 	}
 }
