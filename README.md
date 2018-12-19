@@ -59,7 +59,7 @@ WHERE {
 Execute
 
 ```shell
-docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data/operations/construct.rq" -url "http://localhost:7200/repositories/test" -op "construct" -var graphUri:http://graph classType:http://test/class
+docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data/operations/construct.rq" -url "http://localhost:7200/repositories/test" -op "construct" -var serviceUrl:http://localhost:7200/repositories/test graphUri:http://graph classType:http://test/class 
 
 ```
 
@@ -69,9 +69,9 @@ From https://github.com/vemonet/insert-data2services
 
 ```shell
 # DrugBank
-docker run -it --rm -v "$PWD/insert-biolink/drugbank":/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/ncats-red-kg/statements" -un $LOGIN -pw $PASSWORD -var inputGraph:http://data2services/graph/xml2rdf outputGraph:http://data2services/biolink/drugbank
+docker run -it --rm -v "$PWD/insert-biolink/drugbank":/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/ncats-red-kg/statements" -un $LOGIN -pw $PASSWORD -var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/xml2rdf outputGraph:http://data2services/biolink/drugbank
 
 # HGNC
-docker run -it --rm -v "$PWD/insert-biolink/hgnc":/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/ncats-red-kg/statements" -un $LOGIN -pw $PASSWORD -var inputGraph:http://data2services/graph/autor2rml outputGraph:http://data2services/biolink/hgnc
+docker run -it --rm -v "$PWD/insert-biolink/hgnc":/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/ncats-red-kg/statements" -un $LOGIN -pw $PASSWORD -var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/autor2rml outputGraph:http://data2services/biolink/hgnc
 ```
 
