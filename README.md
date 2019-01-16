@@ -65,7 +65,7 @@ docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data
 
  ## Execute on specific datasets
 
-From https://github.com/vemonet/insert-data2services 
+From https://github.com/vemonet/data2services-insert 
 
 ```shell
 # DrugBank
