@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -57,8 +58,10 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 						new RegexFileFilter(".*\\.(rq|sparql)"),
 						DirectoryFileFilter.DIRECTORY
 				);
-				// Recursively iterate over files in the directory
-				Iterator<File> iterator = files.iterator();
+				List<File> fileList = new ArrayList<File>(files);
+				Collections.sort(fileList);
+				// Recursively iterate over files in the directory in the alphabetical order
+				Iterator<File> iterator = fileList.iterator();
 				while (iterator.hasNext()) {
 					File f = iterator.next();
 					String queryString = resolveVariables(FileUtils.readFileToString(f));
