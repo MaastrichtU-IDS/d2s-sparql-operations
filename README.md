@@ -4,14 +4,11 @@
 A project to execute SPARQL queries using rdf4j. 
 
 * The user has to provide the path to the directory where the queries are stored in `.rq` text files. 
-
 * YAML files with multiple queries are also supported to be able to execute them in a defined order. See the [example in resources](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/describe_statistics-drugbank.yaml)
-
 * *Update*, *construct* and *select* queries are currently supported. 
-
 * It is possible to optionally define username and password for the SPARQL endpoint.
-
-* Examples queries: https://github.com/vemonet/insert-data2services
+* Queries in a directory are executed in the alphabetical order of their filename.
+* Examples queries: https://github.com/vemonet/data2services-insert
 
 
 
