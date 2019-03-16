@@ -3,12 +3,12 @@ pipeline {
   stages {
     stage('checkout') {
       steps {
-        git 'https://github.com/MaastrichtU-IDS/RdfUpload.git'
+        git 'https://github.com/vemonet/rdf4j-sparql-operations.git'
       }
     }
     stage('build') {
       steps {
-        sh 'docker build -t rdf-upload .'
+        sh 'docker build -t rdf4j-sparql-operations .'
       }
     }
   }
