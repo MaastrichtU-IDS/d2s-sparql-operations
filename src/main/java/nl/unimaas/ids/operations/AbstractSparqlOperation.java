@@ -88,6 +88,19 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		}
 		//repo.shutDown();
 	}
+	
+	public void executeSingleQuery(String queryString) throws Exception {
+		try (RepositoryConnection conn = repo.getConnection()) {
+			queryString = resolveVariables(queryString);
+			logger.info("Executing: ");
+			logger.info(queryString);
+			executeQuery(conn, queryString, null);
+			
+		} catch (Exception e) {
+			throw e;
+		}
+		//repo.shutDown();
+	}
 
 	// Execute queries from a YAML file.
 	@SuppressWarnings("unchecked")

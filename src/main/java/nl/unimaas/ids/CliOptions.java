@@ -9,7 +9,10 @@ public class CliOptions {
 	@Option(names = { "-?", "--help" }, usageHelp = true, description = "Display a help message")
 	boolean help = false;
 	
-	@Option(names= {"-rq", "--request-dir"}, description = "RDF file path.", required = true)
+	@Option(names= {"-sp", "--sparql-query"}, description = "SPARQL query to execute.")
+	String sparqlQuery = null;
+	
+	@Option(names= {"-rq", "--request-dir"}, description = "Directory containing the .rq files to execute.")
 	String inputFile = null;
 	
 	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select). Default is update")

@@ -17,7 +17,13 @@ public class SparqlOperation {
 			
 			SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.dbUrl, cli.username, cli.password, cli.variables);
 			
-			sparqlExecutor.executeFiles(cli.inputFile);
+			if (cli.sparqlQuery != null) {
+				sparqlExecutor.executeSingleQuery(cli.sparqlQuery);
+			}
+			
+			if (cli.inputFile != null) {
+				sparqlExecutor.executeFiles(cli.inputFile);
+			}
 
 		} catch (Exception e) {
 			printUsageAndExit(e);

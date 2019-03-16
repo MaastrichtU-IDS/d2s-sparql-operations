@@ -8,7 +8,7 @@ A project to execute SPARQL queries using rdf4j.
 * *Update*, *construct* and *select* queries are currently supported. 
 * It is possible to optionally define username and password for the SPARQL endpoint.
 * Queries in a directory are executed in the alphabetical order of their filename.
-* Examples queries: https://github.com/vemonet/data2services-insert
+* Examples queries: https://github.com/MaastrichtU-IDS/data2services-insert
 
 
 

@@ -10,6 +10,8 @@ import org.eclipse.rdf4j.repository.RepositoryException;
 
 public interface SparqlExecutorInterface {
 	
+	public void executeSingleQuery(String queryString) throws Exception;
+	
 	public void executeFiles(String filePath) throws Exception;
 	
 	public void executeQuery(RepositoryConnection conn, String queryString, String outputFilepath) throws RepositoryException, MalformedQueryException, IOException ;
