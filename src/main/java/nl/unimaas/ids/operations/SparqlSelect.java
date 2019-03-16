@@ -20,8 +20,8 @@ public class SparqlSelect extends AbstractSparqlOperation {
 		logger = LoggerFactory.getLogger(SparqlSelect.class.getName());
 	}
 
-	public void executeQuery(RepositoryConnection conn, String queryString, String filepath) throws RepositoryException, MalformedQueryException, IOException {
-		logger.info("Selecting from " + filepath);
+	public void executeQuery(RepositoryConnection conn, String queryString, String outputFilepath) throws RepositoryException, MalformedQueryException, IOException {
+		logger.info("Executing select query...");
 		
 		TupleQuery query = conn.prepareTupleQuery(queryString);
 	    // A QueryResult is also an AutoCloseable resource, so make sure it gets

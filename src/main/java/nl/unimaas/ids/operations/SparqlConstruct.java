@@ -23,9 +23,8 @@ public class SparqlConstruct extends AbstractSparqlOperation {
 		logger = LoggerFactory.getLogger(SparqlConstruct.class.getName());
 	}
 
-	public void executeQuery(RepositoryConnection conn, String queryString, String filepath) throws RepositoryException, MalformedQueryException, IOException {
-		logger.info("Constructing from " + filepath);
-		
+	public void executeQuery(RepositoryConnection conn, String queryString, String outputFilepath) throws RepositoryException, MalformedQueryException, IOException {
+		logger.info("Executing construct query...");
 		// Query the SPARQL endpoint
 		GraphQueryResult graphResult = conn.prepareGraphQuery(queryString).evaluate();
 		logger.info("SPARQL endpoint query done");
@@ -34,9 +33,12 @@ public class SparqlConstruct extends AbstractSparqlOperation {
 		Model resultModel = QueryResults.asModel(graphResult);
 		logger.info("Model generated");
 		
-		// Write the model to a file
-		Rio.write(resultModel, new FileOutputStream(filepath + ".ttl"), RDFFormat.TURTLE); // TODO: fix the name definition
-		//Rio.write(resultModel, System.out, RDFFormat.TURTLE);
+		// Write the model to a file (for each rq file executed)
+		if (outputFilepath == null) {
+			Rio.write(resultModel, System.out, RDFFormat.TURTLE);
+		} else {
+			Rio.write(resultModel, new FileOutputStream(outputFilepath + ".ttl"), RDFFormat.TURTLE); // TODO: fix the name definition
+		}
 		
 		//conn.add(f, null, Rio.getParserFormatForFileName(f.getName()).get());
 	}

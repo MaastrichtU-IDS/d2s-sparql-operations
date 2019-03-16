@@ -2,6 +2,7 @@ package nl.unimaas.ids.operations;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -47,42 +48,53 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	public void executeFiles(String filePath) throws Exception {
 		
 		try (RepositoryConnection conn = repo.getConnection()) {
-			File inputFile = new File(filePath);
-			if(!inputFile.exists())
-				throw new IllegalArgumentException("Input file \"" + inputFile.getAbsolutePath() + "\" does not exist");
-			if(!inputFile.canRead())
-				throw new SecurityException("Can not read from input file \"" + inputFile.getAbsolutePath() + "\"");
-			
-			// if input file is yaml. 
-			if (inputFile.isDirectory()) {
-				Collection<File> files = FileUtils.listFiles(
-						inputFile,
-						new RegexFileFilter(".*\\.(rq|sparql)"),
-						DirectoryFileFilter.DIRECTORY
-				);
-				List<File> fileList = new ArrayList<File>(files);
-				Collections.sort(fileList);
-				// Recursively iterate over files in the directory in the alphabetical order
-				Iterator<File> iterator = fileList.iterator();
-				while (iterator.hasNext()) {
-					File f = iterator.next();
-					String queryString = resolveVariables(FileUtils.readFileToString(f));
-					logger.info("Executing: ");
-					logger.info(queryString);
-					executeQuery(conn, queryString, f.getPath());
-				}
-				
-			} else if (FilenameUtils.getExtension(inputFile.getName()).equals("yaml")) { 
-				// YAML is provided
-				parseQueriesYaml(conn, inputFile);
-			} else {
-				// Single file provided
-				String queryString = resolveVariables(FileUtils.readFileToString(inputFile));
+			if (filePath.matches("^(http|https|ftp)://.*$")) {
+				// If user provide a URL
+				File urlFile = File.createTempFile("rdf4j-sparql-operations", "temp");
+				FileUtils.copyURLToFile(new URL(filePath), urlFile);
+				String queryString = resolveVariables(FileUtils.readFileToString(urlFile));
 				logger.info("Executing: ");
 				logger.info(queryString);
-				executeQuery(conn, queryString, inputFile.getPath());
-			}
+				executeQuery(conn, queryString, null);
 			
+			} else {
+				// File or dir path provided
+				File inputFile = new File(filePath);
+				if(!inputFile.exists())
+					throw new IllegalArgumentException("Input file \"" + inputFile.getAbsolutePath() + "\" does not exist");
+				if(!inputFile.canRead())
+					throw new SecurityException("Can not read from input file \"" + inputFile.getAbsolutePath() + "\"");
+				
+				// if input file is a directory 
+				if (inputFile.isDirectory()) {
+					Collection<File> files = FileUtils.listFiles(
+							inputFile,
+							new RegexFileFilter(".*\\.(rq|sparql)"),
+							DirectoryFileFilter.DIRECTORY
+					);
+					List<File> fileList = new ArrayList<File>(files);
+					Collections.sort(fileList);
+					// Recursively iterate over files in the directory in the alphabetical order
+					Iterator<File> iterator = fileList.iterator();
+					while (iterator.hasNext()) {
+						File f = iterator.next();
+						String queryString = resolveVariables(FileUtils.readFileToString(f));
+						logger.info("Executing: ");
+						logger.info(queryString);
+						executeQuery(conn, queryString, f.getPath());
+					}
+					
+				} else if (FilenameUtils.getExtension(inputFile.getName()).equals("yaml")) { 
+					// If input file is YAML we parse it to execute provided queries
+					parseQueriesYaml(conn, inputFile);
+				} else {
+					// Single file provided
+					String queryString = resolveVariables(FileUtils.readFileToString(inputFile));
+					logger.info("Executing: ");
+					logger.info(queryString);
+					executeQuery(conn, queryString, inputFile.getPath());
+				}
+			}
 		} catch (Exception e) {
 			throw e;
 		}

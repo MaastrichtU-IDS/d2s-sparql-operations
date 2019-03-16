@@ -19,8 +19,8 @@ public class SparqlUpdate extends AbstractSparqlOperation {
 		logger = LoggerFactory.getLogger(SparqlUpdate.class.getName());
 	}
 
-	public void executeQuery(RepositoryConnection conn, String queryString, String filepath) throws RepositoryException, MalformedQueryException, IOException {
-		logger.info("Updating from " + filepath);
+	public void executeQuery(RepositoryConnection conn, String queryString, String outputFilepath) throws RepositoryException, MalformedQueryException, IOException {
+		logger.info("Executing update query...");
 		
 		// Query the SPARQL endpoint
 		Update update = conn.prepareUpdate(QueryLanguage.SPARQL, queryString);
