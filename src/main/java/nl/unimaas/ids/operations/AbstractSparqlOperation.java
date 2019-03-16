@@ -45,18 +45,25 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		}
 	}
 
+	// Executed when files are provided. Execute from single file from URL or file path, or multiple files from directory
 	public void executeFiles(String filePath) throws Exception {
 		
 		try (RepositoryConnection conn = repo.getConnection()) {
 			if (filePath.matches("^(http|https|ftp)://.*$")) {
 				// If user provide a URL
-				File urlFile = File.createTempFile("rdf4j-sparql-operations", "temp");
+				File urlFile = File.createTempFile("rdf4j-sparql-operations-", null); // generate a .tmp
 				FileUtils.copyURLToFile(new URL(filePath), urlFile);
-				String queryString = resolveVariables(FileUtils.readFileToString(urlFile));
-				logger.info("Executing: ");
-				logger.info(queryString);
-				executeQuery(conn, queryString, null);
-			
+				
+				if (filePath.endsWith(".yaml")) {
+					// If input file is YAML we parse it to execute provided queries
+					parseQueriesYaml(conn, urlFile);
+					
+				} else {	
+					String queryString = resolveVariables(FileUtils.readFileToString(urlFile));				
+					logger.info("Executing: ");
+					logger.info(queryString);
+					executeQuery(conn, queryString, null);
+				}
 			} else {
 				// File or dir path provided
 				File inputFile = new File(filePath);
@@ -101,6 +108,7 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		//repo.shutDown();
 	}
 	
+	// Execute a single SPARQL query string
 	public void executeSingleQuery(String queryString) throws Exception {
 		try (RepositoryConnection conn = repo.getConnection()) {
 			queryString = resolveVariables(queryString);

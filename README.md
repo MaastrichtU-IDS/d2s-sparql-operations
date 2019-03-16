@@ -23,9 +23,15 @@ docker run -it --rm rdf4j-sparql-operations -?
 ```
 ## Run
 ```shell
-# Update (insert) on graphdb.dumontierlab.com 
-# GraphDB requires to add /statements at the end of the endpoint URL for INSERT
-docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test/statements" -un username -pw password
+# SELECT on dbpedia
+docker run -it --rm rdf4j-sparql-operations -sp "select distinct ?Concept where {[] a ?Concept} LIMIT 10" -url "http://dbpedia.org/sparql" -op select
+
+# CONSTRUCT on GraphDB using GitHub URL
+docker run -it --rm rdf4j-sparql-operations -rq "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-insert/master/resources/construct-test.rq" -url "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" -op construct
+
+# Multiple updates (INSERT) on graphdb.dumontierlab.com 
+# Note: GraphDB requires to add /statements at the end of the endpoint URL for INSERT
+docker run -it --rm -v "/data/data2services-insert/insert-biolink/drugbank":/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb.dumontierlab.com/repositories/test/statements" -un USERNAME -pw PASSWORD
 
 # Using local GraphDB docker
 docker run -it --rm --link graphdb:graphdb -v /data/operations:/data rdf4j-sparql-operations -rq "/data" -url "http://graphdb:7200/repositories/test/statements"
