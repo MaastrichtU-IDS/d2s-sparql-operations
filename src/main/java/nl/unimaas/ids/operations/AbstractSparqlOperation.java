@@ -32,14 +32,16 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		repo.setUsernameAndPassword(username, password);
 		repo.initialize();
 		
-        for (int i=0; i<variables.length; i++)
-        {
-            String[] variableSplitted = variables[i].split(":", 2);
-            if (variableSplitted != null) {
-	            // Split on first : (varGraph:http://graph gives {"?_varGraph": "http://graph"}
-            	variablesHash.put("\\?_" + variableSplitted[0], variableSplitted[1]);
-            }
-        }
+		if (variables != null) {
+	        for (int i=0; i<variables.length; i++)
+	        {
+	            String[] variableSplitted = variables[i].split(":", 2);
+	            if (variableSplitted != null) {
+		            // Split on first : (varGraph:http://graph gives {"?_varGraph": "http://graph"}
+	            	variablesHash.put("\\?_" + variableSplitted[0], variableSplitted[1]);
+	            }
+	        }
+		}
 	}
 
 	public void executeFiles(String filePath) throws Exception {
