@@ -1,4 +1,4 @@
-FROM maven:3-jdk-8
+FROM maven:3-jdk-8-alpine
 
 LABEL maintainer "Vincent Emonet <vincent.emonet@gmail.com>"
 
@@ -17,4 +17,4 @@ RUN mvn clean install && \
 WORKDIR $APP_DIR
 
 ENTRYPOINT ["java","-jar","rdf4j-sparql-operations.jar"]
-CMD ["-?"]
+CMD ["-h"]

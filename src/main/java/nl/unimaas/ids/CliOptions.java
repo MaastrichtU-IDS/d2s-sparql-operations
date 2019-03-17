@@ -6,7 +6,7 @@ import picocli.CommandLine.Option;
 
 @Command(name = "rdf4j-sparql-operations")
 public class CliOptions {
-	@Option(names = { "-?", "--help" }, usageHelp = true, description = "Display a help message")
+	@Option(names = { "-h", "--help" }, usageHelp = true, description = "Display a help message")
 	boolean help = false;
 	
 	@Option(names= {"-sp", "--sparql-query"}, description = "SPARQL query string to execute.")
