@@ -17,3 +17,4 @@ RUN mvn clean install && \
 WORKDIR $APP_DIR
 
 ENTRYPOINT ["java","-jar","rdf4j-sparql-operations.jar"]
+CMD ["-?"]
