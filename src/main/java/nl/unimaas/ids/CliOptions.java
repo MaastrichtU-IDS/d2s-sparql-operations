@@ -4,12 +4,12 @@ import nl.unimaas.ids.operations.QueryOperation;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(name = "dataconstructor")
+@Command(name = "rdf4j-sparql-operations")
 public class CliOptions {
 	@Option(names = { "-?", "--help" }, usageHelp = true, description = "Display a help message")
 	boolean help = false;
 	
-	@Option(names= {"-sp", "--sparql-query"}, description = "SPARQL query to execute.")
+	@Option(names= {"-sp", "--sparql-query"}, description = "SPARQL query string to execute.")
 	String sparqlQuery = null;
 	
 	@Option(names= {"-f", "--filepath"}, description = "Path of file(s) to execute. Single file from URL or filepath. Multiple files from directory (query files must have .rq extension). YAML file.")
