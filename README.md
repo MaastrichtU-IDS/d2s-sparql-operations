@@ -2,13 +2,13 @@
 A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL or multiple files using [RDF4J](http://rdf4j.org/).
 
 * The user can execute **SPARQL queries** by
-  * Passing a SPARQL query **string** in `-sp` param 
+  * Passing a SPARQL **query string** in `-sp` param 
   * Providing a **URL** in `-rq` param
   * Providing the path to a directory where the queries are stored in `.rq` text files and executed in the **alphabetical order** of their filename. 
   * A **YAML file** with multiple queries. See the [example in resources](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/describe_statistics-drugbank.yaml)
-* *Update*, *construct* and *select* operations supported.
-* It is possible to optionally define username and password for the SPARQL endpoint.
-* Examples queries: https://github.com/MaastrichtU-IDS/data2services-insert
+* **Update**, **construct** and **select** operations supported.
+* It is possible to optionally define **username** and **password** for the SPARQL endpoint.
+* Examples queries: [data2services-insert](https://github.com/MaastrichtU-IDS/data2services-insert).
 
 
 
@@ -26,7 +26,7 @@ docker run -it --rm rdf4j-sparql-operations -?
 
 ### Select
 
-On [DBpedia](http://dbpedia.org/sparql) using SPARQL query string.
+On [DBpedia](http://dbpedia.org/sparql) using a SPARQL query as argument.
 
 ```shell
 docker run -it --rm rdf4j-sparql-operations -op select \
@@ -36,7 +36,7 @@ docker run -it --rm rdf4j-sparql-operations -op select \
 
 ### Construct
 
-On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL.
+On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL to get SPARQL query.
 
 ```shell
 docker run -it --rm rdf4j-sparql-operations -op construct \
@@ -59,12 +59,13 @@ docker run -it --rm -v "/data/data2services-insert/insert-biolink/drugbank":/dat
 
 ### YAML
 
-A YAML file can be used to provide multiple queries ordered.
+A YAML file can be used to provide multiple ordered queries.
 
 ```shell
 # Run on a YAML with construct
-docker run -it --rm -v "/path/to/rdf4j-sparql-operations/src/main/resources/describe_statistics-drugbank.yaml":/data/describe_statistics-drugbank.yaml \
-	sparql-rdf4j-operations -f "/data/describe_statistics-drugbank.yaml" -op construct \
+docker run -it --rm 
+	-v "$(pwd)/rdf4j-sparql-operations/src/main/resources/describe_statistics-drugbank.yaml":/data/stats.yaml \
+	sparql-rdf4j-operations -f "/data/stats.yaml" -op construct \
 	-ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
 	-un username -pw password
 ```
