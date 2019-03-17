@@ -12,7 +12,7 @@ public class CliOptions {
 	@Option(names= {"-sp", "--sparql-query"}, description = "SPARQL query to execute.")
 	String sparqlQuery = null;
 	
-	@Option(names= {"-rq", "--request-dir"}, description = "Directory containing the .rq files to execute.")
+	@Option(names= {"-f", "--filepath"}, description = "Path of file(s) to execute. Single file from URL or filepath. Multiple files from directory (query files must have .rq extension). YAML file.")
 	String inputFile = null;
 	
 	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select). Default is update")
@@ -21,16 +21,16 @@ public class CliOptions {
 	@Option(names= {"-var", "--variables"}, arity = "0..*", paramLabel = "STRING", description = "Variables to replace in the SPARQL query. E.g.: varGraphInput:http://data2services/input varGraphOutput:http://data2services/output")
 	String[] variables;
 
-	@Option(names= {"-url", "--database-url"}, description = "URL for Repository/Endpoint", required = true)
+	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL for SPARQL Endpoint", required = true)
 	String dbUrl = null;
 
 	@Option(names= {"-rep", "--repositoryId"}, description = "RDF4J Repository ID for HTTPRepository file upload (only required in case of RDF4JSPARQL or HTTP method)")
 	String repositoryId = null;
 
-	@Option(names= {"-un", "--username"}, description = "Username used for authentication")
+	@Option(names= {"-un", "--username"}, description = "Username used for triplestore authentication")
 	String username = null;
 
-	@Option(names= {"-pw", "--password"}, description = "Password used for authentication")
+	@Option(names= {"-pw", "--password"}, description = "Password used for triplestore authentication")
 	String password = null;
 
 
