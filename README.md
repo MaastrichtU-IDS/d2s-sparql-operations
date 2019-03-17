@@ -1,5 +1,5 @@
 # About
-A project to execute SPARQL queries from string, URL or multiple files using `rdf4j`.
+A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL or multiple files using [RDF4J](http://rdf4j.org/).
 
 * The user can execute SPARQL queries by
   * Passing a SPARQL query string in `-sp` param 
@@ -53,8 +53,6 @@ docker run -it --rm -v "/path/to/rdf4j-sparql-operations/src/main/resources/desc
 
 Variables can be set in the SPARQL queries. For example:
 
-construct.rq in /data/operations
-
 ```sql
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 CONSTRUCT 
@@ -90,7 +88,7 @@ docker run -it --rm -v "$PWD/insert-biolink/drugbank":/data rdf4j-sparql-operati
 
 # HGNC
 docker run -it --rm -v "$PWD/insert-biolink/hgnc":/data rdf4j-sparql-operations \
-	-f "/data" -un LOGIN -pw PASSWORD \
+	-f "/data" -un USERNAME -pw PASSWORD \
 	-ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg/statements" \
     -var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/autor2rml outputGraph:http://data2services/biolink/hgnc
 ```
