@@ -1,11 +1,12 @@
 # About
-A project to execute SPARQL queries using rdf4j (*Update*, *construct* and *select*). 
+A project to execute SPARQL queries from string, URL or multiple files using `rdf4j`.
 
 * The user can execute SPARQL queries by
   * Passing a SPARQL query string in `-sp` param 
   * Providing a URL in `-rq` param
   * Providing the path to a directory where the queries are stored in `.rq` text files and executed in the alphabetical order of their filename. 
   * A YAML file with multiple queries. See the [example in resources](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/describe_statistics-drugbank.yaml)
+* *Update*, *construct* and *select* operations supported.
 * It is possible to optionally define username and password for the SPARQL endpoint.
 * Examples queries: https://github.com/MaastrichtU-IDS/data2services-insert
 
