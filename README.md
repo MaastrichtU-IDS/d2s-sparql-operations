@@ -115,6 +115,6 @@ docker run -it --rm -v "$PWD/insert-biolink/drugbank":/data rdf4j-sparql-operati
 docker run -it --rm -v "$PWD/insert-biolink/hgnc":/data rdf4j-sparql-operations \
 	-f "/data" -un USERNAME -pw PASSWORD \
 	-ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
-    -var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/autor2rml outputGraph:https://w3id.org/data2services/graph/biolink/hgnc
+	-var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/autor2rml outputGraph:https://w3id.org/data2services/graph/biolink/hgnc
 ```
 
