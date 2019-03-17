@@ -21,8 +21,8 @@ public class CliOptions {
 	@Option(names= {"-var", "--variables"}, arity = "0..*", paramLabel = "STRING", description = "Variables to replace in the SPARQL query. E.g.: varGraphInput:http://data2services/input varGraphOutput:http://data2services/output")
 	String[] variables;
 
-	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL for SPARQL Endpoint", required = true)
-	String dbUrl = null;
+	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL of the SPARQL Endpoint to query", required = true)
+	String endpointUrl = null;
 
 	@Option(names= {"-rep", "--repositoryId"}, description = "RDF4J Repository ID for HTTPRepository file upload (only required in case of RDF4JSPARQL or HTTP method)")
 	String repositoryId = null;

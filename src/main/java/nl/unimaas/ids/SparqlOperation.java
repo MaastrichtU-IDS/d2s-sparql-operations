@@ -15,7 +15,7 @@ public class SparqlOperation {
 			
 			//System.out.println("Performing operation: " + cli.queryOperation.toString());
 			
-			SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.dbUrl, cli.username, cli.password, cli.variables);
+			SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.endpointUrl, cli.username, cli.password, cli.variables);
 			
 			if (cli.sparqlQuery != null) {
 				sparqlExecutor.executeSingleQuery(cli.sparqlQuery);
