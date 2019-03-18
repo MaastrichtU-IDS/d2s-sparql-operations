@@ -76,7 +76,7 @@ docker run -it --rm
 
 Variables can be set in the SPARQL queries using a `_` at the beggining: `?_myVar`. See example:
 
-```json
+```shell
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 CONSTRUCT 
 { 
