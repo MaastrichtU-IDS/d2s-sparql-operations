@@ -41,7 +41,7 @@ On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL
 ```shell
 docker run -it --rm rdf4j-sparql-operations -op construct \
 	-ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
-	-rq "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-insert/master/resources/construct-test.rq" 
+	-f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-insert/master/resources/construct-test.rq" 
 ```
 
 ### Update
