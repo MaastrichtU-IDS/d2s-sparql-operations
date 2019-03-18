@@ -3,7 +3,7 @@ A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries fro
 
 * The user can execute **SPARQL queries** by
   * Passing a SPARQL **query string** in `-sp` param 
-  * Providing a **URL** in `-rq` param
+  * Providing a **URL** in `-f` param
   * Providing the path to a directory where the queries are stored in `.rq` text files and executed in the **alphabetical order** of their filename. 
   * A **YAML file** with multiple queries. See the [example in resources](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/describe_statistics-drugbank.yaml)
 * **Update**, **construct** and **select** operations supported.
