@@ -7,9 +7,12 @@ ENV TMP_DIR /tmp/operations
 
 WORKDIR $TMP_DIR
 
-COPY . .
+## only runs if pom.xml changes. To avoid downloading dependencies everytime.
+COPY pom.xml .
+RUN mvn verify clean --fail-never
 
-RUN mvn clean install && \
+COPY src/ ./src/
+RUN mvn package && \
     mkdir $APP_DIR && \
     mv target/rdf4j-sparql-operations-0.0.1-SNAPSHOT-jar-with-dependencies.jar $APP_DIR/rdf4j-sparql-operations.jar && \
     rm -rf $TMP_DIR
