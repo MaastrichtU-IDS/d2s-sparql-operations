@@ -105,6 +105,33 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		//repo.shutDown();
 	}
 	
+	// We replace ?_myVar with the corresponding value
+	private String resolveVariables(String query) {
+		scanForVariables(query);
+		
+		String replacedQuery = query;
+		for (Map.Entry<String, String> entry : variablesHash.entrySet()) {
+	        //System.out.println(entry.getKey() + " = " + entry.getValue());
+			replacedQuery = replacedQuery.replaceAll(entry.getKey().toString(), entry.getValue().toString());
+		}
+	    return replacedQuery;
+	}
+	
+	// Scan files to check for the variables
+	public ArrayList<String> scanForVariables(String query) {
+		ArrayList<String> queryVariables = new ArrayList<String>();
+		Pattern p = Pattern.compile("<\\?_(.*?)>");
+	    Matcher m = p.matcher(query);
+	    
+	    logger.info("    VARIABLES of the query:");
+	    while (m.find()) {
+	    	// Get first group. Use m.group(0) for the whole match expression
+	    	logger.info(m.group(1));
+	        queryVariables.add(m.group(1));
+	    }
+	    return queryVariables;
+	}
+	
 	// Execute a single SPARQL query string
 	public void executeSingleQuery(String queryString) throws Exception {
 		try (RepositoryConnection conn = repo.getConnection()) {
@@ -152,18 +179,6 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		}		
 	}
 	
-	// We replace ?_myVar with the corresponding value
-	private String resolveVariables(String query) {
-		scanForVariables(query);
-		
-		String replacedQuery = query;
-		for (Map.Entry<String, String> entry : variablesHash.entrySet()) {
-	        //System.out.println(entry.getKey() + " = " + entry.getValue());
-			replacedQuery = replacedQuery.replaceAll(entry.getKey().toString(), entry.getValue().toString());
-		}
-	    return replacedQuery;
-	}
-	
 	public ArrayList<URL> crawlGithubToGetQueries(String githubUrl) throws IOException {
 		ArrayList<URL> queryList = new ArrayList<URL>();
 		String html = Jsoup.connect(githubUrl).get().html();
@@ -176,18 +191,4 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		return queryList;
 	}
 	
-	// Scan files to check for the variables
-	public ArrayList<String> scanForVariables(String query) {
-		ArrayList<String> queryVariables = new ArrayList<String>();
-		Pattern p = Pattern.compile("<\\?_(.*?)>");
-	    Matcher m = p.matcher(query);
-	    
-	    logger.info("    VARIABLES of the query:");
-	    while (m.find()) {
-	    	// Get first group. Use m.group(0) for the whole match expression
-	    	logger.info(m.group(1));
-	        queryVariables.add(m.group(1));
-	    }
-	    return queryVariables;
-	}
 }
