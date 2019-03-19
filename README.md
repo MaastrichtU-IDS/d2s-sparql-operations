@@ -73,12 +73,9 @@ docker run -it --rm rdf4j-sparql-operations \
 A YAML file can be used to provide multiple ordered queries. See [example](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/describe_statistics-drugbank.yaml).
 
 ```shell
-# Run on a YAML with construct
-docker run -it --rm 
-	-v "$(pwd)/rdf4j-sparql-operations/src/main/resources/describe_statistics-drugbank.yaml":/data/stats.yaml \
-	sparql-rdf4j-operations -f "/data/stats.yaml" -op construct \
-	-ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
-	-un username -pw password
+docker run -it --rm rdf4j-sparql-operations \
+  -op select -ep "http://dbpedia.org/sparql" \
+  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-insert/master/resources/select-examples/example-queries.yaml"
 ```
 
 
