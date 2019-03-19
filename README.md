@@ -27,7 +27,7 @@ docker run -it --rm rdf4j-sparql-operations -h
 
 ### Select
 
-On [DBpedia](http://dbpedia.org/sparql) using a SPARQL query as argument.
+On [DBpedia](http://dbpedia.org/sparql) using a SPARQL query string as argument.
 
 ```shell
 docker run -it --rm rdf4j-sparql-operations -op select \
@@ -37,7 +37,7 @@ docker run -it --rm rdf4j-sparql-operations -op select \
 
 ### Construct
 
-On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL to get SPARQL query.
+On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL to get the SPARQL query from a file.
 
 ```shell
 docker run -it --rm rdf4j-sparql-operations -op construct \
@@ -47,7 +47,7 @@ docker run -it --rm rdf4j-sparql-operations -op construct \
 
 ### Update
 
-Multiple `INSERT` on [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/).
+Multiple `INSERT` on [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/), using files in a repository from the local file system.
 
 ```shell
 docker run -it --rm -v "/data/data2services-insert/insert-biolink/drugbank":/data \
@@ -60,22 +60,22 @@ docker run -it --rm -v "/data/data2services-insert/insert-biolink/drugbank":/dat
 
 ### GitHub repository
 
-We crawl the GitHub repository and execute every `.rq` file. See [example repository](https://github.com/MaastrichtU-IDS/data2services-insert/tree/master/resources/select-examples).
+We crawl the GitHub repository and execute every `.rq` file. See [example repository](https://github.com/vemonet/rdf4j-sparql-operations/tree/master/src/main/resources/select-examples).
 
 ```shell
 docker run -it --rm rdf4j-sparql-operations \
   -op select -ep "http://dbpedia.org/sparql" \
-  -f "https://github.com/MaastrichtU-IDS/data2services-insert/tree/master/resources/select-examples" 
+  -f "https://github.com/vemonet/rdf4j-sparql-operations/tree/master/src/main/resources/select-examples" 
 ```
 
 ### YAML
 
-A YAML file can be used to provide multiple ordered queries. See [example](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/describe_statistics-drugbank.yaml).
+A YAML file can be used to provide multiple ordered queries. See [example](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/example-queries.yaml).
 
 ```shell
 docker run -it --rm rdf4j-sparql-operations \
   -op select -ep "http://dbpedia.org/sparql" \
-  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-insert/master/resources/select-examples/example-queries.yaml"
+  -f "https://raw.githubusercontent.com/vemonet/rdf4j-sparql-operations/master/src/main/resources/example-queries.yaml"
 ```
 
 
@@ -97,13 +97,13 @@ WHERE {
 }
 ```
 
-Execute with 3 variables:
+Execute with [2 variables](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/example-select-variables.rq):
 
 ```shell
-docker run -it --rm -v /data/operations:/data rdf4j-sparql-operations \
-	-f "/data/operations/construct.rq" -op construct \
-	-ep "http://localhost:7200/repositories/test" \
-    -var serviceUrl:http://localhost:7200/repositories/test graphUri:https://w3id.org/data2services/graph classType:http://test/class
+docker run -it --rm rdf4j-sparql-operations \
+  -op select -ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
+  -f "https://raw.githubusercontent.com/vemonet/rdf4j-sparql-operations/master/src/main/resources/example-select-variables.rq" \
+  -var limit:10 graph:https://w3id.org/data2services/graph/biolink/date
 ```
 
 
