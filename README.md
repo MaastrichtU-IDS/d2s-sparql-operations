@@ -4,11 +4,12 @@ A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries fro
 * The user can execute **SPARQL queries** by
   * Passing a SPARQL **query string** in `-sp` param 
   * Providing a **URL** in `-f` param
-  * Providing the path to a directory where the queries are stored in `.rq` text files and executed in the **alphabetical order** of their filename. 
-  * A **YAML file** with multiple queries. See the [example in resources](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/describe_statistics-drugbank.yaml)
+  * Providing the **URL** of a **GitHub repository** containing `.rq` files to execute in `-f` param
+  * Providing the **path to a directory** where the queries are stored in `.rq` text files and executed in the **alphabetical order** of their filename. 
+  * A **YAML file** with multiple ordered queries.
 * **Update**, **construct** and **select** operations supported.
 * It is possible to optionally define **username** and **password** for the SPARQL endpoint.
-* Examples queries: [data2services-insert](https://github.com/MaastrichtU-IDS/data2services-insert).
+* Example queries: [data2services-insert](https://github.com/MaastrichtU-IDS/data2services-insert).
 
 
 
@@ -57,9 +58,19 @@ docker run -it --rm -v "/data/data2services-insert/insert-biolink/drugbank":/dat
 
 * GraphDB requires to add `/statements` at the end of the endpoint URL for `INSERT`
 
+### GitHub repository
+
+We crawl the GitHub repository and execute every `.rq` file. See [example repository](https://github.com/MaastrichtU-IDS/data2services-insert/tree/master/resources/select-examples).
+
+```shell
+docker run -it --rm rdf4j-sparql-operations \
+  -op select -ep "http://dbpedia.org/sparql" \
+  -f "https://github.com/MaastrichtU-IDS/data2services-insert/tree/master/resources/select-examples" 
+```
+
 ### YAML
 
-A YAML file can be used to provide multiple ordered queries.
+A YAML file can be used to provide multiple ordered queries. See [example](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/describe_statistics-drugbank.yaml).
 
 ```shell
 # Run on a YAML with construct
