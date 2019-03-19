@@ -52,23 +52,15 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		
 		try (RepositoryConnection conn = repo.getConnection()) {
 			if (filePath.startsWith("https://github.com/")) {
-				logger.info("yeahyeah");
-				ArrayList<URL> githubUrlArray = crawlGitHub(filePath);
+				// Crawl a given path in a github repository to execute .rq files
+				logger.info("Crawling GitHub page...");
+				ArrayList<URL> queryList = crawlGithubToGetQueries(filePath);
+				for (URL queryUrl : queryList) {
+					executeFromUrl(conn, queryUrl);
+				}
 			} else if (filePath.matches("^(http|https|ftp)://.*$")) {
 				// If user provide a URL
-				File urlFile = File.createTempFile("rdf4j-sparql-operations-", null); // generate a .tmp
-				FileUtils.copyURLToFile(new URL(filePath), urlFile);
-				
-				if (filePath.endsWith(".yaml")) {
-					// If input file is YAML we parse it to execute provided queries
-					parseQueriesYaml(conn, urlFile);
-					
-				} else {	
-					String queryString = resolveVariables(FileUtils.readFileToString(urlFile));				
-					logger.info("Executing: ");
-					logger.info(queryString);
-					executeQuery(conn, queryString, null);
-				}
+				executeFromUrl(conn, new URL(filePath));
 			} else {
 				// File or dir path provided
 				File inputFile = new File(filePath);
@@ -126,6 +118,22 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		}
 		//repo.shutDown();
 	}
+		
+	private void executeFromUrl(RepositoryConnection conn, URL url) throws Exception {
+		File urlFile = File.createTempFile("rdf4j-sparql-operations-", null); // generate a .tmp
+		FileUtils.copyURLToFile(url, urlFile);
+		
+		if (url.toString().endsWith(".yaml")) {
+			// If input file is YAML we parse it to execute provided queries
+			parseQueriesYaml(conn, urlFile);
+			
+		} else {	
+			String queryString = resolveVariables(FileUtils.readFileToString(urlFile));				
+			logger.info("Executing single file from URL: ");
+			logger.info(queryString);
+			executeQuery(conn, queryString, null);
+		}
+	}
 
 	// Execute queries from a YAML file.
 	@SuppressWarnings("unchecked")
@@ -156,19 +164,16 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	    return replacedQuery;
 	}
 	
-	public ArrayList<URL> crawlGitHub(String githubUrl) throws IOException {
+	public ArrayList<URL> crawlGithubToGetQueries(String githubUrl) throws IOException {
+		ArrayList<URL> queryList = new ArrayList<URL>();
 		String html = Jsoup.connect(githubUrl).get().html();
 		Pattern pattern = Pattern.compile("href=\"(.*?\\.rq)\"");
         Matcher matcher = pattern.matcher(html);
         while (matcher.find()) {
-
-            for (int i = 0; i <= matcher.groupCount(); i++) {
-                System.out.println("------------");
-                System.out.println("Group " + i + ": " + matcher.group(i));
-            }
-            System.out.println();
+        	queryList.add(new URL("https://raw.githubusercontent.com" + matcher.group(1).replace("blob/", "")));
+        	logger.info("https://raw.githubusercontent.com" + matcher.group(1).replace("blob/", ""));
         }
-		return null;
+		return queryList;
 	}
 	
 	// Scan files to check for the variables
