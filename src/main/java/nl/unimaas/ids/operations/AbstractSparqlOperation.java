@@ -2,6 +2,7 @@ package nl.unimaas.ids.operations;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +20,7 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
+import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -49,7 +51,10 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	public void executeFiles(String filePath) throws Exception {
 		
 		try (RepositoryConnection conn = repo.getConnection()) {
-			if (filePath.matches("^(http|https|ftp)://.*$")) {
+			if (filePath.startsWith("https://github.com/")) {
+				logger.info("yeahyeah");
+				ArrayList<URL> githubUrlArray = crawlGitHub(filePath);
+			} else if (filePath.matches("^(http|https|ftp)://.*$")) {
 				// If user provide a URL
 				File urlFile = File.createTempFile("rdf4j-sparql-operations-", null); // generate a .tmp
 				FileUtils.copyURLToFile(new URL(filePath), urlFile);
@@ -149,6 +154,21 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 			replacedQuery = replacedQuery.replaceAll(entry.getKey().toString(), entry.getValue().toString());
 		}
 	    return replacedQuery;
+	}
+	
+	public ArrayList<URL> crawlGitHub(String githubUrl) throws IOException {
+		String html = Jsoup.connect(githubUrl).get().html();
+		Pattern pattern = Pattern.compile("href=\"(.*?\\.rq)\"");
+        Matcher matcher = pattern.matcher(html);
+        while (matcher.find()) {
+
+            for (int i = 0; i <= matcher.groupCount(); i++) {
+                System.out.println("------------");
+                System.out.println("Group " + i + ": " + matcher.group(i));
+            }
+            System.out.println();
+        }
+		return null;
 	}
 	
 	// Scan files to check for the variables
