@@ -7,7 +7,7 @@ ENV TMP_DIR /tmp/operations
 
 WORKDIR $TMP_DIR
 
-## only runs if pom.xml changes. To avoid downloading dependencies everytime.
+# Only runs if pom.xml changes. To avoid downloading dependencies everytime.
 COPY pom.xml .
 RUN mvn verify clean --fail-never
 
