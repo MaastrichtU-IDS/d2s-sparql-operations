@@ -15,14 +15,14 @@ A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries fro
 
 # Docker build
 ```shell
-docker build -t rdf4j-sparql-operations .
+docker build -t data2services-sparql-operations .
 ```
 # Docker run
 
 ### Usage
 
 ```shell
-docker run -it --rm rdf4j-sparql-operations -h
+docker run -it --rm data2services-sparql-operations -h
 ```
 
 ### Select
@@ -30,7 +30,7 @@ docker run -it --rm rdf4j-sparql-operations -h
 On [DBpedia](http://dbpedia.org/sparql) using a SPARQL query string as argument.
 
 ```shell
-docker run -it --rm rdf4j-sparql-operations -op select \
+docker run -it --rm data2services-sparql-operations -op select \
 	-sp "select distinct ?Concept where {[] a ?Concept} LIMIT 10" \
 	-ep "http://dbpedia.org/sparql"
 ```
@@ -40,7 +40,7 @@ docker run -it --rm rdf4j-sparql-operations -op select \
 On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL to get the SPARQL query from a file.
 
 ```shell
-docker run -it --rm rdf4j-sparql-operations -op construct \
+docker run -it --rm data2services-sparql-operations -op construct \
 	-ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
 	-f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-insert/master/resources/construct-test.rq" 
 ```
@@ -51,7 +51,7 @@ Multiple `INSERT` on [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/
 
 ```shell
 docker run -it --rm -v "/data/data2services-insert/insert-biolink/drugbank":/data \
-	rdf4j-sparql-operations -f "/data" -op update \
+	data2services-sparql-operations -f "/data" -op update \
 	-ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
 	-un USERNAME -pw PASSWORD
 ```
@@ -60,22 +60,22 @@ docker run -it --rm -v "/data/data2services-insert/insert-biolink/drugbank":/dat
 
 ### GitHub repository
 
-We crawl the GitHub repository and execute every `.rq` file. See [example repository](https://github.com/vemonet/rdf4j-sparql-operations/tree/master/src/main/resources/select-examples).
+We crawl the GitHub repository and execute every `.rq` file. See [example repository](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/tree/master/src/main/resources/select-examples).
 
 ```shell
-docker run -it --rm rdf4j-sparql-operations \
+docker run -it --rm data2services-sparql-operations \
   -op select -ep "http://dbpedia.org/sparql" \
-  -f "https://github.com/vemonet/rdf4j-sparql-operations/tree/master/src/main/resources/select-examples" 
+  -f "https://github.com/MaastrichtU-IDS/data2services-sparql-operations/tree/master/src/main/resources/select-examples" 
 ```
 
 ### YAML
 
-A YAML file can be used to provide multiple ordered queries. See [example](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/example-queries.yaml).
+A YAML file can be used to provide multiple ordered queries. See [example](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/blob/master/src/main/resources/example-queries.yaml).
 
 ```shell
-docker run -it --rm rdf4j-sparql-operations \
+docker run -it --rm data2services-sparql-operations \
   -op select -ep "http://dbpedia.org/sparql" \
-  -f "https://raw.githubusercontent.com/vemonet/rdf4j-sparql-operations/master/src/main/resources/example-queries.yaml"
+  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-queries.yaml"
 ```
 
 
@@ -97,12 +97,12 @@ WHERE {
 }
 ```
 
-Execute with [2 variables](https://github.com/vemonet/rdf4j-sparql-operations/blob/master/src/main/resources/example-select-variables.rq):
+Execute with [2 variables](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/blob/master/src/main/resources/example-select-variables.rq):
 
 ```shell
-docker run -it --rm rdf4j-sparql-operations \
+docker run -it --rm data2services-sparql-operations \
   -op select -ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
-  -f "https://raw.githubusercontent.com/vemonet/rdf4j-sparql-operations/master/src/main/resources/example-select-variables.rq" \
+  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-select-variables.rq" \
   -var limit:10 graph:https://w3id.org/data2services/graph/biolink/date
 ```
 
@@ -114,13 +114,13 @@ From [data2services-insert](https://github.com/MaastrichtU-IDS/data2services-ins
 
 ```shell
 # DrugBank
-docker run -it --rm -v "$PWD/insert-biolink/drugbank":/data rdf4j-sparql-operations \
+docker run -it --rm -v "$PWD/insert-biolink/drugbank":/data data2services-sparql-operations \
 	-f "/data" -un USERNAME -pw PASSWORD \
 	-ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
 	-var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/xml2rdf outputGraph:https://w3id.org/data2services/graph/biolink/drugbank
 
 # HGNC
-docker run -it --rm -v "$PWD/insert-biolink/hgnc":/data rdf4j-sparql-operations \
+docker run -it --rm -v "$PWD/insert-biolink/hgnc":/data data2services-sparql-operations \
 	-f "/data" -un USERNAME -pw PASSWORD \
 	-ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
 	-var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/autor2rml outputGraph:https://w3id.org/data2services/graph/biolink/hgnc
