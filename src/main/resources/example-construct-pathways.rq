@@ -1,4 +1,5 @@
 PREFIX bl: <http://w3id.org/biolink/vocab/>
+# On http://graphdb.dumontierlab.com/repositories/ncats-red-kg
 construct {
     ?s a bl:Pathway .
 } where {
