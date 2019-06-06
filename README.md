@@ -9,7 +9,7 @@ A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries fro
   * A **YAML file** with multiple ordered queries.
 * **Update**, **construct** and **select** operations supported.
 * It is possible to optionally define **username** and **password** for the SPARQL endpoint.
-* Example queries: [data2services-insert](https://github.com/MaastrichtU-IDS/data2services-insert).
+* Example queries: [data2services-transform-repository](https://github.com/MaastrichtU-IDS/data2services-transform-repository).
 
 
 
@@ -31,8 +31,8 @@ On [DBpedia](http://dbpedia.org/sparql) using a SPARQL query string as argument.
 
 ```shell
 docker run -it --rm data2services-sparql-operations -op select \
-	-sp "select distinct ?Concept where {[] a ?Concept} LIMIT 10" \
-	-ep "http://dbpedia.org/sparql"
+  -sp "select distinct ?Concept where {[] a ?Concept} LIMIT 10" \
+  -ep "http://dbpedia.org/sparql"
 ```
 
 ### Construct
@@ -41,8 +41,8 @@ On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL
 
 ```shell
 docker run -it --rm data2services-sparql-operations -op construct \
-	-ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
-	-f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-insert/master/resources/construct-test.rq" 
+  -ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
+  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-transform-repository/master/resources/construct-test.rq" 
 ```
 
 ### Update
@@ -50,10 +50,10 @@ docker run -it --rm data2services-sparql-operations -op construct \
 Multiple `INSERT` on [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/), using files in a repository from the local file system.
 
 ```shell
-docker run -it --rm -v "/data/data2services-insert/insert-biolink/drugbank":/data \
-	data2services-sparql-operations -f "/data" -op update \
-	-ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
-	-un USERNAME -pw PASSWORD
+docker run -it --rm -v "/data/data2services-transform-repository/sparql/insert-biolink/drugbank":/data \
+  data2services-sparql-operations -f "/data" -op update \
+  -ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
+  -un USERNAME -pw PASSWORD
 ```
 
 * GraphDB requires to add `/statements` at the end of the endpoint URL for `INSERT`
