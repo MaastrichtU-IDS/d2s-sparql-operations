@@ -147,7 +147,7 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	}
 		
 	private void executeFromUrl(RepositoryConnection conn, URL url) throws Exception {
-		File urlFile = File.createTempFile("rdf4j-sparql-operations-", null); // generate a .tmp
+		File urlFile = File.createTempFile("data2services-sparql-operations-", null); // generate a .tmp
 		FileUtils.copyURLToFile(url, urlFile);
 		
 		if (url.toString().endsWith(".yaml")) {

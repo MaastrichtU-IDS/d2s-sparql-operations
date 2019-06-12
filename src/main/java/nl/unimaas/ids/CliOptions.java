@@ -4,7 +4,7 @@ import nl.unimaas.ids.operations.QueryOperation;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(name = "rdf4j-sparql-operations")
+@Command(name = "data2services-sparql-operations")
 public class CliOptions {
 	@Option(names = { "-h", "--help" }, usageHelp = true, description = "Display a help message")
 	boolean help = false;
