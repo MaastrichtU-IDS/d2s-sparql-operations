@@ -13,7 +13,7 @@ A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries fro
 
 # Pull
 
-`BETA`: the `latest` image is automatically built from branch `master` on GitHub when update.
+`BETA`: available on [DockerHub](https://hub.docker.com/r/vemonet/data2services-sparql-operations) the `latest` image is automatically built from latest branch `master` commit on [GitHub](https://github.com/MaastrichtU-IDS/data2services-sparql-operations).
 
 ```shell
 docker pull vemonet/data2services-sparql-operations
@@ -21,13 +21,15 @@ docker pull vemonet/data2services-sparql-operations
 
 # Build
 
-Clone the git repository and build the docker image.
+You can also clone the git repository and build the docker image:
 
 ```shell
 git clone https://github.com/MaastrichtU-IDS/data2services-sparql-operations
 docker build -t data2services-sparql-operations .
 ```
 # Run
+
+Make sure to use `vemonet/data2services-sparql-operations` if you pull from [DockerHub](https://hub.docker.com/r/vemonet/data2services-sparql-operations).
 
 ### Usage
 
@@ -94,16 +96,14 @@ docker run -it --rm data2services-sparql-operations \
 
 Variables can be set in the SPARQL queries using a `_` at the beggining: `?_myVar`. See example:
 
-```shell
+```SPARQL
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
-CONSTRUCT 
-{ 
-    ?class a <?_classType> .
-}
-WHERE {
-    GRAPH <?_graphUri> {
-        [] a ?class .
-    }
+CONSTRUCT { 
+  ?class a <?_classType> .
+} WHERE {
+  GRAPH <?_graphUri> {
+    [] a ?class .
+  }
 }
 ```
 
@@ -124,15 +124,17 @@ From [data2services-transform-repository](https://github.com/MaastrichtU-IDS/dat
 
 ```shell
 # DrugBank
-docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data data2services-sparql-operations \
-	-f "/data" -un USERNAME -pw PASSWORD \
-	-ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
-	-var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/xml2rdf outputGraph:https://w3id.org/data2services/graph/biolink/drugbank
+docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
+  data2services-sparql-operations \
+  -f "/data" -un USERNAME -pw PASSWORD \
+  -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
+  -var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/xml2rdf outputGraph:https://w3id.org/data2services/graph/biolink/drugbank
 
 # HGNC
-docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data data2services-sparql-operations \
-	-f "/data" -un USERNAME -pw PASSWORD \
-	-ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
-	-var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/autor2rml outputGraph:https://w3id.org/data2services/graph/biolink/hgnc
+docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data \
+  data2services-sparql-operations \
+  -f "/data" -un USERNAME -pw PASSWORD \
+  -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
+  -var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/autor2rml outputGraph:https://w3id.org/data2services/graph/biolink/hgnc
 ```
 
