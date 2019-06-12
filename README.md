@@ -21,20 +21,18 @@ docker pull vemonet/data2services-sparql-operations
 
 # Build
 
-You can also clone the git repository and build the docker image:
+You can also clone the [GitHub repository](https://github.com/MaastrichtU-IDS/data2services-sparql-operations) and build the docker image locally (**unecessary if you do** `docker pull`)
 
 ```shell
 git clone https://github.com/MaastrichtU-IDS/data2services-sparql-operations
-docker build -t data2services-sparql-operations .
+docker build -t vemonet/data2services-sparql-operations .
 ```
 # Run
-
-Make sure to use `vemonet/data2services-sparql-operations` if you pull from [DockerHub](https://hub.docker.com/r/vemonet/data2services-sparql-operations).
 
 ### Usage
 
 ```shell
-docker run -it --rm data2services-sparql-operations -h
+docker run -it --rm vemonet/data2services-sparql-operations -h
 ```
 
 ### Select
@@ -42,7 +40,7 @@ docker run -it --rm data2services-sparql-operations -h
 On [DBpedia](http://dbpedia.org/sparql) using a SPARQL query string as argument.
 
 ```shell
-docker run -it --rm data2services-sparql-operations -op select \
+docker run -it --rm vemonet/data2services-sparql-operations -op select \
   -sp "select distinct ?Concept where {[] a ?Concept} LIMIT 10" \
   -ep "http://dbpedia.org/sparql"
 ```
@@ -52,7 +50,7 @@ docker run -it --rm data2services-sparql-operations -op select \
 On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL to get the SPARQL query from a file.
 
 ```shell
-docker run -it --rm data2services-sparql-operations -op construct \
+docker run -it --rm vemonet/data2services-sparql-operations -op construct \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
   -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-construct-pathways.rq" 
 ```
@@ -63,7 +61,7 @@ Multiple `INSERT` on [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/
 
 ```shell
 docker run -it --rm -v "/data/data2services-transform-repository/sparql/insert-biolink/drugbank":/data \
-  data2services-sparql-operations -f "/data" -op update \
+  vemonet/data2services-sparql-operations -f "/data" -op update \
   -ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
   -un USERNAME -pw PASSWORD
 ```
@@ -75,7 +73,7 @@ docker run -it --rm -v "/data/data2services-transform-repository/sparql/insert-b
 We crawl the GitHub repository and execute every `.rq` file. See [example repository](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/tree/master/src/main/resources/select-examples).
 
 ```shell
-docker run -it --rm data2services-sparql-operations \
+docker run -it --rm vemonet/data2services-sparql-operations \
   -op select -ep "http://dbpedia.org/sparql" \
   -f "https://github.com/MaastrichtU-IDS/data2services-sparql-operations/tree/master/src/main/resources/select-examples" 
 ```
@@ -85,7 +83,7 @@ docker run -it --rm data2services-sparql-operations \
 A YAML file can be used to provide multiple ordered queries. See [example](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/blob/master/src/main/resources/example-queries.yaml).
 
 ```shell
-docker run -it --rm data2services-sparql-operations \
+docker run -it --rm vemonet/data2services-sparql-operations \
   -op select -ep "http://dbpedia.org/sparql" \
   -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-queries.yaml"
 ```
