@@ -116,6 +116,8 @@ docker run -it --rm data2services-sparql-operations \
   -var limit:10 graph:https://w3id.org/data2services/graph/biolink/date
 ```
 
+* Make sure to place the `-var` **parameters at the end of the commandline** to be able to define an unlimited number of variables without issues.
+
 
 
 # Examples
