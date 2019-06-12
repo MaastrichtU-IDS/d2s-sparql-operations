@@ -29,6 +29,8 @@ docker build -t vemonet/data2services-sparql-operations .
 ```
 # Run
 
+N.B.: you will need to remove the `\` and make the `docker run` commands one-line for **Windows PowerShell**.
+
 ### Usage
 
 ```shell
