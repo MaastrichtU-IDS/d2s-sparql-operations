@@ -72,7 +72,7 @@ docker run -it --rm -v "/data/data2services-transform-repository/sparql/insert-b
 
 ### GitHub repository
 
-We crawl the GitHub repository and execute every `.rq` file. See [example repository](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/tree/master/src/main/resources/select-examples).
+We crawl the [example GitHub repository](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/tree/master/src/main/resources/select-examples) and execute each `.rq` file.
 
 ```shell
 docker run -it --rm vemonet/data2services-sparql-operations \
@@ -82,7 +82,7 @@ docker run -it --rm vemonet/data2services-sparql-operations \
 
 ### YAML
 
-A YAML file can be used to provide multiple ordered queries. See [example](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/blob/master/src/main/resources/example-queries.yaml).
+A YAML file can be used to provide multiple ordered queries. See [example from GitHub](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/blob/master/src/main/resources/example-queries.yaml).
 
 ```shell
 docker run -it --rm vemonet/data2services-sparql-operations \
@@ -97,23 +97,20 @@ docker run -it --rm vemonet/data2services-sparql-operations \
 Variables can be set in the SPARQL queries using a `_` at the beggining: `?_myVar`. See example:
 
 ```SPARQL
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-CONSTRUCT { 
-  ?class a <?_classType> .
-} WHERE {
-  GRAPH <?_graphUri> {
-    [] a ?class .
+SELECT DISTINCT ?Concept WHERE {
+  GRAPH <?_graph> {
+    [] a ?Concept .
   }
-}
+} LIMIT ?_limit
 ```
 
 Execute with [2 variables](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/blob/master/src/main/resources/example-select-variables.rq):
 
 ```shell
-docker run -it --rm data2services-sparql-operations \
+docker run -it --rm vemonet/data2services-sparql-operations \
   -op select -ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
   -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-select-variables.rq" \
-  -var limit:10 graph:https://w3id.org/data2services/graph/biolink/date
+  -var limit:10 graph:https://data2services/test
 ```
 
 * Make sure to place the `-var` **parameters at the end of the commandline** to be able to define an unlimited number of variables without issues.
@@ -127,14 +124,14 @@ From [data2services-transform-repository](https://github.com/MaastrichtU-IDS/dat
 ```shell
 # DrugBank
 docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
-  data2services-sparql-operations \
+  vemonet/data2services-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
   -var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/xml2rdf outputGraph:https://w3id.org/data2services/graph/biolink/drugbank
 
 # HGNC
 docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data \
-  data2services-sparql-operations \
+  vemonet/data2services-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
   -var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/autor2rml outputGraph:https://w3id.org/data2services/graph/biolink/hgnc
