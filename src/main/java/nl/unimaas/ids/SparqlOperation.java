@@ -23,6 +23,8 @@ public class SparqlOperation {
 				SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.endpointUrl, cli.username, cli.password, cli.variables);
 				
 				if (cli.sparqlQuery != null) {
+					// Properly get select results using asList
+					// https://rdf4j.eclipse.org/documentation/programming/repository/
 					sparqlExecutor.executeSingleQuery(cli.sparqlQuery);
 				}
 				
