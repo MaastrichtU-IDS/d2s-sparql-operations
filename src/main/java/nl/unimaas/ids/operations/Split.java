@@ -75,8 +75,8 @@ public class Split {
 		    IRI subjectIri = f.createIRI(bindingSet.getValue("s").stringValue());
 		    IRI predicateIri = f.createIRI(bindingSet.getValue("p").stringValue());
 		    String stringToSplit = bindingSet.getValue("toSplit").stringValue();
-//		    IRI graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
-		    IRI graphIri = f.createIRI("http://test/split/2");
+		    IRI graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
+		    //IRI graphIri = f.createIRI("http://test/split/2");
 		    if (stringToSplit.contains(delimiter)) {
 		    	for (String splitFragment: stringToSplit.split(delimiter)) {           
 				    System.out.println(splitFragment); 
