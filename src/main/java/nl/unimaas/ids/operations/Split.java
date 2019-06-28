@@ -11,6 +11,7 @@ import org.eclipse.rdf4j.query.TupleQuery;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.http.HTTPRepository;
 import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
 
 /**
@@ -20,17 +21,21 @@ public class Split {
 
 //	private SparqlExecutorInterface sparqlSelectExecutor;
 //	private SparqlExecutorInterface sparqlUpdateExecutor;
-	private SPARQLRepository repo;
+	private HTTPRepository repo;
 	// TODO: test if RDF4J HTTP repo perform better. 
-	private SPARQLRepository updateRepo;
+	private HTTPRepository updateRepo;
 	
 	public Split(String endpointUrl, String endpointUpdateUrl, String username, String password, String[] variables) {
 		// Abstract constructor
-		repo = new SPARQLRepository(endpointUrl);
+		
+		repo = new HTTPRepository(endpointUrl, endpointUpdateUrl);
+		//repo = new SPARQLRepository(endpointUrl);
+		
 		repo.setUsernameAndPassword(username, password);
 		repo.initialize();
 		
-		updateRepo = new SPARQLRepository(endpointUpdateUrl);
+		updateRepo = new HTTPRepository(endpointUrl, endpointUpdateUrl);
+		//updateRepo = new SPARQLRepository(endpointUpdateUrl);
 		updateRepo.setUsernameAndPassword(username, password);
 		updateRepo.initialize();
 		
@@ -75,8 +80,8 @@ public class Split {
 		    IRI subjectIri = f.createIRI(bindingSet.getValue("s").stringValue());
 		    IRI predicateIri = f.createIRI(bindingSet.getValue("p").stringValue());
 		    String stringToSplit = bindingSet.getValue("toSplit").stringValue();
-		    IRI graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
-		    //IRI graphIri = f.createIRI("http://test/split/2");
+		    //IRI graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
+		    IRI graphIri = f.createIRI("http://test/split");
 		    if (stringToSplit.contains(delimiter)) {
 		    	for (String splitFragment: stringToSplit.split(delimiter)) {           
 				    System.out.println(splitFragment); 

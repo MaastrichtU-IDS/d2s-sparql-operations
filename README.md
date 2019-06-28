@@ -102,6 +102,14 @@ docker run -it --rm \
   -ep "http://graphdb.dumontierlab.com/repositories/test" \
   -uep "http://graphdb.dumontierlab.com/repositories/test/statements" \
   -un USERNAME -pw PASSWORD
+  
+docker run -d --name split-eggnog --link graphdb:graphdb \
+  vemonet/data2services-sparql-operations -op split \
+  --split-property "https://w3id.org/data2services/autor2rml/model/Pmids" \
+  --split-delimiter ";" \
+  -ep "http://graphdb:7200/repositories/ncats-test" \
+  -uep "http://graphdb:7200/repositories/ncats-test/statements" \
+  -un emonet -pw PASSWORD
 ```
 
 
