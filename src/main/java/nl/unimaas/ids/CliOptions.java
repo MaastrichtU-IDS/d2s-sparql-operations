@@ -21,11 +21,14 @@ public class CliOptions {
 	@Option(names= {"-var", "--variables"}, arity = "0..*", paramLabel = "STRING", description = "Variables to replace in the SPARQL query. E.g.: varGraphInput:http://data2services/input varGraphOutput:http://data2services/output")
 	String[] variables;
 	
-	@Option(names= {"-sd", "--split-delimiter"}, description = "Delimiter for the Split operation. Default: ','")
+	@Option(names= {"-spd", "--split-delimiter"}, description = "Delimiter for the Split operation. Default: ','")
 	String splitDelimiter = ",";
 	
 	@Option(names= {"-spp", "--split-property"}, description = "Property to split. e.g.: 'http://www.w3.org/2000/01/rdf-schema#label'")
 	String splitProperty = null;
+	
+	@Option(names= {"-spc", "--split-class"}, description = "Class to split. e.g.: 'http://w3id.org/biolink/vocab/GeneGrouping'")
+	String splitClass = null;
 
 	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL of the SPARQL Endpoint to query", required = true)
 	String endpointUrl = null;

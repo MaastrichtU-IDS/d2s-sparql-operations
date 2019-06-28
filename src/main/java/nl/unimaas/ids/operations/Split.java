@@ -59,11 +59,11 @@ public class Split {
 	public TupleQueryResult executeSplit(String classToSplit, String propertyToSplit, String delimiter) throws RepositoryException, MalformedQueryException, IOException {
 		String queryString = "SELECT ?s ?p ?toSplit ?g WHERE {"
 				+ "    GRAPH ?g {"
-				+ "    	?s ?p ?toSplit ."
+				+ "    	?s a <" + classToSplit + "> ;"
+				+ "      ?p ?toSplit ."
 				+ "    	FILTER(?p = <" + propertyToSplit + ">)"
 				+ "    } }";
 		
-		delimiter = ";";
 		RepositoryConnection conn = repo.getConnection();
 		RepositoryConnection updateConn = updateRepo.getConnection();
 				
