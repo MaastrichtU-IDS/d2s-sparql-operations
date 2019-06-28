@@ -1,7 +1,9 @@
 package nl.unimaas.ids;
 
+import nl.unimaas.ids.operations.QueryOperation;
 import nl.unimaas.ids.operations.SparqlOperationFactory;
 import nl.unimaas.ids.operations.SparqlExecutorInterface;
+import nl.unimaas.ids.operations.Split;
 import picocli.CommandLine;
 
 public class SparqlOperation {
@@ -13,18 +15,21 @@ public class SparqlOperation {
 			if(cli.help)
 				printUsageAndExit();
 			
-			//System.out.println("Performing operation: " + cli.queryOperation.toString());
-			
-			SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.endpointUrl, cli.username, cli.password, cli.variables);
-			
-			if (cli.sparqlQuery != null) {
-				sparqlExecutor.executeSingleQuery(cli.sparqlQuery);
+			if (cli.queryOperation == QueryOperation.split) {
+				Split splitter = new Split(cli.endpointUrl, cli.endpointUpdateUrl, cli.username, cli.password, cli.variables);
+				splitter.executeSplit(null, "https://w3id.org/data2services/autor2rml/model/Pmids", null);
+			} else {			
+				//System.out.println("Performing operation: " + cli.queryOperation.toString());
+				SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.endpointUrl, cli.username, cli.password, cli.variables);
+				
+				if (cli.sparqlQuery != null) {
+					sparqlExecutor.executeSingleQuery(cli.sparqlQuery);
+				}
+				
+				if (cli.inputFile != null) {
+					sparqlExecutor.executeFiles(cli.inputFile);
+				}
 			}
-			
-			if (cli.inputFile != null) {
-				sparqlExecutor.executeFiles(cli.inputFile);
-			}
-
 		} catch (Exception e) {
 			printUsageAndExit(e);
 		}

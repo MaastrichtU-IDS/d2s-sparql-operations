@@ -15,7 +15,7 @@ public class CliOptions {
 	@Option(names= {"-f", "--filepath"}, description = "Path of file(s) to execute. Single file from URL or filepath. Multiple files from directory (query files must have .rq extension). YAML file.")
 	String inputFile = null;
 	
-	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select). Default is update")
+	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select, split). Default is update")
 	QueryOperation queryOperation = QueryOperation.update;
 	
 	@Option(names= {"-var", "--variables"}, arity = "0..*", paramLabel = "STRING", description = "Variables to replace in the SPARQL query. E.g.: varGraphInput:http://data2services/input varGraphOutput:http://data2services/output")
@@ -23,6 +23,9 @@ public class CliOptions {
 
 	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL of the SPARQL Endpoint to query", required = true)
 	String endpointUrl = null;
+	
+	@Option(names= {"-uep", "--update-sparql-endpoint"}, description = "URL of the Update SPARQL Endpoint to use for update operations (add /statements for RDF4J endpoints). Using -ep as default.", required = false)
+	String endpointUpdateUrl = endpointUrl;
 
 	@Option(names= {"-rep", "--repositoryId"}, description = "RDF4J Repository ID for HTTPRepository file upload (only required in case of RDF4JSPARQL or HTTP method)")
 	String repositoryId = null;
