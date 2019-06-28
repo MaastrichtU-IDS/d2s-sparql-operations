@@ -17,7 +17,7 @@ public class SparqlOperation {
 			
 			if (cli.queryOperation == QueryOperation.split) {
 				Split splitter = new Split(cli.endpointUrl, cli.endpointUpdateUrl, cli.username, cli.password, cli.variables);
-				splitter.executeSplit(null, "https://w3id.org/data2services/autor2rml/model/Pmids", null);
+				splitter.executeSplit(null, cli.splitProperty, cli.splitDelimiter);
 			} else {			
 				//System.out.println("Performing operation: " + cli.queryOperation.toString());
 				SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.endpointUrl, cli.username, cli.password, cli.variables);

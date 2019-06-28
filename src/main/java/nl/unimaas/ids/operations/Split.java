@@ -18,8 +18,8 @@ import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
  */
 public class Split {
 
-	private SparqlExecutorInterface sparqlSelectExecutor;
-	private SparqlExecutorInterface sparqlUpdateExecutor;
+//	private SparqlExecutorInterface sparqlSelectExecutor;
+//	private SparqlExecutorInterface sparqlUpdateExecutor;
 	private SPARQLRepository repo;
 	// TODO: test if RDF4J HTTP repo perform better. 
 	private SPARQLRepository updateRepo;
@@ -55,7 +55,7 @@ public class Split {
 		String queryString = "SELECT ?s ?p ?toSplit ?g WHERE {"
 				+ "    GRAPH ?g {"
 				+ "    	?s ?p ?toSplit ."
-				+ "    	FILTER(?p = <https://w3id.org/data2services/autor2rml/model/Pmids>)"
+				+ "    	FILTER(?p = <" + propertyToSplit + ">)"
 				+ "    } }";
 		
 		delimiter = ";";
@@ -66,7 +66,6 @@ public class Split {
 		TupleQueryResult selectResults = query.evaluate();
 		
 		ValueFactory f = updateRepo.getValueFactory();
-		IRI testGraph = f.createIRI("http://test/split");
 		
 		System.out.println("Values to Split:");
 		//TupleQueryResult result = query.evaluate();
@@ -77,10 +76,11 @@ public class Split {
 		    IRI predicateIri = f.createIRI(bindingSet.getValue("p").stringValue());
 		    String stringToSplit = bindingSet.getValue("toSplit").stringValue();
 //		    IRI graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
+		    IRI graphIri = f.createIRI("http://test/split/2");
 		    if (stringToSplit.contains(delimiter)) {
 		    	for (String splitFragment: stringToSplit.split(delimiter)) {           
 				    System.out.println(splitFragment); 
-				    updateConn.add(subjectIri, predicateIri, f.createLiteral(splitFragment), testGraph);
+				    updateConn.add(subjectIri, predicateIri, f.createLiteral(splitFragment), graphIri);
 				}
 		    }
 		  }
