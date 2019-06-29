@@ -9,10 +9,10 @@ import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.TupleQuery;
 import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.Update;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.http.HTTPRepository;
-import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
 
 /**
  * A class to upload to GraphDB SPARQL endpoint
@@ -56,7 +56,7 @@ public class Split {
 //		sparqlUpdateExecutor = SparqlOperationFactory.getSparqlExecutor(QueryOperation.update, endpointUrl, username, password, variables);
 	}
 
-	public TupleQueryResult executeSplit(String classToSplit, String propertyToSplit, String delimiter) throws RepositoryException, MalformedQueryException, IOException {
+	public TupleQueryResult executeSplit(String classToSplit, String propertyToSplit, String delimiter, boolean deleteSplittedTriples) throws RepositoryException, MalformedQueryException, IOException {
 		String queryString = "SELECT ?s ?p ?toSplit ?g WHERE {"
 				+ "    GRAPH ?g {"
 				+ "    	?s a <" + classToSplit + "> ;"
@@ -93,6 +93,16 @@ public class Split {
 		finally {
 			selectResults.close();
 			conn.close();
+			if (deleteSplittedTriples) {
+				String deleteQueryString = "DELETE ?s ?p ?o ?g WHERE {"    
+						+ "GRAPH ?g {"    	
+						+ "?s a <" + classToSplit + "> ;"
+						+ "?p ?o ."  	
+						+ "FILTER(?p = <" + propertyToSplit + ">)"  
+						+ "FILTER(contains(?o, '" + delimiter + "'))} } ";
+				Update update = updateConn.prepareUpdate(deleteQueryString);
+				update.execute();
+			}
 			updateConn.close();
 		}
 		return selectResults;

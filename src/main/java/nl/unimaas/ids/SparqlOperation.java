@@ -17,7 +17,7 @@ public class SparqlOperation {
 			
 			if (cli.queryOperation == QueryOperation.split) {
 				Split splitter = new Split(cli.endpointUrl, cli.endpointUpdateUrl, cli.username, cli.password, cli.variables);
-				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter);
+				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter, cli.splitDelete);
 			} else {			
 				//System.out.println("Performing operation: " + cli.queryOperation.toString());
 				SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.endpointUrl, cli.username, cli.password, cli.variables);
