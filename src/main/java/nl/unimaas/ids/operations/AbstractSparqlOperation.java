@@ -82,7 +82,7 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 					Iterator<File> iterator = fileList.iterator();
 					while (iterator.hasNext()) {
 						File f = iterator.next();
-						String queryString = resolveVariables(FileUtils.readFileToString(f));
+						String queryString = resolveVariables(FileUtils.readFileToString(f, "UTF-8"));
 						logger.info("Executing: ");
 						logger.info(queryString);
 						executeQuery(conn, queryString, f.getPath());
@@ -93,7 +93,7 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 					parseQueriesYaml(conn, inputFile);
 				} else {
 					// Single file provided
-					String queryString = resolveVariables(FileUtils.readFileToString(inputFile));
+					String queryString = resolveVariables(FileUtils.readFileToString(inputFile, "UTF-8"));
 					logger.info("Executing: ");
 					logger.info(queryString);
 					executeQuery(conn, queryString, inputFile.getPath());
@@ -155,7 +155,7 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 			parseQueriesYaml(conn, urlFile);
 			
 		} else {	
-			String queryString = resolveVariables(FileUtils.readFileToString(urlFile));				
+			String queryString = resolveVariables(FileUtils.readFileToString(urlFile, "UTF-8"));				
 			logger.info("Executing single file from URL: ");
 			logger.info(queryString);
 			executeQuery(conn, queryString, null);
