@@ -30,7 +30,7 @@ public class CliOptions {
 	@Option(names= {"-spc", "--split-class"}, description = "Class to split. e.g.: 'http://w3id.org/biolink/vocab/GeneGrouping'")
 	String splitClass = null;
 	
-	@Option(names= {"-spd", "--split-delete"}, description = "Should we delete the splitted statements? Default: false")
+	@Option(names= {"--split-delete"}, description = "Should we delete the splitted statements? Default: false")
 	boolean splitDelete = false;
 
 	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL of the SPARQL Endpoint to query", required = true)
