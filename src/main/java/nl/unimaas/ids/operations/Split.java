@@ -13,6 +13,8 @@ import org.eclipse.rdf4j.query.Update;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.http.HTTPRepository;
+import org.eclipse.rdf4j.model.*;
+import org.eclipse.rdf4j.model.util.*;
 
 /**
  * A class to upload to GraphDB SPARQL endpoint
@@ -56,13 +58,17 @@ public class Split {
 //		sparqlUpdateExecutor = SparqlOperationFactory.getSparqlExecutor(QueryOperation.update, endpointUrl, username, password, variables);
 	}
 
-	public TupleQueryResult executeSplit(String classToSplit, String propertyToSplit, String delimiter, boolean deleteSplittedTriples) throws RepositoryException, MalformedQueryException, IOException {
+	public TupleQueryResult executeSplit(String classToSplit, String propertyToSplit, String delimiter, boolean deleteSplittedTriples, String trimDelimiter, String uriExpansion) throws RepositoryException, MalformedQueryException, IOException {
 		String queryString = "SELECT ?s ?p ?toSplit ?g WHERE {"
 				+ "    GRAPH ?g {"
 				+ "    	?s a <" + classToSplit + "> ;"
 				+ "      ?p ?toSplit ."
-				+ "    	FILTER(?p = <" + propertyToSplit + ">)"
+				+ "    	FILTER(?p = <" + propertyToSplit + ">)."
+				+ "FILTER(regex(?toSplit, '" + delimiter+"(?=\")" + "'))"
 				+ "    } }";
+		
+		System.out.println(queryString);
+		System.out.println();
 		
 		RepositoryConnection conn = repo.getConnection();
 		RepositoryConnection updateConn = updateRepo.getConnection();
@@ -74,32 +80,77 @@ public class Split {
 		
 		System.out.println("Values to Split:");
 		//TupleQueryResult result = query.evaluate();
+		
+    	ModelBuilder builder = new ModelBuilder();
+    	
+    	Model bulkUpdate = builder.build();
+    	
+    	int count = 0;
+    	int accum = 0;
+    	
 		try {
 		  while (selectResults.hasNext()) {
 		    BindingSet bindingSet = selectResults.next();
+		    
 		    IRI subjectIri = f.createIRI(bindingSet.getValue("s").stringValue());
 		    IRI predicateIri = f.createIRI(bindingSet.getValue("p").stringValue());
 		    String stringToSplit = bindingSet.getValue("toSplit").stringValue();
 		    //IRI graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
 		    IRI graphIri = f.createIRI("http://test/split");
-		    if (stringToSplit.contains(delimiter)) {
-		    	for (String splitFragment: stringToSplit.split(delimiter)) {           
-				    System.out.println(splitFragment); 
-				    updateConn.add(subjectIri, predicateIri, f.createLiteral(splitFragment), graphIri);
-				}
-		    }
+		    
+		    	
+	    	String[] splitFragments = stringToSplit.split(delimiter+"(?=\")");
+	    	
+	    	for (String splitFragment: splitFragments) {          
+			    
+	    		if(trimDelimiter != null) {
+			    	splitFragment = splitFragment.replaceAll("^"+trimDelimiter+"|"+trimDelimiter+"$", "");;
+			    }
+	    		
+	    		if(uriExpansion != null) {
+	    			splitFragment = uriExpansion + splitFragment;
+	    		}
+			    
+			    bulkUpdate.add(subjectIri, predicateIri, f.createLiteral(splitFragment), graphIri);
+			    count++;
+			    //System.out.println(count); 
+			}
+		    
+		    if((count > 10000)) {
+	    		
+		    	updateConn.add(bulkUpdate, graphIri);
+	    		bulkUpdate = builder.build();
+	    		
+	    		accum += count;
+	    		System.out.println("Updated triples: "+ accum); 
+	    		count = 0;
+	    		
+	    	}else if((count <= 10000) && !selectResults.hasNext()) {
+	    		updateConn.add(bulkUpdate, graphIri);
+	    		accum += count;
+	    		System.out.println("Total updated triples: " + accum); 
+	    	}
+		    
 		  }
 		}
 		finally {
 			selectResults.close();
 			conn.close();
 			if (deleteSplittedTriples) {
-				String deleteQueryString = "DELETE ?s ?p ?o ?g WHERE {"    
+				String deleteQueryString = "DELETE { "
+						+ "GRAPH ?g {"
+						+ "?s ?p ?o."
+						+ "} "
+						+ "}WHERE {"    
 						+ "GRAPH ?g {"    	
 						+ "?s a <" + classToSplit + "> ;"
 						+ "?p ?o ."  	
-						+ "FILTER(?p = <" + propertyToSplit + ">)"  
-						+ "FILTER(contains(?o, '" + delimiter + "'))} } ";
+						+ "FILTER(?p = <" + propertyToSplit + ">)."  
+						+ "FILTER(regex(?o, '" + delimiter+"(?=\")" + "'))} } ";
+				
+				System.out.println();
+				System.out.println(deleteQueryString);
+				
 				Update update = updateConn.prepareUpdate(deleteQueryString);
 				update.execute();
 			}

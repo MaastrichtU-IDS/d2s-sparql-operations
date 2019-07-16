@@ -24,6 +24,12 @@ public class CliOptions {
 	@Option(names= {"-spd", "--split-delimiter"}, description = "Delimiter for the Split operation. Default: ','")
 	String splitDelimiter = ",";
 	
+	@Option(names= {"-trd", "--trim-delimiter"}, description = "Delimiter for the Trim operation. Default: null")
+	String trimDelimiter = null;
+	
+	@Option(names= {"-uex", "--uri-expansion"}, description = "Expan splitted values with URI")
+	String uriExpansion = null;
+	
 	@Option(names= {"-spp", "--split-property"}, description = "Property to split. e.g.: 'http://www.w3.org/2000/01/rdf-schema#label'")
 	String splitProperty = null;
 	

@@ -9,7 +9,7 @@ import picocli.CommandLine;
 public class SparqlOperation {
 
 	public static void main(String[] args) throws Exception {
-		try {
+		try { 
 			// TODO: logger
 			CliOptions cli = CommandLine.populateCommand(new CliOptions(), args);
 			if(cli.help)
@@ -17,7 +17,7 @@ public class SparqlOperation {
 			
 			if (cli.queryOperation == QueryOperation.split) {
 				Split splitter = new Split(cli.endpointUrl, cli.endpointUpdateUrl, cli.username, cli.password, cli.variables);
-				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter, cli.splitDelete);
+				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter, cli.splitDelete,  cli.trimDelimiter, cli.uriExpansion);
 			} else {			
 				//System.out.println("Performing operation: " + cli.queryOperation.toString());
 				SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.endpointUrl, cli.username, cli.password, cli.variables);
