@@ -56,6 +56,7 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 				logger.info("Crawling GitHub page...");
 				ArrayList<URL> queryList = crawlGithubToGetQueries(filePath);
 				for (URL queryUrl : queryList) {
+					logger.info("Executing GitHub URL: " + queryUrl.toString());
 					executeFromUrl(conn, queryUrl);
 				}
 			} else if (filePath.matches("^(http|https|ftp)://.*$")) {
