@@ -115,11 +115,12 @@ docker run -it --rm vemonet/data2services-sparql-operations \
 E.g.: a statement with value "1234,345,768" would be splitted in 3 statements "1234", "345" and "768".
 
 ```shell
-docker run -it --rm \
+docker run -it \
   vemonet/data2services-sparql-operations -op split \
   --split-property "http://w3id.org/biolink/vocab/has_participant" \
   --split-class "http://w3id.org/biolink/vocab/GeneGrouping" \
-  --split-delimiter ","
+  --split-delimiter "," \
+  --split-delete \ # Delete the splitted statement
   -ep "http://graphdb.dumontierlab.com" \ # RDF4J server URL
   -uep "test" \ # RDF4J server repository ID
   -un USERNAME -pw PASSWORD

@@ -25,6 +25,8 @@ public class Split {
 	// TODO: test if RDF4J HTTP repo perform better. 
 	private HTTPRepository updateRepo;
 	
+	private HashMap<String, String> variablesHash;
+	
 	public Split(String endpointUrl, String endpointUpdateUrl, String username, String password, String[] variables) {
 		// Abstract constructor
 		
@@ -39,7 +41,7 @@ public class Split {
 		updateRepo.setUsernameAndPassword(username, password);
 		updateRepo.initialize();
 		
-		HashMap<String, String> variablesHash = new HashMap<String, String>();
+		variablesHash = new HashMap<String, String>();
 		if (variables != null) {
 	        for (int i=0; i<variables.length; i++)
 	        {
@@ -81,7 +83,12 @@ public class Split {
 		    IRI predicateIri = f.createIRI(bindingSet.getValue("p").stringValue());
 		    String stringToSplit = bindingSet.getValue("toSplit").stringValue();
 		    //IRI graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
-		    IRI graphIri = f.createIRI("http://test/split");
+		    IRI graphIri = f.createIRI("https://w3id.org/data2services/graph/split");
+		    if (variablesHash.containsKey("outputGraph")) {
+		    	System.out.println("Output Graph: " + variablesHash.get("outputGraph"));
+		    	graphIri = f.createIRI(variablesHash.get("outputGraph"));
+		    }
+		    
 		    if (stringToSplit.contains(delimiter)) {
 		    	for (String splitFragment: stringToSplit.split(delimiter)) {           
 				    System.out.println(splitFragment); 
@@ -94,12 +101,11 @@ public class Split {
 			selectResults.close();
 			conn.close();
 			if (deleteSplittedTriples) {
-				String deleteQueryString = "DELETE ?s ?p ?o ?g WHERE {"    
-						+ "GRAPH ?g {"    	
+				String deleteQueryString = "DELETE ?s ?p ?o WHERE {"    
 						+ "?s a <" + classToSplit + "> ;"
 						+ "?p ?o ."  	
 						+ "FILTER(?p = <" + propertyToSplit + ">)"  
-						+ "FILTER(contains(?o, '" + delimiter + "'))} } ";
+						+ "FILTER(contains(?o, '" + delimiter + "'))}";
 				Update update = updateConn.prepareUpdate(deleteQueryString);
 				update.execute();
 			}
