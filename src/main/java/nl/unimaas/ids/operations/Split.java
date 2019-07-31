@@ -48,7 +48,7 @@ public class Split {
 	            String[] variableSplitted = variables[i].split(":", 2);
 	            if (variableSplitted != null) {
 		            // Split on first : (varGraph:http://graph gives {"?_varGraph": "http://graph"}
-	            	variablesHash.put("\\?_" + variableSplitted[0], variableSplitted[1]);
+	            	variablesHash.put(variableSplitted[0], variableSplitted[1]);
 	            }
 	        }
 		}
@@ -74,7 +74,13 @@ public class Split {
 		
 		ValueFactory f = updateRepo.getValueFactory();
 		
-		System.out.println("Values to Split:");
+		IRI graphIri = f.createIRI("https://w3id.org/data2services/graph/split");
+	    if (variablesHash.containsKey("outputGraph")) {
+	    	System.out.println("Output Graph: " + variablesHash.get("outputGraph"));
+	    	graphIri = f.createIRI(variablesHash.get("outputGraph"));
+	    }
+	    
+	    System.out.println("Values to Split:");
 		//TupleQueryResult result = query.evaluate();
 		try {
 		  while (selectResults.hasNext()) {
@@ -83,11 +89,6 @@ public class Split {
 		    IRI predicateIri = f.createIRI(bindingSet.getValue("p").stringValue());
 		    String stringToSplit = bindingSet.getValue("toSplit").stringValue();
 		    //IRI graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
-		    IRI graphIri = f.createIRI("https://w3id.org/data2services/graph/split");
-		    if (variablesHash.containsKey("outputGraph")) {
-		    	System.out.println("Output Graph: " + variablesHash.get("outputGraph"));
-		    	graphIri = f.createIRI(variablesHash.get("outputGraph"));
-		    }
 		    
 		    if (stringToSplit.contains(delimiter)) {
 		    	for (String splitFragment: stringToSplit.split(delimiter)) {           
