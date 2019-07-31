@@ -102,7 +102,7 @@ public class Split {
 			selectResults.close();
 			conn.close();
 			if (deleteSplittedTriples) {
-				String deleteQueryString = "DELETE ?s ?p ?o WHERE {"    
+				String deleteQueryString = "DELETE { ?s ?p ?o } WHERE {"    
 						+ "?s a <" + classToSplit + "> ;"
 						+ "?p ?o ."  	
 						+ "FILTER(?p = <" + propertyToSplit + ">)"  
