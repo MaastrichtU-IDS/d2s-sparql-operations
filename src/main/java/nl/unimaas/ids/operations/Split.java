@@ -121,6 +121,7 @@ public class Split {
 		Map<String, String> prefixToReplace = null;
 
 		if (uriExpansion != null && uriExpansion.equals("infer")) {
+			// Identifier resolution
 
 			File registeryFile = new File("registery.json");
 			if (!registeryFile.exists()) {
@@ -141,7 +142,7 @@ public class Split {
 				regCount++;
 			}
 
-			System.out.println("Regsitery build finished, total items: "
+			System.out.println("Registery build finished, total items: "
 					+ regCount);
 
 			// Some prefixes are not covered by PrefixCommons at the moment and will be added here.
@@ -171,7 +172,7 @@ public class Split {
 				IRI subjectIri = f.createIRI(bindingSet.getValue("s").stringValue());
 				IRI predicateIri = f.createIRI(bindingSet.getValue("p").stringValue());
 				String stringToSplit = bindingSet.getValue("toSplit").stringValue();
-				// TODO: use graph IRI directly from the data
+				// Use graph IRI directly from the data, if no graph URI provided
 				if (!graphFromParam) {
 					graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
 				}
