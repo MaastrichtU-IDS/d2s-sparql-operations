@@ -121,6 +121,8 @@ docker run -it \
   --split-class "http://w3id.org/biolink/vocab/GeneGrouping" \
   --split-delimiter "," \
   --split-delete \ # Delete the splitted statement
+  --uri-expansion "https://w3id.org/data2services/" \ # Use 'infer' to do it automatically using prefixcommons
+  #--trim-delimiter '"' \
   -ep "http://graphdb.dumontierlab.com" \ # RDF4J server URL
   -uep "test" \ # RDF4J server repository ID
   -un USERNAME -pw PASSWORD

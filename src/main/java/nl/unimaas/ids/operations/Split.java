@@ -144,6 +144,7 @@ public class Split {
 			System.out.println("Regsitery build finished, total items: "
 					+ regCount);
 
+			// Some prefixes are not covered by PrefixCommons at the moment and will be added here.
 			prefixToReplace = new HashMap<String, String>();
 			prefixToReplace.put("keggcompound", "kegg");
 			prefixToReplace.put("keggdrug", "kegg");
@@ -167,34 +168,25 @@ public class Split {
 			while (selectResults.hasNext()) {
 				BindingSet bindingSet = selectResults.next();
 
-				IRI subjectIri = f.createIRI(bindingSet.getValue("s")
-						.stringValue());
-				IRI predicateIri = f.createIRI(bindingSet.getValue("p")
-						.stringValue());
-				String stringToSplit = bindingSet.getValue("toSplit")
-						.stringValue();
+				IRI subjectIri = f.createIRI(bindingSet.getValue("s").stringValue());
+				IRI predicateIri = f.createIRI(bindingSet.getValue("p").stringValue());
+				String stringToSplit = bindingSet.getValue("toSplit").stringValue();
 				// TODO: use graph IRI directly from the data
 				if (!graphFromParam) {
-					graphIri = f.createIRI(bindingSet.getValue("g")
-							.stringValue());
+					graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
 				}
 
 				String[] splitFragments = stringToSplit.split(delimiter);
 
 				for (String splitFragment : splitFragments) {
 					if (trimDelimiter != null) {
-						splitFragment = splitFragment
-								.replaceAll("^" + trimDelimiter + "|"
+						splitFragment = splitFragment.replaceAll("^" + trimDelimiter + "|"
 										+ trimDelimiter + "$", "");
-						;
 					}
 
 					if (uriExpansion != null) {
-
 						if (!uriExpansion.equals("infer")) {
-
 							splitFragment = uriExpansion + splitFragment;
-
 							bulkUpdate.add(subjectIri, predicateIri,
 									f.createIRI(splitFragment), graphIri);
 
@@ -295,7 +287,7 @@ public class Split {
 
 				} // for loop
 
-				if ((count > 10000)) {
+				if ((count > 1000000)) {
 					updateConn.add(bulkUpdate, graphIri);
 					bulkUpdate = builder.build();
 
@@ -303,7 +295,7 @@ public class Split {
 					System.out.println("Updated triples: " + accum);
 					count = 0;
 
-				} else if ((count <= 10000) && !selectResults.hasNext()) {
+				} else if ((count <= 1000000) && !selectResults.hasNext()) {
 					updateConn.add(bulkUpdate, graphIri);
 					accum += count;
 					System.out.println("Total updated triples: " + accum);
