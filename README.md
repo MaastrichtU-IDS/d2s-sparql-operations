@@ -156,11 +156,11 @@ Execute:
 
 ```shell
 docker run -it --rm vemonet/data2services-sparql-operations \
-  -op insert -ep "http://graphdb.dumontierlab.com/repositories/test" \
+  -op update -ep "http://graphdb.dumontierlab.com/repositories/test" \
   -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-insert-variables.rq" \
-  -varInputGraph http://www.ontotext.com/explicit \
-  -varOutputGraph https://w3id.org/data2services/output \
-  -varServiceUrl https://localhost:7200/repositories/test
+  --var-input-graph http://www.ontotext.com/explicit \
+  --var-output-graph https://w3id.org/data2services/output \
+  --var-service-url https://localhost:7200/repositories/test
 ```
 
 ---

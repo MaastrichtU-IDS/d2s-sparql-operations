@@ -104,9 +104,10 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 	// We replace ?_var with the corresponding value
 	private String resolveVariables(String query) {
 		//scanForVariables(query);
-		query = query.replaceAll("?_inputGraph", varInputGraph);
-		query = query.replaceAll("?_outputGraph", varOutputGraph);
-		query = query.replaceAll("?_serviceUrl", varServiceUrl);
+		query = query.replaceAll("\\?_inputGraph", varInputGraph);
+		query = query.replaceAll("\\?_outputGraph", varOutputGraph);
+		query = query.replaceAll("\\?_serviceUrl", varServiceUrl);
+		logger.info("    SPARQL query after replace all: " + query);
 	    return query;
 	}
 	

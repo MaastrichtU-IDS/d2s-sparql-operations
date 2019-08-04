@@ -34,10 +34,6 @@ public class CliOptions {
 	@Option(names= {"-pw", "--password"}, description = "Password used for SPARQL endpoint authentication")
 	String password = null;
 	
-	// TOREMOVE
-	@Option(names= {"-var", "--variables"}, arity = "0..*", paramLabel = "STRING", description = "Variables to replace in the SPARQL query. E.g.: varGraphInput:http://data2services/input varGraphOutput:http://data2services/output")
-	String[] variables;
-	
 	// SPARQL query variables
 	@Option(names= {"--var-input-graph"}, description = "Input graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/data2services/input")
 	String varInputGraph;
