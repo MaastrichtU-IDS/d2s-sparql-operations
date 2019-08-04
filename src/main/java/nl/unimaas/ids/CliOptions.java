@@ -18,9 +18,37 @@ public class CliOptions {
 	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select, split). Default is update")
 	QueryOperation queryOperation = QueryOperation.update;
 	
+	// SPARQL endpoint params
+	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL of the SPARQL Endpoint to query", required = true)
+	String endpointUrl = null;
+	
+	@Option(names= {"-uep", "--update-sparql-endpoint"}, description = "URL of the Update SPARQL Endpoint to use for update operations (add /statements for RDF4J endpoints). Using -ep as default.", required = false)
+	String endpointUpdateUrl = endpointUrl;
+
+	@Option(names= {"-rep", "--repositoryId"}, description = "RDF4J Repository ID for HTTPRepository file upload (only required in case of RDF4JSPARQL or HTTP method)")
+	String repositoryId = null;
+
+	@Option(names= {"-un", "--username"}, description = "Username used for SPARQL endpoint authentication")
+	String username = null;
+
+	@Option(names= {"-pw", "--password"}, description = "Password used for SPARQL endpoint authentication")
+	String password = null;
+	
+	// TOREMOVE
 	@Option(names= {"-var", "--variables"}, arity = "0..*", paramLabel = "STRING", description = "Variables to replace in the SPARQL query. E.g.: varGraphInput:http://data2services/input varGraphOutput:http://data2services/output")
 	String[] variables;
 	
+	// SPARQL query variables
+	@Option(names= {"--var-input-graph"}, description = "Input graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/data2services/input")
+	String varInputGraph;
+	
+	@Option(names= {"--var-output-graph"}, description = "Output graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/data2services/output")
+	String varOutputGraph;
+	
+	@Option(names= {"--var-service-url"}, description = "A SPARQL service URL variable to replace in the SPARQL query. E.g.: http://localhost:7200/repositories/test")
+	String varServiceUrl;
+	
+	// Split params
 	@Option(names= {"-spd", "--split-delimiter"}, description = "Delimiter for the Split operation. Default: ','")
 	String splitDelimiter = ",";
 	
@@ -38,21 +66,5 @@ public class CliOptions {
 	
 	@Option(names= {"--split-delete"}, description = "Should we delete the splitted statements? Default: false")
 	boolean splitDelete = false;
-
-	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL of the SPARQL Endpoint to query", required = true)
-	String endpointUrl = null;
-	
-	@Option(names= {"-uep", "--update-sparql-endpoint"}, description = "URL of the Update SPARQL Endpoint to use for update operations (add /statements for RDF4J endpoints). Using -ep as default.", required = false)
-	String endpointUpdateUrl = endpointUrl;
-
-	@Option(names= {"-rep", "--repositoryId"}, description = "RDF4J Repository ID for HTTPRepository file upload (only required in case of RDF4JSPARQL or HTTP method)")
-	String repositoryId = null;
-
-	@Option(names= {"-un", "--username"}, description = "Username used for triplestore authentication")
-	String username = null;
-
-	@Option(names= {"-pw", "--password"}, description = "Password used for triplestore authentication")
-	String password = null;
-
 
 }

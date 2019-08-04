@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
  */
 public class SparqlSelect extends AbstractSparqlOperation {
 
-	public SparqlSelect(String endpoint, String username, String password, String[] variables) {
-		super(endpoint, username, password, variables);
+	public SparqlSelect(String endpoint, String username, String password, String varInputGraph, String varOutputGraph, String varServiceUrl) {
+		super(endpoint, username, password, varInputGraph, varOutputGraph, varServiceUrl);
 		logger = LoggerFactory.getLogger(SparqlSelect.class.getName());
 	}
 

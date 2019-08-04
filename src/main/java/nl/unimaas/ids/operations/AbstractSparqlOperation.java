@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,23 +27,19 @@ import org.yaml.snakeyaml.Yaml;
 public abstract class AbstractSparqlOperation implements SparqlExecutorInterface {
 	protected Logger logger = LoggerFactory.getLogger(AbstractSparqlOperation.class.getName());
 	private SPARQLRepository repo;
-	HashMap<String, String> variablesHash = new HashMap<String, String>();
 	
-	public AbstractSparqlOperation(String endpoint, String username, String password, String[] variables) {
+	String varInputGraph;
+	String varOutputGraph;
+	String varServiceUrl;
+	
+	public AbstractSparqlOperation(String endpoint, String username, String password, String varInputGraph, String varOutputGraph, String varServiceUrl) {
 		repo = new SPARQLRepository(endpoint);
 		repo.setUsernameAndPassword(username, password);
 		repo.initialize();
 		
-		if (variables != null) {
-	        for (int i=0; i<variables.length; i++)
-	        {
-	            String[] variableSplitted = variables[i].split(":", 2);
-	            if (variableSplitted != null) {
-		            // Split on first : (varGraph:http://graph gives {"?_varGraph": "http://graph"}
-	            	variablesHash.put("\\?_" + variableSplitted[0], variableSplitted[1]);
-	            }
-	        }
-		}
+		this.varInputGraph = varInputGraph;
+		this.varOutputGraph = varOutputGraph;
+		this.varServiceUrl = varServiceUrl;
 	}
 
 	// Executed when files are provided. Execute from single file from URL or file path, or multiple files from directory
@@ -106,19 +101,16 @@ public abstract class AbstractSparqlOperation implements SparqlExecutorInterface
 		//repo.shutDown();
 	}
 	
-	// We replace ?_myVar with the corresponding value
+	// We replace ?_var with the corresponding value
 	private String resolveVariables(String query) {
-		scanForVariables(query);
-		
-		String replacedQuery = query;
-		for (Map.Entry<String, String> entry : variablesHash.entrySet()) {
-	        //System.out.println(entry.getKey() + " = " + entry.getValue());
-			replacedQuery = replacedQuery.replaceAll(entry.getKey().toString(), entry.getValue().toString());
-		}
-	    return replacedQuery;
+		//scanForVariables(query);
+		query = query.replaceAll("?_inputGraph", varInputGraph);
+		query = query.replaceAll("?_outputGraph", varOutputGraph);
+		query = query.replaceAll("?_serviceUrl", varServiceUrl);
+	    return query;
 	}
 	
-	// Scan files to check for the variables
+	// TO REMOVE? Scan files to check for the variables
 	public ArrayList<String> scanForVariables(String query) {
 		ArrayList<String> queryVariables = new ArrayList<String>();
 		Pattern p = Pattern.compile("<\\?_(.*?)>");

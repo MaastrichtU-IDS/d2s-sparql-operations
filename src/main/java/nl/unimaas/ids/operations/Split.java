@@ -40,10 +40,10 @@ public class Split {
 	private HTTPRepository repo;
 	private HTTPRepository updateRepo;
 	
-	private HashMap<String, String> variablesHash;
-
+	private String varOutputGraph;
+	
 	public Split(String endpointUrl, String endpointUpdateUrl, String username,
-			String password, String[] variables) {
+			String password, String varOutputGraph) {
 		
 		repo = new HTTPRepository(endpointUrl, endpointUpdateUrl);
 		// repo = new SPARQLRepository(endpointUrl);
@@ -55,18 +55,8 @@ public class Split {
 		// updateRepo = new SPARQLRepository(endpointUpdateUrl);
 		updateRepo.setUsernameAndPassword(username, password);
 		updateRepo.initialize();
-
-		variablesHash = new HashMap<String, String>();
-		if (variables != null) {
-			for (int i = 0; i < variables.length; i++) {
-				String[] variableSplitted = variables[i].split(":", 2);
-				if (variableSplitted != null) {
-					// Split on first : (varGraph:http://graph gives
-					// {"?_varGraph": "http://graph"}
-					variablesHash.put(variableSplitted[0], variableSplitted[1]);
-				}
-			}
-		}
+		
+		this.varOutputGraph = varOutputGraph;
 
 		// With SPARQL executors
 		// sparqlSelectExecutor =
@@ -108,11 +98,9 @@ public class Split {
 		// statement
 		IRI graphIri = null;
 		boolean graphFromParam = false;
-		if (variablesHash.containsKey("outputGraph")) {
-			System.out.println("Output Graph: "
-					+ variablesHash.get("outputGraph"));
+		if (varOutputGraph != null) {
 			graphFromParam = true;
-			graphIri = f.createIRI(variablesHash.get("outputGraph"));
+			graphIri = f.createIRI(varOutputGraph);
 		}
 
 		ModelBuilder builder = new ModelBuilder();

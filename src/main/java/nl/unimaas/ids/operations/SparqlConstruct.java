@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
  */
 public class SparqlConstruct extends AbstractSparqlOperation {
 
-	public SparqlConstruct(String endpoint, String username, String password, String[] variables) {
-		super(endpoint, username, password, variables);
+	public SparqlConstruct(String endpoint, String username, String password, String varInputGraph, String varOutputGraph, String varServiceUrl) {
+		super(endpoint, username, password, varInputGraph, varOutputGraph, varServiceUrl);
 		logger = LoggerFactory.getLogger(SparqlConstruct.class.getName());
 	}
 

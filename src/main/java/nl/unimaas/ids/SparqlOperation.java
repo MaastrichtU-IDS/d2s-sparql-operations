@@ -16,11 +16,11 @@ public class SparqlOperation {
 				printUsageAndExit();
 			
 			if (cli.queryOperation == QueryOperation.split) {
-				Split splitter = new Split(cli.endpointUrl, cli.endpointUpdateUrl, cli.username, cli.password, cli.variables);
+				Split splitter = new Split(cli.endpointUrl, cli.endpointUpdateUrl, cli.username, cli.password, cli.varOutputGraph);
 				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter, cli.splitDelete,  cli.trimDelimiter, cli.uriExpansion);
 			} else {			
 				//System.out.println("Performing operation: " + cli.queryOperation.toString());
-				SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.endpointUrl, cli.username, cli.password, cli.variables);
+				SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, cli.endpointUrl, cli.username, cli.password, cli.varInputGraph, cli.varOutputGraph, cli.varServiceUrl);
 				
 				if (cli.sparqlQuery != null) {
 					// Properly get select results using asList

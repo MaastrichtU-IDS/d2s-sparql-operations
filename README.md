@@ -136,26 +136,32 @@ docker run -it \
 
 # Set variables
 
-Variables can be set in the SPARQL queries using a `_` at the beggining: `?_myVar`. See example:
+3 variables can be set in the SPARQL queries using a `?_`: `?_inputGraph`, `?_outputGraph` and `?_serviceUrl`. See example:
 
 ```SPARQL
-SELECT DISTINCT ?Concept WHERE {
-  GRAPH <?_graph> {
-    [] a ?Concept .
+INSERT {
+  GRAPH <?_outputGraph> {
+    ?Concept a <https://w3id.org/data2services/Concept> .
   }
-} LIMIT ?_limit
+} WHERE {
+  SERVICE <?_serviceUrl> {
+    GRAPH <?_inputGraph> {
+      SELECT * {
+        [] a ?Concept .
+      } LIMIT 10 
+} } }
 ```
 
-Execute with [2 variables](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/blob/master/src/main/resources/example-select-variables.rq):
+Execute:
 
 ```shell
 docker run -it --rm vemonet/data2services-sparql-operations \
-  -op select -ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
-  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-select-variables.rq" \
-  -var limit:10 graph:https://data2services/test
+  -op insert -ep "http://graphdb.dumontierlab.com/repositories/test" \
+  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-insert-variables.rq" \
+  -varInputGraph http://www.ontotext.com/explicit \
+  -varOutputGraph https://w3id.org/data2services/output \
+  -varServiceUrl https://localhost:7200/repositories/test
 ```
-
-* Make sure to place the `-var` **parameters at the end of the commandline** to be able to define an unlimited number of variables without issues.
 
 ---
 
@@ -169,13 +175,17 @@ docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
   vemonet/data2services-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
-  -var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/xml2rdf outputGraph:https://w3id.org/data2services/graph/biolink/drugbank
+  -varServiceUrl http://localhost:7200/repositories/test \ 
+  -varInputGraph http://data2services/graph/xml2rdf \ 
+  -varOutputGraph https://w3id.org/data2services/graph/biolink/drugbank
 
 # HGNC
 docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data \
   vemonet/data2services-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
-  -var serviceUrl:http://localhost:7200/repositories/test inputGraph:http://data2services/graph/autor2rml outputGraph:https://w3id.org/data2services/graph/biolink/hgnc
+  -varServiceUrl http://localhost:7200/repositories/test \
+  -varInputGraph http://data2services/graph/autor2rml \
+  -varOutputGraph https://w3id.org/data2services/graph/biolink/hgnc
 ```
 
