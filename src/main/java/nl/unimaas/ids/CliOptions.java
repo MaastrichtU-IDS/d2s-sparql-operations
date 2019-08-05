@@ -62,5 +62,8 @@ public class CliOptions {
 	
 	@Option(names= {"--split-delete"}, description = "Should we delete the splitted statements? Default: false")
 	boolean splitDelete = false;
+	
+	@Option(names= {"-sbs", "--split-buffer-size"}, description = "Number of statements in the RDF4J model before loading it to the SPARQL endpoint. Default: 1000000")
+	int splitBufferSize = 1000000;
 
 }

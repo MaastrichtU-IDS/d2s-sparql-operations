@@ -42,9 +42,12 @@ public class Split {
 	
 	private String varOutputGraph;
 	
+	private int splitBufferSize;
+	
 	public Split(String endpointUrl, String endpointUpdateUrl, String username,
-			String password, String varOutputGraph) {
-		
+			String password, String varOutputGraph, int splitBufferSize) {
+		this.splitBufferSize = splitBufferSize;
+		System.out.println("Split buffer size: " + splitBufferSize);
 		repo = new HTTPRepository(endpointUrl, endpointUpdateUrl);
 		// repo = new SPARQLRepository(endpointUrl);
 
@@ -276,7 +279,7 @@ public class Split {
 
 				} // for loop
 
-				if ((count > 1000000)) {
+				if ((count > splitBufferSize)) {
 					updateConn.add(bulkUpdate, graphIri);
 					bulkUpdate = builder.build();
 
@@ -284,7 +287,7 @@ public class Split {
 					System.out.println("Updated triples: " + accum);
 					count = 0;
 
-				} else if ((count <= 1000000) && !selectResults.hasNext()) {
+				} else if ((count <= splitBufferSize) && !selectResults.hasNext()) {
 					updateConn.add(bulkUpdate, graphIri);
 					accum += count;
 					System.out.println("Total updated triples: " + accum);

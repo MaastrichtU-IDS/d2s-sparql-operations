@@ -16,7 +16,7 @@ public class SparqlOperation {
 				printUsageAndExit();
 			
 			if (cli.queryOperation == QueryOperation.split) {
-				Split splitter = new Split(cli.endpointUrl, cli.endpointUpdateUrl, cli.username, cli.password, cli.varOutputGraph);
+				Split splitter = new Split(cli.endpointUrl, cli.endpointUpdateUrl, cli.username, cli.password, cli.varOutputGraph, cli.splitBufferSize);
 				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter, cli.splitDelete,  cli.trimDelimiter, cli.uriExpansion);
 			} else {			
 				//System.out.println("Performing operation: " + cli.queryOperation.toString());
