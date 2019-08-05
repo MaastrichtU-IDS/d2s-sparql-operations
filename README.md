@@ -159,9 +159,9 @@ docker run -it --rm vemonet/data2services-sparql-operations \
   -op update -ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
   -un $USERNAME -pw $PASSWORD \
   -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-insert-variables.rq" \
-  --var-input-graph http://www.ontotext.com/explicit \
-  --var-output-graph https://w3id.org/data2services/output \
-  --var-service-url http://localhost:7200/repositories/test
+  --var-inputGraph http://www.ontotext.com/explicit \
+  --var-outputGraph https://w3id.org/data2services/output \
+  --var-serviceUrl http://localhost:7200/repositories/test
 ```
 
 ---
@@ -185,8 +185,8 @@ docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data \
   vemonet/data2services-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
-  --var-service-url http://localhost:7200/repositories/test \
-  --var-input-graph http://data2services/graph/autor2rml \
-  --var-output-graph https://w3id.org/data2services/graph/biolink/hgnc
+  --var-serviceUrl http://localhost:7200/repositories/test \
+  --var-inputGraph http://data2services/graph/autor2rml \
+  --var-outputGraph https://w3id.org/data2services/graph/biolink/hgnc
 ```
 
