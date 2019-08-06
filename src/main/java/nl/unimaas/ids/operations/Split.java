@@ -21,6 +21,9 @@ import org.eclipse.rdf4j.repository.http.HTTPRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.rdf4j.model.*;
 import org.eclipse.rdf4j.model.util.*;
@@ -71,20 +74,16 @@ public class Split {
 	}
 
 	public TupleQueryResult executeSplit(String classToSplit,
-			String propertyToSplit, String delimiter,
-			boolean deleteSplittedTriples, String trimDelimiter,
+			String propertyToSplit, char splitDelimiter,
+			char splitQuote, boolean deleteSplittedTriples,
 			String uriExpansion) throws RepositoryException,
 			MalformedQueryException, IOException {
-
-		if (delimiter.equals(",\"")) {
-			delimiter = ",(?=\")";
-		}
 
 		String queryString = "SELECT ?s ?p ?toSplit ?g WHERE {"
 				+ "    GRAPH ?g {" + "    	?s a <" + classToSplit + "> ;"
 				+ "      ?p ?toSplit ." + "    	FILTER(?p = <"
 				+ propertyToSplit + ">)." + "FILTER(regex(?toSplit, '"
-				+ delimiter + "'))" + "    } }";
+				+ splitDelimiter + "'))" + "    } }";
 
 		System.out.println(queryString);
 		System.out.println();
@@ -167,14 +166,14 @@ public class Split {
 				if (!graphFromParam) {
 					graphIri = f.createIRI(bindingSet.getValue("g").stringValue());
 				}
+				
+				CSVFormat format = CSVFormat.newFormat(splitDelimiter);
+				format = format.withQuote(splitQuote);
+				
+				CSVParser parser = CSVParser.parse(stringToSplit, format);
 
-				String[] splitFragments = stringToSplit.split(delimiter);
-
-				for (String splitFragment : splitFragments) {
-					if (trimDelimiter != null) {
-						splitFragment = splitFragment.replaceAll("^" + trimDelimiter + "|"
-										+ trimDelimiter + "$", "");
-					}
+				for (CSVRecord csvRecord : parser) {
+					String splitFragment = csvRecord.toString();
 
 					if (uriExpansion != null) {
 						if (!uriExpansion.equals("infer")) {
@@ -311,7 +310,7 @@ public class Split {
 						+ "?s ?p ?o." + "} " + "}WHERE {" + "GRAPH ?g {"
 						+ "?s a <" + classToSplit + "> ;" + "?p ?o ."
 						+ "FILTER(?p = <" + propertyToSplit + ">)."
-						+ "FILTER(regex(?o, '" + delimiter + "'))} } ";
+						+ "FILTER(regex(?o, '" + splitDelimiter + "'))} } ";
 
 				System.out.println();
 				System.out.println(deleteQueryString);

@@ -45,25 +45,25 @@ public class CliOptions {
 	String varServiceUrl;
 	
 	// Split params
-	@Option(names= {"-spd", "--split-delimiter"}, description = "Delimiter for the Split operation. Default: ','")
-	String splitDelimiter = ",";
+	@Option(names= {"--split-delimiter"}, description = "Delimiter for the Split operation. Default: ','")
+	char splitDelimiter = ',';
 	
-	@Option(names= {"-trd", "--trim-delimiter"}, description = "Delimiter for the Trim operation. Default: null")
-	String trimDelimiter = null;
+	@Option(names= {"--split-quote"}, description = "Delimiter for the Trim operation. Default: '\"'")
+	char splitQuote = '"'; // TODO: is null char good here? Should we let free?
 	
 	@Option(names= {"-uex", "--uri-expansion"}, description = "Expan splitted values with URI, use \"infer\" to do it automatically")
 	String uriExpansion = null;
 	
-	@Option(names= {"-spp", "--split-property"}, description = "Property to split. e.g.: 'http://www.w3.org/2000/01/rdf-schema#label'")
+	@Option(names= {"--split-property"}, description = "Property to split. e.g.: 'http://www.w3.org/2000/01/rdf-schema#label'")
 	String splitProperty = null;
 	
-	@Option(names= {"-spc", "--split-class"}, description = "Class to split. e.g.: 'http://w3id.org/biolink/vocab/GeneGrouping'")
+	@Option(names= {"--split-class"}, description = "Class to split. e.g.: 'http://w3id.org/biolink/vocab/GeneGrouping'")
 	String splitClass = null;
 	
 	@Option(names= {"--split-delete"}, description = "Should we delete the splitted statements? Default: false")
 	boolean splitDelete = false;
 	
-	@Option(names= {"-sbs", "--split-buffer-size"}, description = "Number of statements in the RDF4J model before loading it to the SPARQL endpoint. Default: 1000000")
+	@Option(names= {"--split-buffer-size"}, description = "Number of statements in the RDF4J model before loading it to the SPARQL endpoint. Default: 1000000")
 	int splitBufferSize = 1000000;
 
 }
