@@ -171,111 +171,112 @@ public class Split {
 				format = format.withQuote(splitQuote);
 				
 				CSVParser parser = CSVParser.parse(stringToSplit, format);
-
+				
 				for (CSVRecord csvRecord : parser) {
-					String splitFragment = csvRecord.toString();
-
-					if (uriExpansion != null) {
-						if (!uriExpansion.equals("infer")) {
-							splitFragment = uriExpansion + splitFragment;
-							bulkUpdate.add(subjectIri, predicateIri,
-									f.createIRI(splitFragment), graphIri);
-
-						} else if (uriExpansion.equals("infer")) {
-
-							if (splitFragment.indexOf("(") != -1) {
-								splitFragment = splitFragment.substring(0,
-										splitFragment.indexOf("("));
-							}
-							// splitFragment =
-							// splitFragment.replaceAll("\\[.*?\\]", "").trim();
-							// splitFragment =
-							// splitFragment.replaceAll("\\\\([^()]*\\\\)",
-							// "").trim();
-							// splitFragment =
-							// splitFragment.replaceAll("\\(.*?\\)", "").trim();
-							// splitFragment =
-							// splitFragment.replaceAll("[()?;{}]+",
-							// " ").trim();
-
-							if (splitFragment.contains(":")) {
-
-								int p = 0;
-
-								if (splitFragment.contains("url")) {
-									p = splitFragment.indexOf(":");
-								} else {
-									p = splitFragment.lastIndexOf(":");
+					for (int i=0; i<csvRecord.size(); i++){
+						String splitFragment = csvRecord.get(i);
+	
+						if (uriExpansion != null) {
+							if (!uriExpansion.equals("infer")) {
+								splitFragment = uriExpansion + splitFragment;
+								bulkUpdate.add(subjectIri, predicateIri,
+										f.createIRI(splitFragment), graphIri);
+	
+							} else if (uriExpansion.equals("infer")) {
+	
+								if (splitFragment.indexOf("(") != -1) {
+									splitFragment = splitFragment.substring(0,
+											splitFragment.indexOf("("));
 								}
-
-								String prefix = splitFragment.substring(0, p)
-										.toLowerCase().replace(" ", "").trim();
-								String id = splitFragment.substring(p + 1);
-
-								availablePref.put(prefix, "");
-
-								if (prefixToReplace.containsKey(prefix)) {
-									prefix = prefixToReplace.get(prefix);
-								}
-
-								if (registery.containsKey(prefix)) {
-
-									// System.out.println(prefix);
-
-									splitFragment = registery.get(prefix) + id;
-
-									predicateIri = f.createIRI(propertyToSplit
-											.substring(0, propertyToSplit
-													.lastIndexOf("/") + 1)
-											+ "x-" + prefix);
-
-									bulkUpdate.add(subjectIri, predicateIri,
-											f.createIRI(splitFragment),
-											graphIri);
-
+								// splitFragment =
+								// splitFragment.replaceAll("\\[.*?\\]", "").trim();
+								// splitFragment =
+								// splitFragment.replaceAll("\\\\([^()]*\\\\)",
+								// "").trim();
+								// splitFragment =
+								// splitFragment.replaceAll("\\(.*?\\)", "").trim();
+								// splitFragment =
+								// splitFragment.replaceAll("[()?;{}]+",
+								// " ").trim();
+	
+								if (splitFragment.contains(":")) {
+	
+									int p = 0;
+	
+									if (splitFragment.contains("url")) {
+										p = splitFragment.indexOf(":");
+									} else {
+										p = splitFragment.lastIndexOf(":");
+									}
+	
+									String prefix = splitFragment.substring(0, p)
+											.toLowerCase().replace(" ", "").trim();
+									String id = splitFragment.substring(p + 1);
+	
+									availablePref.put(prefix, "");
+	
+									if (prefixToReplace.containsKey(prefix)) {
+										prefix = prefixToReplace.get(prefix);
+									}
+	
+									if (registery.containsKey(prefix)) {
+	
+										// System.out.println(prefix);
+	
+										splitFragment = registery.get(prefix) + id;
+	
+										predicateIri = f.createIRI(propertyToSplit
+												.substring(0, propertyToSplit
+														.lastIndexOf("/") + 1)
+												+ "x-" + prefix);
+	
+										bulkUpdate.add(subjectIri, predicateIri,
+												f.createIRI(splitFragment),
+												graphIri);
+	
+									} else {
+	
+										predicateIri = f.createIRI(propertyToSplit
+												.substring(0, propertyToSplit
+														.lastIndexOf("/") + 1)
+												+ "x-ref");
+										bulkUpdate.add(subjectIri, predicateIri,
+												f.createLiteral(splitFragment),
+												graphIri);
+	
+										// for (Entry<String, String[]> e :
+										// registery.entrySet()) {
+										// if (splitFragment.contains(e.getKey())) {
+										//
+										// splitFragment =
+										// registery.get(e.getKey())[2] + id;
+										//
+										// predicateIri =
+										// f.createIRI(propertyToSplit.substring(0,propertyToSplit.lastIndexOf("/")+1)+"x-"+prefix);
+										//
+										// bulkUpdate.add(subjectIri, predicateIri,
+										// f.createLiteral(splitFragment),
+										// graphIri);
+										// }
+										// }
+	
+									}
+	
 								} else {
-
-									predicateIri = f.createIRI(propertyToSplit
-											.substring(0, propertyToSplit
-													.lastIndexOf("/") + 1)
-											+ "x-ref");
 									bulkUpdate.add(subjectIri, predicateIri,
 											f.createLiteral(splitFragment),
 											graphIri);
-
-									// for (Entry<String, String[]> e :
-									// registery.entrySet()) {
-									// if (splitFragment.contains(e.getKey())) {
-									//
-									// splitFragment =
-									// registery.get(e.getKey())[2] + id;
-									//
-									// predicateIri =
-									// f.createIRI(propertyToSplit.substring(0,propertyToSplit.lastIndexOf("/")+1)+"x-"+prefix);
-									//
-									// bulkUpdate.add(subjectIri, predicateIri,
-									// f.createLiteral(splitFragment),
-									// graphIri);
-									// }
-									// }
-
-								}
-
-							} else {
-								bulkUpdate.add(subjectIri, predicateIri,
-										f.createLiteral(splitFragment),
-										graphIri);
-							} // if(splitFragment.contains(":"))
-
-						} // if(!uriExpansion.equals("infer"))
-
-					} else {
-						bulkUpdate.add(subjectIri, predicateIri,
-								f.createLiteral(splitFragment), graphIri);
-					} // if(uriExpansion != null)
-
-					count++;
-
+								} // if(splitFragment.contains(":"))
+	
+							} // if(!uriExpansion.equals("infer"))
+						
+						} else {
+							bulkUpdate.add(subjectIri, predicateIri,
+									f.createLiteral(splitFragment), graphIri);
+						} // if(uriExpansion != null)
+	
+						count++;
+					}
 				} // for loop
 
 				if ((count > splitBufferSize)) {
