@@ -4,6 +4,29 @@
 	<groupId>nl.unimaas.ids</groupId>
 	<artifactId>data2services-sparql-operations</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	
+    <licenses>
+      <license>
+        <name>MIT License</name>
+        <url>https://opensource.org/licenses/MIT</url>
+        <distribution>repo</distribution>
+      </license>
+    </licenses>
+	<organization>
+		<name>Institute of Data Science at Maastricht University</name>
+		<url>https://www.maastrichtuniversity.nl/IDS</url>
+	</organization>
+	<developers>
+		<developer>
+			<name>Vincent Emonet</name>
+			<email>vincent.emonet@gmail.com</email>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>Europe/Amsterdam</timezone>
+		</developer>
+	</developers>
 
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
