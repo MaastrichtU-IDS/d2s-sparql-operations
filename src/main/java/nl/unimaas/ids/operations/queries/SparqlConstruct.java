@@ -1,4 +1,4 @@
-package nl.unimaas.ids.operations;
+package nl.unimaas.ids.operations.queries;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A class to upload to GraphDB SPARQL endpoint
  */
-public class SparqlConstruct extends AbstractSparqlOperation {
+public class SparqlConstruct extends AbstractSparqlQuery {
 
 	public SparqlConstruct(Repository repo, String varInputGraph, String varOutputGraph, String varServiceUrl) {
 		super(repo, varInputGraph, varOutputGraph, varServiceUrl);

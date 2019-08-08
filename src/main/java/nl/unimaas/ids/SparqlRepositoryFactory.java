@@ -1,4 +1,4 @@
-package nl.unimaas.ids.operations;
+package nl.unimaas.ids;
 
 import java.sql.SQLException;
 
@@ -11,15 +11,14 @@ public class SparqlRepositoryFactory {
 	// Try to load HTTPRepository, load SPARQLRepository if fail
 	public static Repository getRepository(String endpointUrl, String username, String password) throws SQLException, ClassNotFoundException {
 		try {
-			HTTPRepository httpRepo;
-        	httpRepo = new HTTPRepository(endpointUrl);
+			HTTPRepository httpRepo = new HTTPRepository(endpointUrl);
         	httpRepo.setUsernameAndPassword(username, password);
         	httpRepo.initialize();
         	return httpRepo;
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			SPARQLRepository sparqlRepo;
-   	 		sparqlRepo = new SPARQLRepository(endpointUrl);
+			System.out.println("Triplestore is not a RDF4J server, using SPARQLRepository instead of HTTPRepository");
+			SPARQLRepository sparqlRepo = new SPARQLRepository(endpointUrl);
    	 		sparqlRepo.setUsernameAndPassword(username, password);
    	 		sparqlRepo.initialize();
    	 		return sparqlRepo;

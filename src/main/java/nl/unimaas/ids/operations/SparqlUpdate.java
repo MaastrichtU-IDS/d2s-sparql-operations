@@ -2,6 +2,8 @@ package nl.unimaas.ids.operations;
 
 import java.io.IOException;
 
+import nl.unimaas.ids.operations.queries.AbstractSparqlQuery;
+
 import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.QueryLanguage;
 import org.eclipse.rdf4j.query.Update;
@@ -13,7 +15,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A class to upload to GraphDB SPARQL endpoint
  */
-public class SparqlUpdate extends AbstractSparqlOperation {
+public class SparqlUpdate extends AbstractSparqlQuery {
 
 	public SparqlUpdate(Repository repo, String varInputGraph, String varOutputGraph, String varServiceUrl) {
 		super(repo, varInputGraph, varOutputGraph, varServiceUrl);

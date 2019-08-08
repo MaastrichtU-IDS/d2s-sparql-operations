@@ -2,6 +2,9 @@ package nl.unimaas.ids.operations;
 
 import java.sql.SQLException;
 
+import nl.unimaas.ids.operations.queries.SparqlConstruct;
+import nl.unimaas.ids.operations.queries.SparqlSelect;
+
 import org.eclipse.rdf4j.repository.Repository;
 
 public class SparqlOperationFactory {
@@ -24,6 +27,5 @@ public class SparqlOperationFactory {
 		}
 		return q;
 	}
-
 
 }

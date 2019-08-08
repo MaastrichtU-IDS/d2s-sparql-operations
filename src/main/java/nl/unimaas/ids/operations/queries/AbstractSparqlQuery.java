@@ -1,4 +1,4 @@
-package nl.unimaas.ids.operations;
+package nl.unimaas.ids.operations.queries;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import nl.unimaas.ids.operations.SparqlExecutorInterface;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
@@ -24,15 +26,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
-public abstract class AbstractSparqlOperation implements SparqlExecutorInterface {
-	protected Logger logger = LoggerFactory.getLogger(AbstractSparqlOperation.class.getName());
+public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
+	protected Logger logger = LoggerFactory.getLogger(AbstractSparqlQuery.class.getName());
 	private Repository repo;
 	
 	String varInputGraph;
 	String varOutputGraph;
 	String varServiceUrl;
 	
-	public AbstractSparqlOperation(Repository repo, String varInputGraph, String varOutputGraph, String varServiceUrl) {
+	public AbstractSparqlQuery(Repository repo, String varInputGraph, String varOutputGraph, String varServiceUrl) {
 		this.repo = repo;
 		
 		this.varInputGraph = varInputGraph;

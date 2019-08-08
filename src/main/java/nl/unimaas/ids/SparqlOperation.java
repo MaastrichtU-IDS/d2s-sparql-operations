@@ -3,7 +3,6 @@ package nl.unimaas.ids;
 import nl.unimaas.ids.operations.QueryOperation;
 import nl.unimaas.ids.operations.SparqlExecutorInterface;
 import nl.unimaas.ids.operations.SparqlOperationFactory;
-import nl.unimaas.ids.operations.SparqlRepositoryFactory;
 import nl.unimaas.ids.operations.Split;
 
 import org.eclipse.rdf4j.repository.Repository;
