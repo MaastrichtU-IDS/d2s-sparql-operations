@@ -47,6 +47,7 @@ public class Split {
 		this.splitBufferSize = splitBufferSize;
 		System.out.println("Split buffer size: " + splitBufferSize);
 
+		this.repo = repo;
 		// To remove
 		updateRepo = repo;
 		this.varOutputGraph = varOutputGraph;
