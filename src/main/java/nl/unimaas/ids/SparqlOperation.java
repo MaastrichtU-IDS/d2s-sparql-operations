@@ -19,7 +19,7 @@ public class SparqlOperation {
 			if(cli.help)
 				printUsageAndExit();
 			
-			Repository repo = SparqlRepositoryFactory.getRepository(cli.endpointUrl, cli.username, cli.password);
+			Repository repo = SparqlRepositoryFactory.getRepository(cli.endpointUrl, cli.repositoryId, cli.username, cli.password);
 			
 			if (cli.queryOperation == QueryOperation.split) {
 				Split splitter = new Split(repo, cli.varOutputGraph, cli.splitBufferSize);

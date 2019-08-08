@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import nl.unimaas.ids.operations.queries.SparqlConstruct;
 import nl.unimaas.ids.operations.queries.SparqlSelect;
+import nl.unimaas.ids.operations.queries.SparqlUpdate;
 
 import org.eclipse.rdf4j.repository.Repository;
 

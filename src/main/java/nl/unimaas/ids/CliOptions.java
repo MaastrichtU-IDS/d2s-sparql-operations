@@ -18,13 +18,11 @@ public class CliOptions {
 	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select, split). Default is update")
 	QueryOperation queryOperation = QueryOperation.update;
 	
+	
 	// SPARQL endpoint params
 	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL of the SPARQL Endpoint to query or RDF4J Server. e.g. http://graphdb.dumontierlab.com/repositories/test or http://graphdb.dumontierlab.com", required = true)
 	String endpointUrl = null;
 	
-	@Option(names= {"-uep", "--update-sparql-endpoint"}, description = "URL of the Update SPARQL Endpoint to use for update operations (add /statements for RDF4J endpoints). Using -ep as default.", required = false)
-	String endpointUpdateUrl = endpointUrl;
-
 	@Option(names= {"-rep", "--repositoryId"}, description = "Repository ID for RDF4J Server. E.g. test")
 	String repositoryId = null;
 
@@ -33,6 +31,7 @@ public class CliOptions {
 
 	@Option(names= {"-pw", "--password"}, description = "Password used for SPARQL endpoint authentication")
 	String password = null;
+	
 	
 	// SPARQL query variables
 	@Option(names= {"--var-inputGraph"}, description = "Input graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/data2services/input")
@@ -43,6 +42,7 @@ public class CliOptions {
 	
 	@Option(names= {"--var-serviceUrl"}, description = "A SPARQL service URL variable to replace in the SPARQL query. E.g.: http://localhost:7200/repositories/test")
 	String varServiceUrl;
+	
 	
 	// Split params
 	@Option(names= {"--split-delimiter"}, description = "Delimiter for the Split operation. Default: ','")

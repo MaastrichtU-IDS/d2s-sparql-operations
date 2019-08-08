@@ -1,8 +1,6 @@
-package nl.unimaas.ids.operations;
+package nl.unimaas.ids.operations.queries;
 
 import java.io.IOException;
-
-import nl.unimaas.ids.operations.queries.AbstractSparqlQuery;
 
 import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.QueryLanguage;
