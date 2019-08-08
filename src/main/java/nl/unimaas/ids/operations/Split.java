@@ -203,22 +203,16 @@ public class Split {
 									}
 	
 									if (registery.containsKey(prefix)) {
-	
 										// System.out.println(prefix);
-	
 										splitFragment = registery.get(prefix) + id;
-	
 										predicateIri = f.createIRI(propertyToSplit
 												.substring(0, propertyToSplit
 														.lastIndexOf("/") + 1)
 												+ "x-" + prefix);
-	
 										bulkUpdate.add(subjectIri, predicateIri,
 												f.createIRI(splitFragment),
 												graphIri);
-	
 									} else {
-	
 										predicateIri = f.createIRI(propertyToSplit
 												.substring(0, propertyToSplit
 														.lastIndexOf("/") + 1)
@@ -242,26 +236,23 @@ public class Split {
 										// graphIri);
 										// }
 										// }
-	
 									}
-	
+									
 								} else {
 									bulkUpdate.add(subjectIri, predicateIri,
 											f.createLiteral(splitFragment),
 											graphIri);
 								} // if(splitFragment.contains(":"))
-	
 							} // if(!uriExpansion.equals("infer"))
-						
+							
 						} else {
 							bulkUpdate.add(subjectIri, predicateIri,
 									f.createLiteral(splitFragment), graphIri);
 						} // if(uriExpansion != null)
-	
 						count++;
 					}
 				} // for loop
-
+				
 				if ((count > splitBufferSize)) {
 					conn.add(bulkUpdate, graphIri);
 					bulkUpdate = builder.build();
@@ -275,9 +266,7 @@ public class Split {
 					accum += count;
 					System.out.println("Total updated triples: " + accum);
 				}
-
 			} // while results
-
 			// print the content of the cross references available in pharmgkb
 			// Iterator it = availablePref.entrySet().iterator();
 			// while (it.hasNext()) {
@@ -312,7 +301,7 @@ public class Split {
 			new URL(url).toURI();
 			return true;
 		}
-
+		
 		// If there was an Exception
 		// while creating URL object
 		catch (Exception e) {
