@@ -24,17 +24,16 @@ public class SparqlOperation {
 			if (cli.queryOperation == QueryOperations.split) {
 				Split splitter = new Split(repo, cli.varOutputGraph, cli.splitBufferSize);
 				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter,  cli.splitQuote, cli.splitDelete, cli.uriExpansion);
-			} else {			
-				//System.out.println("Performing operation: " + cli.queryOperation.toString());
-				SparqlExecutorInterface sparqlExecutor = SparqlQueryFactory.getSparqlExecutor(cli.queryOperation, repo, cli.varInputGraph, cli.varOutputGraph, cli.varServiceUrl);
-				
+			} else {
+				// Execute SPARQL query operations
+				System.out.println("Performing operation: " + cli.queryOperation.toString());
+				SparqlExecutorInterface sparqlExecutor = SparqlQueryFactory.getSparqlExecutor(cli.queryOperation, repo, 
+						cli.varInputGraph, cli.varOutputGraph, cli.varServiceUrl);
 				if (cli.sparqlQuery != null) {
 					// Execute SPARQL query string passed to -sp
-					// Properly get select results using asList
-					// https://rdf4j.eclipse.org/documentation/programming/repository/
+					// TODO: Properly get select results using asList https://rdf4j.eclipse.org/documentation/programming/repository/
 					sparqlExecutor.executeSingleQuery(cli.sparqlQuery);
 				}
-				
 				if (cli.inputFile != null) {
 					// Execute SPARQL queries from files passed to -f
 					sparqlExecutor.executeFiles(cli.inputFile);
