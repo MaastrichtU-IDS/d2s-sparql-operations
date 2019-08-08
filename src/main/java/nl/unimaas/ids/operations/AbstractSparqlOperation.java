@@ -17,8 +17,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
-import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,16 +26,14 @@ import org.yaml.snakeyaml.Yaml;
 
 public abstract class AbstractSparqlOperation implements SparqlExecutorInterface {
 	protected Logger logger = LoggerFactory.getLogger(AbstractSparqlOperation.class.getName());
-	private SPARQLRepository repo;
+	private Repository repo;
 	
 	String varInputGraph;
 	String varOutputGraph;
 	String varServiceUrl;
 	
-	public AbstractSparqlOperation(String endpoint, String username, String password, String varInputGraph, String varOutputGraph, String varServiceUrl) {
-		repo = new SPARQLRepository(endpoint);
-		repo.setUsernameAndPassword(username, password);
-		repo.initialize();
+	public AbstractSparqlOperation(Repository repo, String varInputGraph, String varOutputGraph, String varServiceUrl) {
+		this.repo = repo;
 		
 		this.varInputGraph = varInputGraph;
 		this.varOutputGraph = varOutputGraph;

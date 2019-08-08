@@ -14,10 +14,9 @@ import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.TupleQuery;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.eclipse.rdf4j.query.Update;
+import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
-import org.eclipse.rdf4j.repository.http.HTTPRepository;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,31 +36,19 @@ public class Split {
 
 	protected Logger logger = LoggerFactory.getLogger(Split.class.getName());
 	
-	// Use HTTPRepo at the moment as it is faster
-	// private SparqlExecutorInterface sparqlSelectExecutor;
-	// private SparqlExecutorInterface sparqlUpdateExecutor;
-	private HTTPRepository repo;
-	private HTTPRepository updateRepo;
+	private Repository repo;
+	private Repository updateRepo;
 	
 	private String varOutputGraph;
 	
 	private int splitBufferSize;
 	
-	public Split(String endpointUrl, String endpointUpdateUrl, String username,
-			String password, String varOutputGraph, int splitBufferSize) {
+	public Split(Repository repo, String varOutputGraph, int splitBufferSize) {
 		this.splitBufferSize = splitBufferSize;
 		System.out.println("Split buffer size: " + splitBufferSize);
-		repo = new HTTPRepository(endpointUrl, endpointUpdateUrl);
-		// repo = new SPARQLRepository(endpointUrl);
 
-		repo.setUsernameAndPassword(username, password);
-		repo.initialize();
-
-		updateRepo = new HTTPRepository(endpointUrl, endpointUpdateUrl);
-		// updateRepo = new SPARQLRepository(endpointUpdateUrl);
-		updateRepo.setUsernameAndPassword(username, password);
-		updateRepo.initialize();
-		
+		// To remove
+		updateRepo = repo;
 		this.varOutputGraph = varOutputGraph;
 
 		// With SPARQL executors

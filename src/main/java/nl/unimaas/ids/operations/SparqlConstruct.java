@@ -7,6 +7,7 @@ import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.query.GraphQueryResult;
 import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.QueryResults;
+import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.rio.RDFFormat;
@@ -18,8 +19,8 @@ import org.slf4j.LoggerFactory;
  */
 public class SparqlConstruct extends AbstractSparqlOperation {
 
-	public SparqlConstruct(String endpoint, String username, String password, String varInputGraph, String varOutputGraph, String varServiceUrl) {
-		super(endpoint, username, password, varInputGraph, varOutputGraph, varServiceUrl);
+	public SparqlConstruct(Repository repo, String varInputGraph, String varOutputGraph, String varServiceUrl) {
+		super(repo, varInputGraph, varOutputGraph, varServiceUrl);
 		logger = LoggerFactory.getLogger(SparqlConstruct.class.getName());
 	}
 

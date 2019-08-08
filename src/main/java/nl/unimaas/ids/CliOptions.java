@@ -19,13 +19,13 @@ public class CliOptions {
 	QueryOperation queryOperation = QueryOperation.update;
 	
 	// SPARQL endpoint params
-	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL of the SPARQL Endpoint to query", required = true)
+	@Option(names= {"-ep", "--sparql-endpoint"}, description = "URL of the SPARQL Endpoint to query or RDF4J Server. e.g. http://graphdb.dumontierlab.com/repositories/test or http://graphdb.dumontierlab.com", required = true)
 	String endpointUrl = null;
 	
 	@Option(names= {"-uep", "--update-sparql-endpoint"}, description = "URL of the Update SPARQL Endpoint to use for update operations (add /statements for RDF4J endpoints). Using -ep as default.", required = false)
 	String endpointUpdateUrl = endpointUrl;
 
-	@Option(names= {"-rep", "--repositoryId"}, description = "RDF4J Repository ID for HTTPRepository file upload (only required in case of RDF4JSPARQL or HTTP method)")
+	@Option(names= {"-rep", "--repositoryId"}, description = "Repository ID for RDF4J Server. E.g. test")
 	String repositoryId = null;
 
 	@Option(names= {"-un", "--username"}, description = "Username used for SPARQL endpoint authentication")

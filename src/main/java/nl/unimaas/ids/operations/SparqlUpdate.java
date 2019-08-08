@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.QueryLanguage;
 import org.eclipse.rdf4j.query.Update;
+import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.LoggerFactory;
@@ -14,8 +15,8 @@ import org.slf4j.LoggerFactory;
  */
 public class SparqlUpdate extends AbstractSparqlOperation {
 
-	public SparqlUpdate(String endpoint, String username, String password, String varInputGraph, String varOutputGraph, String varServiceUrl) {
-		super(endpoint, username, password, varInputGraph, varOutputGraph, varServiceUrl);
+	public SparqlUpdate(Repository repo, String varInputGraph, String varOutputGraph, String varServiceUrl) {
+		super(repo, varInputGraph, varOutputGraph, varServiceUrl);
 		logger = LoggerFactory.getLogger(SparqlUpdate.class.getName());
 	}
 
