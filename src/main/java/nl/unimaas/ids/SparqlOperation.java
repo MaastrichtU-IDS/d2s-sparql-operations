@@ -1,6 +1,7 @@
 package nl.unimaas.ids;
 
 import nl.unimaas.ids.operations.QueryOperations;
+import nl.unimaas.ids.operations.RdfUpload;
 import nl.unimaas.ids.operations.Split;
 import nl.unimaas.ids.operations.queries.SparqlExecutorInterface;
 import nl.unimaas.ids.operations.queries.SparqlQueryFactory;
@@ -24,8 +25,12 @@ public class SparqlOperation {
 			if (cli.queryOperation == QueryOperations.split) {
 				Split splitter = new Split(repo, cli.varOutputGraph, cli.splitBufferSize);
 				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter,  cli.splitQuote, cli.splitDelete, cli.uriExpansion);
+				
+			} else if (cli.queryOperation == QueryOperations.upload) {
+				RdfUpload.uploadRdf(cli.inputFile, repo);
+				
 			} else {
-				// Execute SPARQL query operations
+				// Execute SPARQL queries
 				System.out.println("Performing operation: " + cli.queryOperation.toString());
 				SparqlExecutorInterface sparqlExecutor = SparqlQueryFactory.getSparqlExecutor(cli.queryOperation, repo, 
 						cli.varInputGraph, cli.varOutputGraph, cli.varServiceUrl);
