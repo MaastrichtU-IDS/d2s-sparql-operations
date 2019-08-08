@@ -1,4 +1,4 @@
-package nl.unimaas.ids.operations;
+package nl.unimaas.ids.operations.queries;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,9 +1,9 @@
 package nl.unimaas.ids;
 
-import nl.unimaas.ids.operations.QueryOperation;
-import nl.unimaas.ids.operations.SparqlExecutorInterface;
-import nl.unimaas.ids.operations.SparqlOperationFactory;
+import nl.unimaas.ids.operations.QueryOperations;
 import nl.unimaas.ids.operations.Split;
+import nl.unimaas.ids.operations.queries.SparqlExecutorInterface;
+import nl.unimaas.ids.operations.queries.SparqlQueryFactory;
 
 import org.eclipse.rdf4j.repository.Repository;
 
@@ -21,12 +21,12 @@ public class SparqlOperation {
 			
 			Repository repo = SparqlRepositoryFactory.getRepository(cli.endpointUrl, cli.repositoryId, cli.username, cli.password);
 			
-			if (cli.queryOperation == QueryOperation.split) {
+			if (cli.queryOperation == QueryOperations.split) {
 				Split splitter = new Split(repo, cli.varOutputGraph, cli.splitBufferSize);
 				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter,  cli.splitQuote, cli.splitDelete, cli.uriExpansion);
 			} else {			
 				//System.out.println("Performing operation: " + cli.queryOperation.toString());
-				SparqlExecutorInterface sparqlExecutor = SparqlOperationFactory.getSparqlExecutor(cli.queryOperation, repo, cli.varInputGraph, cli.varOutputGraph, cli.varServiceUrl);
+				SparqlExecutorInterface sparqlExecutor = SparqlQueryFactory.getSparqlExecutor(cli.queryOperation, repo, cli.varInputGraph, cli.varOutputGraph, cli.varServiceUrl);
 				
 				if (cli.sparqlQuery != null) {
 					// Properly get select results using asList

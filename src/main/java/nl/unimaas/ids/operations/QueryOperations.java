@@ -1,6 +1,6 @@
 package nl.unimaas.ids.operations;
 
-public enum QueryOperation {
+public enum QueryOperations {
 	update,
 	construct,
 	select,

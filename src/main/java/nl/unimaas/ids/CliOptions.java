@@ -1,6 +1,6 @@
 package nl.unimaas.ids;
 
-import nl.unimaas.ids.operations.QueryOperation;
+import nl.unimaas.ids.operations.QueryOperations;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -16,7 +16,7 @@ public class CliOptions {
 	String inputFile = null;
 	
 	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select, split). Default is update")
-	QueryOperation queryOperation = QueryOperation.update;
+	QueryOperations queryOperation = QueryOperations.update;
 	
 	
 	// SPARQL endpoint params

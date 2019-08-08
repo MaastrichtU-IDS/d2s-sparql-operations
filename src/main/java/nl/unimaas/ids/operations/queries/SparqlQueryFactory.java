@@ -1,16 +1,14 @@
-package nl.unimaas.ids.operations;
+package nl.unimaas.ids.operations.queries;
 
 import java.sql.SQLException;
 
-import nl.unimaas.ids.operations.queries.SparqlConstruct;
-import nl.unimaas.ids.operations.queries.SparqlSelect;
-import nl.unimaas.ids.operations.queries.SparqlUpdate;
+import nl.unimaas.ids.operations.QueryOperations;
 
 import org.eclipse.rdf4j.repository.Repository;
 
-public class SparqlOperationFactory {
+public class SparqlQueryFactory {
 	
-	public static SparqlExecutorInterface getSparqlExecutor(QueryOperation operation, Repository repo,  String varInputGraph, String varOutputGraph, String varServiceUrl) throws SQLException, ClassNotFoundException {
+	public static SparqlExecutorInterface getSparqlExecutor(QueryOperations operation, Repository repo,  String varInputGraph, String varOutputGraph, String varServiceUrl) throws SQLException, ClassNotFoundException {
 		SparqlExecutorInterface q;
 		
 		switch (operation) {
