@@ -51,9 +51,6 @@ public class CliOptions {
 	@Option(names= {"--split-quote"}, description = "Delimiter for the Trim operation. Default: '\"'")
 	char splitQuote = '"'; // TODO: is null char good here? Should we let free?
 	
-	@Option(names= {"-uex", "--uri-expansion"}, description = "Expan splitted values with URI, use \"infer\" to do it automatically")
-	String uriExpansion = null;
-	
 	@Option(names= {"--split-property"}, description = "Property to split. e.g.: 'http://www.w3.org/2000/01/rdf-schema#label'")
 	String splitProperty = null;
 	
@@ -65,5 +62,10 @@ public class CliOptions {
 	
 	@Option(names= {"--split-buffer-size"}, description = "Number of statements in the RDF4J model before loading it to the SPARQL endpoint. Default: 1000000")
 	int splitBufferSize = 1000000;
-
+	
+	
+	// URI expansion params
+	@Option(names= {"-uex", "--uri-expansion"}, description = "Expan splitted values with URI, use \"infer\" to do it automatically")
+	String uriExpansion = null;
+	
 }
