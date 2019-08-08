@@ -37,20 +37,16 @@ public class Split {
 	protected Logger logger = LoggerFactory.getLogger(Split.class.getName());
 	
 	private Repository repo;
-	private Repository updateRepo;
 	
 	private String varOutputGraph;
 	
 	private int splitBufferSize;
 	
 	public Split(Repository repo, String varOutputGraph, int splitBufferSize) {
+		this.repo = repo;
+		this.varOutputGraph = varOutputGraph;
 		this.splitBufferSize = splitBufferSize;
 		System.out.println("Split buffer size: " + splitBufferSize);
-
-		this.repo = repo;
-		// To remove
-		updateRepo = repo;
-		this.varOutputGraph = varOutputGraph;
 
 		// With SPARQL executors
 		// sparqlSelectExecutor =
@@ -77,12 +73,11 @@ public class Split {
 		System.out.println();
 
 		RepositoryConnection conn = repo.getConnection();
-		RepositoryConnection updateConn = updateRepo.getConnection();
 
 		TupleQuery query = conn.prepareTupleQuery(queryString);
 		TupleQueryResult selectResults = query.evaluate();
 
-		ValueFactory f = updateRepo.getValueFactory();
+		ValueFactory f = repo.getValueFactory();
 
 		// If graph not defined in params, then we use the graph from the
 		// statement
@@ -268,7 +263,7 @@ public class Split {
 				} // for loop
 
 				if ((count > splitBufferSize)) {
-					updateConn.add(bulkUpdate, graphIri);
+					conn.add(bulkUpdate, graphIri);
 					bulkUpdate = builder.build();
 
 					accum += count;
@@ -276,7 +271,7 @@ public class Split {
 					count = 0;
 
 				} else if ((count <= splitBufferSize) && !selectResults.hasNext()) {
-					updateConn.add(bulkUpdate, graphIri);
+					conn.add(bulkUpdate, graphIri);
 					accum += count;
 					System.out.println("Total updated triples: " + accum);
 				}
@@ -293,7 +288,6 @@ public class Split {
 
 		} finally {
 			selectResults.close();
-			conn.close();
 			if (deleteSplittedTriples) {
 				String deleteQueryString = "DELETE { " + "GRAPH ?g {"
 						+ "?s ?p ?o." + "} " + "}WHERE {" + "GRAPH ?g {"
@@ -304,10 +298,10 @@ public class Split {
 				System.out.println();
 				System.out.println(deleteQueryString);
 
-				Update update = updateConn.prepareUpdate(deleteQueryString);
+				Update update = conn.prepareUpdate(deleteQueryString);
 				update.execute();
 			}
-			updateConn.close();
+			conn.close();
 		}
 		return selectResults;
 	}
