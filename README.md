@@ -57,6 +57,22 @@ docker run -it --rm vemonet/data2services-sparql-operations -op select \
 
 ---
 
+### Update
+
+Multiple `INSERT` on [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/), using files in a repository from the local file system.
+
+```shell
+docker run -it --rm vemonet/data2services-sparql-operations \
+  -ep "http://graphdb.dumontierlab.com" -rep "test" \
+  #-ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
+  -op update -un $USERNAME -pw $PASSWORD \
+  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-insert.rq"
+```
+
+* Note that GraphDB and RDF4J Server require to add `/statements` at the end of the endpoint URL when doing an update.
+
+---
+
 ### Construct
 
 On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL to get the SPARQL query from a file.
@@ -69,20 +85,6 @@ docker run -it --rm vemonet/data2services-sparql-operations -op construct \
 
 ---
 
-### Update
-
-Multiple `INSERT` on [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/), using files in a repository from the local file system.
-
-```shell
-docker run -it --rm -v "/data/data2services-transform-repository/sparql/insert-biolink/drugbank":/data \
-  vemonet/data2services-sparql-operations -f "/data" -op update \
-  -ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
-  -un USERNAME -pw PASSWORD
-```
-
-* GraphDB requires to add `/statements` at the end of the endpoint URL for `INSERT`
-
----
 
 ### GitHub repository
 
@@ -124,7 +126,7 @@ docker run -it \
   --uri-expansion "https://w3id.org/data2services/" \ # Use 'infer' to do it automatically using prefixcommons
   #--trim-delimiter '"' \
   -ep "http://graphdb.dumontierlab.com" \ # RDF4J server URL
-  -uep "test" \ # RDF4J server repository ID
+  -rep "test" \ # RDF4J server repository ID
   -un USERNAME -pw PASSWORD
   
 # For SPARQLRepository

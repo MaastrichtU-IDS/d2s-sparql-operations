@@ -1,0 +1,9 @@
+INSERT {
+  GRAPH <https://w3id.org/data2services/example-insert> {
+    ?Concept a <https://w3id.org/data2services/Concept> .
+  }
+} WHERE {
+  SELECT * {
+    [] a ?Concept .
+  } LIMIT 10
+}
