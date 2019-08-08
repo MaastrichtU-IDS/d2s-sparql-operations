@@ -5,6 +5,15 @@
 	<artifactId>data2services-sparql-operations</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	
+	<url>https://maastrichtu-ids.github.io/data2services-sparql-operations</url>
+	<description>Execute SPARQL queries from string, URL or multiple files using the RDF4J framework.</description>
+	
+	<scm>
+		<url>https://github.com/MaastrichtU-IDS/data2services-sparql-operations</url>
+		<connection>scm:git:git://github.com/MaastrichtU-IDS/data2services-sparql-operations.git</connection>
+		<developerConnection>scm:git:git@github.com:MaastrichtU-IDS/data2services-sparql-operations.git</developerConnection>
+	</scm>
+	
     <licenses>
       <license>
         <name>MIT License</name>
