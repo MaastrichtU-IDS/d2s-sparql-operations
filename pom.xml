@@ -80,12 +80,6 @@
 		    <artifactId>commons-csv</artifactId>
 		    <version>1.7</version>
 		</dependency>
-		<!-- TO REMOVE -->
-		<dependency>
-		    <groupId>com.opencsv</groupId>
-		    <artifactId>opencsv</artifactId>
-		    <version>4.6</version>
-		</dependency>
 	</dependencies>
 	
 
