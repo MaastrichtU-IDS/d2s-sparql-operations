@@ -174,7 +174,7 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 	public ArrayList<URL> crawlGithubToGetQueries(String githubUrl) throws IOException {
 		ArrayList<URL> queryList = new ArrayList<URL>();
 		String html = Jsoup.connect(githubUrl).get().html();
-		Pattern pattern = Pattern.compile("href=\"(.*?\\.rq)\"");
+		Pattern pattern = Pattern.compile("href=\"(\\/.*?\\.rq)\"");
         Matcher matcher = pattern.matcher(html);
         while (matcher.find()) {
         	queryList.add(new URL("https://raw.githubusercontent.com" + matcher.group(1).replace("blob/", "")));
