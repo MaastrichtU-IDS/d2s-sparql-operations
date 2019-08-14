@@ -26,5 +26,6 @@ public class SparqlUpdate extends AbstractSparqlQuery {
 		// Query the SPARQL endpoint
 		Update update = conn.prepareUpdate(QueryLanguage.SPARQL, queryString);
 		update.execute();
+		logger.info("SPARQL Update done.");
 	}
 }
