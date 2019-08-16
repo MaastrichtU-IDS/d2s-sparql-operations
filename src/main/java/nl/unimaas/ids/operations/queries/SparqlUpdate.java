@@ -21,7 +21,8 @@ public class SparqlUpdate extends AbstractSparqlQuery {
 	}
 
 	public void executeQuery(RepositoryConnection conn, String queryString, String outputFilepath) throws RepositoryException, MalformedQueryException, IOException {
-		logger.info("Executing update query: " + queryString);
+		logger.info("Executing UPDATE query:");
+		logger.info(queryString);
 		
 		// Query the SPARQL endpoint
 		Update update = conn.prepareUpdate(QueryLanguage.SPARQL, queryString);

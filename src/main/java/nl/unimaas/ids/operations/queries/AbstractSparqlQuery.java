@@ -46,7 +46,7 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 		try (RepositoryConnection conn = repo.getConnection()) {
 			if (filePath.startsWith("https://github.com/")) {
 				// Crawl a given path in a github repository to execute .rq files
-				logger.info("Crawling GitHub page...");
+				logger.info("Crawling GitHub page: " + filePath);
 				ArrayList<URL> queryList = crawlGithubToGetQueries(filePath);
 				for (URL queryUrl : queryList) {
 					logger.info("Executing GitHub URL: " + queryUrl.toString());
@@ -77,8 +77,6 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 					while (iterator.hasNext()) {
 						File f = iterator.next();
 						String queryString = resolveVariables(FileUtils.readFileToString(f, "UTF-8"));
-						logger.info("Executing: ");
-						logger.info(queryString);
 						executeQuery(conn, queryString, f.getPath());
 					}
 					
@@ -88,8 +86,6 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 				} else {
 					// Single file provided
 					String queryString = resolveVariables(FileUtils.readFileToString(inputFile, "UTF-8"));
-					logger.info("Executing: ");
-					logger.info(queryString);
 					executeQuery(conn, queryString, inputFile.getPath());
 				}
 			}
@@ -105,7 +101,7 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 		query = query.replaceAll("\\?_inputGraph", varInputGraph);
 		query = query.replaceAll("\\?_outputGraph", varOutputGraph);
 		query = query.replaceAll("\\?_serviceUrl", varServiceUrl);
-		logger.info("    SPARQL query after replace all: " + query);
+		//logger.info("    SPARQL query after replace all: " + query);
 	    return query;
 	}
 	
@@ -128,8 +124,6 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 	public void executeSingleQuery(String queryString) throws Exception {
 		try (RepositoryConnection conn = repo.getConnection()) {
 			queryString = resolveVariables(queryString);
-			logger.info("Executing: ");
-			logger.info(queryString);
 			executeQuery(conn, queryString, null);
 			
 		} catch (Exception e) {
@@ -148,8 +142,7 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 			
 		} else {	
 			String queryString = resolveVariables(FileUtils.readFileToString(urlFile, "UTF-8"));				
-			logger.info("Executing single file from URL: ");
-			logger.info(queryString);
+			logger.info("Executing single file from URL: " + url.toString());
 			executeQuery(conn, queryString, null);
 		}
 	}
@@ -165,8 +158,6 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 		int queryCount = 0;
 		for(String query : queries) {
 			String queryString = resolveVariables(query);
-			logger.info("Executing: ");
-			logger.info(queryString);
 			executeQuery(conn, queryString, FilenameUtils.removeExtension(inputFile.getPath()) + "_query_" + queryCount++);
 		}		
 	}
@@ -176,6 +167,7 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 		String html = Jsoup.connect(githubUrl).get().html();
 		Pattern pattern = Pattern.compile("href=\"(\\/.*?\\.rq)\"");
         Matcher matcher = pattern.matcher(html);
+        logger.info("SPARQL queries URL found by crawling " + githubUrl + " :");
         while (matcher.find()) {
         	queryList.add(new URL("https://raw.githubusercontent.com" + matcher.group(1).replace("blob/", "")));
         	logger.info("https://raw.githubusercontent.com" + matcher.group(1).replace("blob/", ""));

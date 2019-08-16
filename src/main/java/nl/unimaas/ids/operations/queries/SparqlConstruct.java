@@ -25,7 +25,9 @@ public class SparqlConstruct extends AbstractSparqlQuery {
 	}
 
 	public void executeQuery(RepositoryConnection conn, String queryString, String outputFilepath) throws RepositoryException, MalformedQueryException, IOException {
-		logger.info("Executing construct query...");
+		logger.info("Executing CONSTRUCT query:");
+		logger.info(queryString);
+		
 		// Query the SPARQL endpoint
 		GraphQueryResult graphResult = conn.prepareGraphQuery(queryString).evaluate();
 		logger.info("SPARQL endpoint query done");
