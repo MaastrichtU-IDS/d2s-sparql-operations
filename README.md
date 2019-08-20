@@ -15,7 +15,7 @@ A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries fro
 
 # Pull
 
-`BETA`: available on [DockerHub](https://hub.docker.com/r/vemonet/data2services-sparql-operations) the `latest` image is automatically built from latest branch `master` commit on [GitHub](https://github.com/MaastrichtU-IDS/data2services-sparql-operations).
+Available on [DockerHub](https://hub.docker.com/r/vemonet/data2services-sparql-operations) the `latest` image is automatically built from latest branch `master` commit on [GitHub](https://github.com/MaastrichtU-IDS/data2services-sparql-operations).
 
 ```shell
 docker pull vemonet/data2services-sparql-operations
@@ -29,7 +29,7 @@ You can also clone the [GitHub repository](https://github.com/MaastrichtU-IDS/da
 
 ```shell
 git clone https://github.com/MaastrichtU-IDS/data2services-sparql-operations
-docker build -t vemonet/data2services-sparql-operations .
+docker build -t vemonet/data2services-sparql-operations ./data2services-sparql-operations
 ```
 ---
 
