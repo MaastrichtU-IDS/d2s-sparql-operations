@@ -1,10 +1,10 @@
 INSERT {
-  GRAPH <?_outputGraph> {
+  GRAPH <?_output> {
     ?Concept a <https://w3id.org/data2services/Concept> .
   }
 } WHERE {
-  SERVICE <?_serviceUrl> {
-    GRAPH <?_inputGraph> {
+  SERVICE <?_service> {
+    GRAPH <?_input> {
       SELECT * {
         [] a ?Concept .
       } LIMIT 10

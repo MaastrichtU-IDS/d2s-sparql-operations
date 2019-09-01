@@ -22,13 +22,13 @@ public class SparqlOperation {
 			Repository repo = SparqlRepositoryFactory.getRepository(cli.endpointUrl, cli.repositoryId, cli.username, cli.password);
 			
 			if (cli.queryOperation == QueryOperations.split) {
-				Split splitter = new Split(repo, cli.varOutputGraph, cli.splitBufferSize);
+				Split splitter = new Split(repo, cli.varOutput, cli.splitBufferSize);
 				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter,  cli.splitQuote, cli.splitDelete, cli.uriExpansion);
 			} else {
 				// Execute SPARQL query operations
 				System.out.println("Performing operation: " + cli.queryOperation.toString());
 				SparqlExecutorInterface sparqlExecutor = SparqlQueryFactory.getSparqlExecutor(cli.queryOperation, repo, 
-						cli.varInputGraph, cli.varOutputGraph, cli.varServiceUrl);
+						cli.varInput, cli.varOutput, cli.varService);
 				if (cli.sparqlQuery != null) {
 					// Execute SPARQL query string passed to -sp
 					// TODO: Properly get select results using asList https://rdf4j.eclipse.org/documentation/programming/repository/

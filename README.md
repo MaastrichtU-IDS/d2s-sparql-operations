@@ -138,16 +138,16 @@ docker run -it \
 
 # Set variables
 
-3 variables can be set in the SPARQL queries using a `?_`: `?_inputGraph`, `?_outputGraph` and `?_serviceUrl`. See example:
+3 variables can be set in the SPARQL queries using a `?_`: `?_input`, `?_output` and `?_service`. See example:
 
 ```SPARQL
 INSERT {
-  GRAPH <?_outputGraph> {
+  GRAPH <?_output> {
     ?Concept a <https://w3id.org/data2services/Concept> .
   }
 } WHERE {
-  SERVICE <?_serviceUrl> {
-    GRAPH <?_inputGraph> {
+  SERVICE <?_service> {
+    GRAPH <?_input> {
       SELECT * {
         [] a ?Concept .
       } LIMIT 10 
@@ -161,9 +161,9 @@ docker run -it --rm vemonet/data2services-sparql-operations \
   -op update -ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
   -un $USERNAME -pw $PASSWORD \
   -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-insert-variables.rq" \
-  --var-inputGraph http://www.ontotext.com/explicit \
-  --var-outputGraph https://w3id.org/data2services/output \
-  --var-serviceUrl http://localhost:7200/repositories/test
+  --var-input http://www.ontotext.com/explicit \
+  --var-output https://w3id.org/data2services/output \
+  --var-service http://localhost:7200/repositories/test
 ```
 
 ---
@@ -178,17 +178,17 @@ docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
   vemonet/data2services-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
-  -varServiceUrl http://localhost:7200/repositories/test \ 
-  -varInputGraph http://data2services/graph/xml2rdf \ 
-  -varOutputGraph https://w3id.org/data2services/graph/biolink/drugbank
+  --var-service http://localhost:7200/repositories/test \ 
+  --var-input http://data2services/graph/xml2rdf \ 
+  --var-output https://w3id.org/data2services/graph/biolink/drugbank
 
 # HGNC
 docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data \
   vemonet/data2services-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
-  --var-serviceUrl http://localhost:7200/repositories/test \
-  --var-inputGraph http://data2services/graph/autor2rml \
-  --var-outputGraph https://w3id.org/data2services/graph/biolink/hgnc
+  --var-service http://localhost:7200/repositories/test \
+  --var-input http://data2services/graph/autor2rml \
+  --var-output https://w3id.org/data2services/graph/biolink/hgnc
 ```
 

@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
  */
 public class SparqlUpdate extends AbstractSparqlQuery {
 
-	public SparqlUpdate(Repository repo, String varInputGraph, String varOutputGraph, String varServiceUrl) {
-		super(repo, varInputGraph, varOutputGraph, varServiceUrl);
+	public SparqlUpdate(Repository repo, String varInput, String varOutput, String varService) {
+		super(repo, varInput, varOutput, varService);
 		logger = LoggerFactory.getLogger(SparqlUpdate.class.getName());
 	}
 

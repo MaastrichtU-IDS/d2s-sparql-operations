@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory;
  */
 public class SparqlConstruct extends AbstractSparqlQuery {
 
-	public SparqlConstruct(Repository repo, String varInputGraph, String varOutputGraph, String varServiceUrl) {
-		super(repo, varInputGraph, varOutputGraph, varServiceUrl);
+	public SparqlConstruct(Repository repo, String varInput, String varOutput, String varService) {
+		super(repo, varInput, varOutput, varService);
 		logger = LoggerFactory.getLogger(SparqlConstruct.class.getName());
 	}
 

@@ -8,18 +8,18 @@ import org.eclipse.rdf4j.repository.Repository;
 
 public class SparqlQueryFactory {
 	
-	public static SparqlExecutorInterface getSparqlExecutor(QueryOperations operation, Repository repo,  String varInputGraph, String varOutputGraph, String varServiceUrl) throws SQLException, ClassNotFoundException {
+	public static SparqlExecutorInterface getSparqlExecutor(QueryOperations operation, Repository repo,  String varInput, String varOutput, String varService) throws SQLException, ClassNotFoundException {
 		SparqlExecutorInterface q;
 		
 		switch (operation) {
         case update:
- 		 q = new SparqlUpdate(repo, varInputGraph, varOutputGraph, varServiceUrl);
+ 		 q = new SparqlUpdate(repo, varInput, varOutput, varService);
        	 break;
         case construct:
-    	 q = new SparqlConstruct(repo, varInputGraph, varOutputGraph, varServiceUrl);
+    	 q = new SparqlConstruct(repo, varInput, varOutput, varService);
        	 break;
         case select:
-       	 q = new SparqlSelect(repo, varInputGraph, varOutputGraph, varServiceUrl);
+       	 q = new SparqlSelect(repo, varInput, varOutput, varService);
        	 break;
    	 	default:
    		 throw new UnsupportedOperationException("Supported operations: update, construct and select.");

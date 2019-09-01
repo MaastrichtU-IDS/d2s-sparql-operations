@@ -28,16 +28,16 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 	protected Logger logger = LoggerFactory.getLogger(AbstractSparqlQuery.class.getName());
 	private Repository repo;
 	
-	String varInputGraph;
-	String varOutputGraph;
-	String varServiceUrl;
+	String varInput;
+	String varOutput;
+	String varService;
 	
-	public AbstractSparqlQuery(Repository repo, String varInputGraph, String varOutputGraph, String varServiceUrl) {
+	public AbstractSparqlQuery(Repository repo, String varInput, String varOutput, String varService) {
 		this.repo = repo;
 		
-		this.varInputGraph = varInputGraph;
-		this.varOutputGraph = varOutputGraph;
-		this.varServiceUrl = varServiceUrl;
+		this.varInput = varInput;
+		this.varOutput = varOutput;
+		this.varService = varService;
 	}
 
 	// Executed when files are provided. Execute from single file from URL or file path, or multiple files from directory
@@ -98,9 +98,9 @@ public abstract class AbstractSparqlQuery implements SparqlExecutorInterface {
 	// We replace ?_var with the corresponding value
 	private String resolveVariables(String query) {
 		//scanForVariables(query);
-		query = query.replaceAll("\\?_inputGraph", varInputGraph);
-		query = query.replaceAll("\\?_outputGraph", varOutputGraph);
-		query = query.replaceAll("\\?_serviceUrl", varServiceUrl);
+		query = query.replaceAll("\\?_input", varInput);
+		query = query.replaceAll("\\?_output", varOutput);
+		query = query.replaceAll("\\?_service", varService);
 		//logger.info("    SPARQL query after replace all: " + query);
 	    return query;
 	}

@@ -35,14 +35,14 @@ public class CliOptions {
 	
 	
 	// SPARQL query variables
-	@Option(names= {"--var-inputGraph"}, description = "Input graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/data2services/input")
-	String varInputGraph;
+	@Option(names= {"--var-input"}, description = "Input graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/data2services/input")
+	String varInput;
 	
-	@Option(names= {"--var-outputGraph"}, description = "Output graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/data2services/output")
-	String varOutputGraph;
+	@Option(names= {"--var-output"}, description = "Output graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/data2services/output")
+	String varOutput;
 	
-	@Option(names= {"--var-serviceUrl"}, description = "A SPARQL service URL variable to replace in the SPARQL query. E.g.: http://localhost:7200/repositories/test")
-	String varServiceUrl;
+	@Option(names= {"--var-service"}, description = "A SPARQL service URL variable to replace in the SPARQL query. E.g.: http://localhost:7200/repositories/test")
+	String varService;
 	
 	
 	// Split params
