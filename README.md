@@ -1,4 +1,6 @@
 # Get started
+See the [Data2Services documentation](http://d2s.semanticscience.org/) to run d2s-sparql-operations as part of workflows to generate RDF knowledge graph from structured data.
+
 A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL or multiple files using [RDF4J](http://rdf4j.org/).
 
 * The user can execute **SPARQL queries** by
@@ -9,7 +11,7 @@ A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries fro
   * A **YAML file** with multiple ordered queries.
 * **Update**, **construct** and **select** operations supported.
 * It is possible to optionally define **username** and **password** for the SPARQL endpoint.
-* [data2services-transform-repository](https://github.com/MaastrichtU-IDS/data2services-transform-repository): example queries to transform biomedical data to the [BioLink](https://biolink.github.io/biolink-model/docs/) model for the [NCATS Translator program](https://ncats.nih.gov/translator).
+* [d2s-transform-repository](https://github.com/MaastrichtU-IDS/d2s-transform-repository): example queries to transform biomedical data to the [BioLink](https://biolink.github.io/biolink-model/docs/) model for the [NCATS Translator program](https://ncats.nih.gov/translator).
 
 ---
 
