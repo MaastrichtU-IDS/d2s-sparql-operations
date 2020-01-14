@@ -17,21 +17,22 @@ A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries fro
 
 # Pull
 
-Available on [DockerHub](https://hub.docker.com/r/vemonet/data2services-sparql-operations) the `latest` image is automatically built from latest branch `master` commit on [GitHub](https://github.com/MaastrichtU-IDS/data2services-sparql-operations).
+Available on [DockerHub](https://hub.docker.com/r/umids/d2s-sparql-operations) the `latest` image is automatically built from latest branch `master` commit on [GitHub](https://github.com/MaastrichtU-IDS/d2s-sparql-operations).
 
-```shell
-docker pull vemonet/data2services-sparql-operations
+```bash
+docker pull umids/d2s-sparql-operations
 ```
 
 ---
 
 # Build
 
-You can also clone the [GitHub repository](https://github.com/MaastrichtU-IDS/data2services-sparql-operations) and build the docker image locally (**unecessary if you do** `docker pull`)
+You can also clone the [GitHub repository](https://github.com/MaastrichtU-IDS/d2s-sparql-operations) and build the docker image locally (**unecessary if you do** `docker pull`)
 
-```shell
-git clone https://github.com/MaastrichtU-IDS/data2services-sparql-operations
-docker build -t vemonet/data2services-sparql-operations ./data2services-sparql-operations
+```bash
+git clone https://github.com/MaastrichtU-IDS/d2s-sparql-operations
+cd d2s-sparql-operations
+docker build -t umids/d2s-sparql-operations .
 ```
 ---
 
@@ -41,8 +42,8 @@ N.B.: you will need to remove the `\` and make the `docker run` commands one-lin
 
 ### Usage
 
-```shell
-docker run -it --rm vemonet/data2services-sparql-operations -h
+```bash
+docker run -it --rm umids/d2s-sparql-operations -h
 ```
 
 ---
@@ -51,8 +52,8 @@ docker run -it --rm vemonet/data2services-sparql-operations -h
 
 On [DBpedia](http://dbpedia.org/sparql) using a SPARQL query string as argument.
 
-```shell
-docker run -it --rm vemonet/data2services-sparql-operations -op select \
+```bash
+docker run -it --rm umids/d2s-sparql-operations -op select \
   -sp "select distinct ?Concept where {[] a ?Concept} LIMIT 10" \
   -ep "http://dbpedia.org/sparql"
 ```
@@ -63,12 +64,12 @@ docker run -it --rm vemonet/data2services-sparql-operations -op select \
 
 Multiple `INSERT` on [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/), using files in a repository from the local file system.
 
-```shell
-docker run -it --rm vemonet/data2services-sparql-operations \
+```bash
+docker run -it --rm umids/d2s-sparql-operations \
   -ep "http://graphdb.dumontierlab.com" -rep "test" \
   #-ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
   -op update -un $USERNAME -pw $PASSWORD \
-  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-insert.rq"
+  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-insert.rq"
 ```
 
 * Note that GraphDB and RDF4J Server require to add `/statements` at the end of the endpoint URL when doing an update.
@@ -79,10 +80,10 @@ docker run -it --rm vemonet/data2services-sparql-operations \
 
 On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL to get the SPARQL query from a file.
 
-```shell
-docker run -it --rm vemonet/data2services-sparql-operations -op construct \
+```bash
+docker run -it --rm umids/d2s-sparql-operations -op construct \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
-  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-construct-pathways.rq" 
+  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-construct-pathways.rq" 
 ```
 
 ---
@@ -90,24 +91,24 @@ docker run -it --rm vemonet/data2services-sparql-operations -op construct \
 
 ### GitHub repository
 
-We crawl the [example GitHub repository](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/tree/master/src/main/resources/select-examples) and execute each `.rq` file.
+We crawl the [example GitHub repository](https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/select-examples) and execute each `.rq` file.
 
-```shell
-docker run -it --rm vemonet/data2services-sparql-operations \
+```bash
+docker run -it --rm umids/d2s-sparql-operations \
   -op select -ep "http://dbpedia.org/sparql" \
-  -f "https://github.com/MaastrichtU-IDS/data2services-sparql-operations/tree/master/src/main/resources/select-examples" 
+  -f "https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/select-examples" 
 ```
 
 ---
 
 ### YAML
 
-A YAML file can be used to provide multiple ordered queries. See [example from GitHub](https://github.com/MaastrichtU-IDS/data2services-sparql-operations/blob/master/src/main/resources/example-queries.yaml).
+A YAML file can be used to provide multiple ordered queries. See [example from GitHub](https://github.com/MaastrichtU-IDS/d2s-sparql-operations/blob/master/src/main/resources/example-queries.yaml).
 
-```shell
-docker run -it --rm vemonet/data2services-sparql-operations \
+```bash
+docker run -it --rm umids/d2s-sparql-operations \
   -op select -ep "http://dbpedia.org/sparql" \
-  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-queries.yaml"
+  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-queries.yaml"
 ```
 
 ---
@@ -118,9 +119,9 @@ docker run -it --rm vemonet/data2services-sparql-operations \
 
 E.g.: a statement with value "1234,345,768" would be splitted in 3 statements "1234", "345" and "768".
 
-```shell
+```bash
 docker run -it \
-  vemonet/data2services-sparql-operations -op split \
+  umids/d2s-sparql-operations -op split \
   --split-property "http://w3id.org/biolink/vocab/has_participant" \
   --split-class "http://w3id.org/biolink/vocab/GeneGrouping" \
   --split-delimiter "," \
@@ -158,11 +159,11 @@ INSERT {
 
 Execute:
 
-```shell
-docker run -it --rm vemonet/data2services-sparql-operations \
+```bash
+docker run -it --rm umids/d2s-sparql-operations \
   -op update -ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
   -un $USERNAME -pw $PASSWORD \
-  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/data2services-sparql-operations/master/src/main/resources/example-insert-variables.rq" \
+  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-insert-variables.rq" \
   --var-input http://www.ontotext.com/explicit \
   --var-output https://w3id.org/data2services/output \
   --var-service http://localhost:7200/repositories/test
@@ -174,10 +175,10 @@ docker run -it --rm vemonet/data2services-sparql-operations \
 
 From [data2services-transform-repository](https://github.com/MaastrichtU-IDS/data2services-transform-repository), use a [federated query](https://github.com/MaastrichtU-IDS/data2services-transform-repository/blob/master/sparql/insert-biolink/drugbank/insert_drugbank_drug_CategoryOrganism.rq) to transform generic RDF generated by [AutoR2RML](https://github.com/amalic/AutoR2RML) and [xml2rdf](https://github.com/MaastrichtU-IDS/xml2rdf) to the [BioLink](https://biolink.github.io/biolink-model/docs/) model, and load it to a different repository.
 
-```shell
+```bash
 # DrugBank
 docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
-  vemonet/data2services-sparql-operations \
+  umids/d2s-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
   --var-service http://localhost:7200/repositories/test \ 
@@ -186,7 +187,7 @@ docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
 
 # HGNC
 docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data \
-  vemonet/data2services-sparql-operations \
+  umids/d2s-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
   --var-service http://localhost:7200/repositories/test \
