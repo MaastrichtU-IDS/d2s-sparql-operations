@@ -1,7 +1,9 @@
 # Get started
-See the [Data2Services documentation](http://d2s.semanticscience.org/) to run d2s-sparql-operations as part of workflows to generate RDF knowledge graph from structured data.
+See the [Data2Services framework documentation](http://d2s.semanticscience.org/) to run d2s-sparql-operations as part of workflows to generate RDF knowledge graph from structured data. 
 
-A project to execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL or multiple files using [RDF4J](http://rdf4j.org/).
+This documentation focus on using d2s-sparql-operations as a standalone Docker container.
+
+Execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL or multiple files using [RDF4J](http://rdf4j.org/).
 
 * The user can execute **SPARQL queries** by
   * Passing a SPARQL **query string** in `-sp` param 
