@@ -13,7 +13,9 @@ Execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL
   * A **YAML file** with multiple ordered queries.
 * **Update**, **construct** and **select** operations supported.
 * It is possible to optionally define **username** and **password** for the SPARQL endpoint.
-* [d2s-transform-repository](https://github.com/MaastrichtU-IDS/d2s-transform-repository): example queries to transform biomedical data to the [BioLink](https://biolink.github.io/biolink-model/docs/) model for the [NCATS Translator program](https://ncats.nih.gov/translator).
+* [d2s-transform-template](https://github.com/MaastrichtU-IDS/d2s-transform-template): example queries to transform biomedical data to the [BioLink](https://biolink.github.io/biolink-model/docs/) model for the [NCATS Translator program](https://ncats.nih.gov/translator).
+* Other examples available [here](https://github.com/MaastrichtU-IDS/d2s-scripts-repository/tree/master/sparql)
+* Queries to compute HCLS descriptive statistics available [here](https://github.com/MaastrichtU-IDS/d2s-scripts-repository/tree/master/sparql/compute-hcls-stats).
 
 ---
 
@@ -128,7 +130,7 @@ docker run -it \
   --split-class "http://w3id.org/biolink/vocab/GeneGrouping" \
   --split-delimiter "," \
   --split-delete \ # Delete the splitted statement
-  --uri-expansion "https://w3id.org/data2services/" \ # Use 'infer' to do it automatically using prefixcommons
+  --uri-expansion "https://w3id.org/d2s/" \ # Use 'infer' to do it automatically using prefixcommons
   #--trim-delimiter '"' \
   -ep "http://graphdb.dumontierlab.com" \ # RDF4J server URL
   -rep "test" \ # RDF4J server repository ID
@@ -148,7 +150,7 @@ docker run -it \
 ```SPARQL
 INSERT {
   GRAPH <?_output> {
-    ?Concept a <https://w3id.org/data2services/Concept> .
+    ?Concept a <https://w3id.org/d2s/Concept> .
   }
 } WHERE {
   SERVICE <?_service> {
@@ -167,7 +169,7 @@ docker run -it --rm umids/d2s-sparql-operations \
   -un $USERNAME -pw $PASSWORD \
   -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-insert-variables.rq" \
   --var-input http://www.ontotext.com/explicit \
-  --var-output https://w3id.org/data2services/output \
+  --var-output https://w3id.org/d2s/output \
   --var-service http://localhost:7200/repositories/test
 ```
 
@@ -185,7 +187,7 @@ docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
   --var-service http://localhost:7200/repositories/test \ 
   --var-input http://data2services/graph/xml2rdf \ 
-  --var-output https://w3id.org/data2services/graph/biolink/drugbank
+  --var-output https://w3id.org/d2s/graph/biolink/drugbank
 
 # HGNC
 docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data \
@@ -194,6 +196,6 @@ docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data \
   -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
   --var-service http://localhost:7200/repositories/test \
   --var-input http://data2services/graph/autor2rml \
-  --var-output https://w3id.org/data2services/graph/biolink/hgnc
+  --var-output https://w3id.org/d2s/graph/biolink/hgnc
 ```
 
