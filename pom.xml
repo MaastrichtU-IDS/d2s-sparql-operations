@@ -2,16 +2,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>nl.unimaas.ids</groupId>
-	<artifactId>data2services-sparql-operations</artifactId>
+	<artifactId>d2s-sparql-operations</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	
-	<url>https://maastrichtu-ids.github.io/data2services-sparql-operations</url>
+	<url>https://maastrichtu-ids.github.io/d2s-sparql-operations</url>
 	<description>Execute SPARQL queries from string, URL or multiple files using the RDF4J framework.</description>
 	
 	<scm>
-		<url>https://github.com/MaastrichtU-IDS/data2services-sparql-operations</url>
-		<connection>scm:git:git://github.com/MaastrichtU-IDS/data2services-sparql-operations.git</connection>
-		<developerConnection>scm:git:git@github.com:MaastrichtU-IDS/data2services-sparql-operations.git</developerConnection>
+		<url>https://github.com/MaastrichtU-IDS/d2s-sparql-operations</url>
+		<connection>scm:git:git://github.com/MaastrichtU-IDS/d2s-sparql-operations.git</connection>
+		<developerConnection>scm:git:git@github.com:MaastrichtU-IDS/d2s-sparql-operations.git</developerConnection>
 	</scm>
 	
     <licenses>
