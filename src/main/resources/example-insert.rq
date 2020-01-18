@@ -1,6 +1,6 @@
 INSERT {
-  GRAPH <https://w3id.org/data2services/example-insert> {
-    ?Concept a <https://w3id.org/data2services/Concept> .
+  GRAPH <https://w3id.org/d2s/example-insert> {
+    ?Concept a <https://w3id.org/d2s/Concept> .
   }
 } WHERE {
   SELECT * {

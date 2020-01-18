@@ -1,6 +1,6 @@
 INSERT {
   GRAPH <?_output> {
-    ?Concept a <https://w3id.org/data2services/Concept> .
+    ?Concept a <https://w3id.org/d2s/Concept> .
   }
 } WHERE {
   SERVICE <?_service> {
