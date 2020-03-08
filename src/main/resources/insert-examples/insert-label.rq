@@ -1,0 +1,10 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+INSERT {
+  GRAPH <https://w3id.org/d2s/example-insert> {
+    ?s rdfs:label ?label .
+  }
+} WHERE {
+  SELECT * {
+    ?s rdfs:label ?label .
+  } LIMIT 100
+}
