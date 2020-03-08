@@ -73,7 +73,7 @@ docker run -it --rm umids/d2s-sparql-operations \
   -ep "http://graphdb.dumontierlab.com" -rep "test" \
   #-ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
   -op update -un $USERNAME -pw $PASSWORD \
-  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-insert.rq"
+  -f "https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/insert-examples"
 ```
 
 * Note that GraphDB and RDF4J Server require to add `/statements` at the end of the endpoint URL when doing an update.
