@@ -21,7 +21,7 @@ public class CliOptions {
 	
 	// SPARQL endpoint params
 	@Option(names= {"-ep", "--sparql-endpoint"}, required = true, 
-			description = "URL of the SPARQL Endpoint to query or RDF4J Server. e.g. http://graphdb.dumontierlab.com/repositories/test or http://graphdb.dumontierlab.com")
+			description = "URL of the SPARQL Endpoint to query or RDF4J Server. e.g. https://graphdb.dumontierlab.com/repositories/test or https://graphdb.dumontierlab.com")
 	String endpointUrl = null;
 	
 	@Option(names= {"-rep", "--repositoryId"}, description = "Repository ID for RDF4J Server. E.g. test")

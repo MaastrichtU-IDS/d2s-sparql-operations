@@ -13,7 +13,7 @@ Execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL
   * A **YAML file** with multiple ordered queries.
 * **Update**, **construct** and **select** operations supported.
 * It is possible to optionally define **username** and **password** for the SPARQL endpoint.
-* [d2s-transform-template](https://github.com/MaastrichtU-IDS/d2s-transform-template): example queries to transform biomedical data to the [BioLink](https://biolink.github.io/biolink-model/docs/) model for the [NCATS Translator program](https://ncats.nih.gov/translator).
+* [d2s-project-template](https://github.com/MaastrichtU-IDS/d2s-project-template): example queries to transform biomedical data to the [BioLink](https://biolink.github.io/biolink-model/docs/) model for the [NCATS Translator program](https://ncats.nih.gov/translator).
 * Other examples available [here](https://github.com/MaastrichtU-IDS/d2s-scripts-repository/tree/master/sparql)
 * Queries to compute HCLS descriptive statistics available [here](https://github.com/MaastrichtU-IDS/d2s-scripts-repository/tree/master/sparql/compute-hcls-stats).
 
@@ -66,12 +66,12 @@ docker run -it --rm umids/d2s-sparql-operations -op select \
 
 ### Update
 
-Multiple `INSERT` on [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/), using files in a repository from the local file system.
+Multiple `INSERT` on [graphdb.dumontierlab.com](https://graphdb.dumontierlab.com/), using files in a repository from the local file system.
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations \
-  -ep "http://graphdb.dumontierlab.com" -rep "test" \
-  #-ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
+  -ep "https://graphdb.dumontierlab.com" -rep "test" \
+  #-ep "https://graphdb.dumontierlab.com/repositories/test/statements" \
   -op update -un $USERNAME -pw $PASSWORD \
   -f "https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/insert-examples"
 ```
@@ -82,11 +82,11 @@ docker run -it --rm umids/d2s-sparql-operations \
 
 ### Construct
 
-On [graphdb.dumontierlab.com](http://graphdb.dumontierlab.com/) using GitHub URL to get the SPARQL query from a file.
+On [graphdb.dumontierlab.com](https://graphdb.dumontierlab.com/) using GitHub URL to get the SPARQL query from a file.
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations -op construct \
-  -ep "http://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
+  -ep "https://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
   -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-construct-pathways.rq" 
 ```
 
@@ -132,13 +132,13 @@ docker run -it \
   --split-delete \ # Delete the splitted statement
   --uri-expansion "https://w3id.org/d2s/" \ # Use 'infer' to do it automatically using prefixcommons
   #--trim-delimiter '"' \
-  -ep "http://graphdb.dumontierlab.com" \ # RDF4J server URL
+  -ep "https://graphdb.dumontierlab.com" \ # RDF4J server URL
   -rep "test" \ # RDF4J server repository ID
   -un USERNAME -pw PASSWORD
   
 # For SPARQLRepository
-#  -ep "http://graphdb.dumontierlab.com/repositories/test" \
-#  -uep "http://graphdb.dumontierlab.com/repositories/test/statements" \
+#  -ep "https://graphdb.dumontierlab.com/repositories/test" \
+#  -uep "https://graphdb.dumontierlab.com/repositories/test/statements" \
 ```
 
 ---
@@ -165,7 +165,7 @@ Execute:
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations \
-  -op update -ep "http://graphdb.dumontierlab.com/repositories/test/statements" \
+  -op update -ep "https://graphdb.dumontierlab.com/repositories/test/statements" \
   -un $USERNAME -pw $PASSWORD \
   -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-insert-variables.rq" \
   --var-input http://www.ontotext.com/explicit \
@@ -184,7 +184,7 @@ From [data2services-transform-repository](https://github.com/MaastrichtU-IDS/dat
 docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
   umids/d2s-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
-  -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
+  -ep "https://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
   --var-service http://localhost:7200/repositories/test \ 
   --var-input http://data2services/graph/xml2rdf \ 
   --var-output https://w3id.org/d2s/graph/biolink/drugbank
@@ -193,7 +193,7 @@ docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
 docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data \
   umids/d2s-sparql-operations \
   -f "/data" -un USERNAME -pw PASSWORD \
-  -ep "http://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
+  -ep "https://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
   --var-service http://localhost:7200/repositories/test \
   --var-input http://data2services/graph/autor2rml \
   --var-output https://w3id.org/d2s/graph/biolink/hgnc
