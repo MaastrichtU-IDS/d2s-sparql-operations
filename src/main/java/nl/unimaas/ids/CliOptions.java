@@ -64,9 +64,8 @@ public class CliOptions {
 	@Option(names= {"--split-buffer-size"}, description = "Number of statements in the RDF4J model before loading it to the SPARQL endpoint. Default: 1000000")
 	int splitBufferSize = 1000000;
 	
-	
 	// URI expansion params
-	@Option(names= {"-uex", "--uri-expansion"}, description = "Expan splitted values with URI, use \"infer\" to do it automatically")
+	@Option(names= {"-uex", "--uri-expansion"}, description = "Expand splitted values with URI, use \"infer\" to do it automatically")
 	String uriExpansion = null;
 	
 }
