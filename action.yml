@@ -9,9 +9,9 @@ inputs:
     description: 'Path of file(s) to execute. Single file from URL or filepath. Multiple files from directory (query files must have .rq extension).'
     required: true
   endpoint:
-    description: 'URL of the SPARQL Endpoint to query or RDF4J Server. e.g. https://graphdb.dumontierlab.com/repositories/test or https://graphdb.dumontierlab.com'
+    description: 'URL of the SPARQL Endpoint to query or RDF4J Server. e.g. https://graphdb.dumontierlab.com/repositories/test/statements or https://graphdb.dumontierlab.com'
     required: true
-    default: 'https://graphdb.dumontierlab.com/repositories/test'
+    default: 'https://graphdb.dumontierlab.com/repositories/test/statements'
   # repository:
   #   description: 'Optional Repository ID for RDF4J Server. E.g. test'
   #   required: false
