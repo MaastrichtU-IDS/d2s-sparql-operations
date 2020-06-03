@@ -25,18 +25,18 @@ inputs:
     description: 'SPARQL query operation (update, construct, select, split). Default is update'
     required: false
     default: 'update'
-  # inputvar:
-  #   description: 'Input graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/d2s/input'
-  #   required: false
-  # outputvar:
-  #   description: 'Output graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/d2s/output'
-  #   required: false
-  # servicevar:
-  #   description: 'A SPARQL service URL variable to replace in the SPARQL query. E.g.: http://localhost:7200/repositories/test'
-  #   required: false
-  args:
-    description: 'Other arguments'
+  inputvar:
+    description: 'Input graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/d2s/input'
     required: false
+  outputvar:
+    description: 'Output graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/d2s/output'
+    required: false
+  servicevar:
+    description: 'A SPARQL service URL variable to replace in the SPARQL query. E.g.: http://localhost:7200/repositories/test'
+    required: false
+  # args:
+  #   description: 'Other arguments'
+  #   required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -51,10 +51,10 @@ runs:
     - ${{ inputs.password }}
     - "--operation"
     - ${{ inputs.operation }}
-    # - "--var-input"
-    # - ${{ inputs.inputvar }}
-    # - "--var-output"
-    # - ${{ inputs.outputvar }}
-    # - "--var-service"
-    # - ${{ inputs.servicevar }}
-    - ${{ inputs.args }}
+    - "--var-input"
+    - ${{ inputs.inputvar }}
+    - "--var-output"
+    - ${{ inputs.outputvar }}
+    - "--var-service"
+    - ${{ inputs.servicevar }}
+    # - ${{ inputs.args }}
