@@ -1,0 +1,27 @@
+
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Publish to Registry
+      uses: HurricanKai/Publish-Docker-Github-Action@master
+      
+      # Only if tag that starts with v
+      if: contains(github.ref, 'refs/tags/v')
+      with:
+        name: umids/d2s-sparql-operations
+        dockerfile: Dockerfile
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        tagging: true
+        # Use env var GITHUB_TAG (set auto from git repo)
