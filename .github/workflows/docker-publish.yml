@@ -8,20 +8,15 @@ on:
 jobs:
 
   build:
-
+    if: contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
     steps:
 
-    - name: Publish to Registry
-      uses: HurricanKai/Publish-Docker-Github-Action@master
-      
-      # Only if tag that starts with v
-      if: contains(github.ref, 'refs/tags/v')
+    - uses: docker/build-push-action@v1
       with:
-        name: umids/d2s-sparql-operations
-        dockerfile: Dockerfile
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
-        tagging: true
+        repository: umids/d2s-sparql-operations
+        tag_with_ref: true
         # Use env var GITHUB_TAG (set auto from git repo)
