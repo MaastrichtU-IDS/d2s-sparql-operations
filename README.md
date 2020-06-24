@@ -52,6 +52,20 @@ docker run -it --rm umids/d2s-sparql-operations -h
 
 ---
 
+### Upload
+
+Upload RDF files to a SPARQL endpoint:
+
+```bash
+docker run -it --rm -v $(pwd):/data umids/d2s-sparql-operations -op upload \
+  -f "*.ttl" \
+  -ep "https://graphdb.dumontierlab.com/repositories/test/statements" \
+  -un $USERNAME -pw $PASSWORD \
+  --var-output "http://my-graph.com"
+```
+
+---
+
 ### Select
 
 On [DBpedia](http://dbpedia.org/sparql) using a SPARQL query string as argument.
@@ -102,6 +116,8 @@ docker run -it --rm umids/d2s-sparql-operations \
   -op select -ep "http://dbpedia.org/sparql" \
   -f "https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/select-examples" 
 ```
+
+> Crawling GitHub repository from URL is based on HTML parsing, hence might be unstable
 
 ---
 

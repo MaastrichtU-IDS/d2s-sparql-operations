@@ -15,7 +15,7 @@ public class CliOptions {
 	@Option(names= {"-f", "--filepath"}, description = "Path of file(s) to execute. Single file from URL or filepath. Multiple files from directory (query files must have .rq extension). YAML file.")
 	String inputFile = null;
 	
-	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select, split). Default is update")
+	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select, split, upload). Default is update")
 	QueryOperations queryOperation = QueryOperations.update;
 	
 	
@@ -38,7 +38,7 @@ public class CliOptions {
 	@Option(names= {"--var-input"}, description = "Input graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/d2s/input")
 	String varInput;
 	
-	@Option(names= {"--var-output"}, description = "Output graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/d2s/output")
+	@Option(names= {"--var-output"}, description = "Output graph URI to upload RDF to, or to be replaced in the SPARQL query. E.g.: https://w3id.org/d2s/output")
 	String varOutput;
 	
 	@Option(names= {"--var-service"}, description = "A SPARQL service URL variable to replace in the SPARQL query. E.g.: http://localhost:7200/repositories/test")
