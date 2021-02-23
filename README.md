@@ -21,12 +21,16 @@ Execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL
 
 # Use the jar
 
-Download the latest `.jar` file from the GitHub releases
-
-Copy and rename the jar somewhere you can call it easily, e.g. in a `bin` folder in your home folder:
+Download the `.jar` file from the latest GitHub release [here](https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/d2s-sparql-operations.jar), you can use this command to do it automatically with Bash:
 
 ```bash
-mv d2s-sparql-operations-*-SNAPSHOT-jar-with-dependencies.jar ~/bin/d2s-sparql-operations.jar
+wget https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/d2s-sparql-operations.jar
+```
+
+Move the jar somewhere you can call it easily, e.g. in a `bin` folder in your home folder:
+
+```bash
+mv d2s-sparql-operations.jar ~/bin/d2s-sparql-operations.jar
 ```
 
 Run the jar:
@@ -45,6 +49,11 @@ Compile the jar file from the source code:
 mvn clean package
 ```
 
+Move it:
+
+```bash
+mv d2s-sparql-operations-*-SNAPSHOT-jar-with-dependencies.jar ~/bin/d2s-sparql-operations.jar
+```
 
 # Use Docker
 
@@ -90,7 +99,7 @@ docker run -it --rm -v $(pwd):/data umids/d2s-sparql-operations -op upload \
   -f "*.ttl" \
   -ep "https://graphdb.dumontierlab.com/repositories/test/statements" \
   -un $USERNAME -pw $PASSWORD \
-  --var-output "http://my-graph.com"
+  -g "http://my-graph.com"
 ```
 
 ---

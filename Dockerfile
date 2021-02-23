@@ -1,4 +1,4 @@
-FROM maven:3-jdk-8-alpine as build
+FROM maven:3-jdk-11 as build
 
 # Only runs if pom.xml changes. To avoid downloading dependencies everytime.
 COPY pom.xml .
@@ -9,7 +9,7 @@ RUN mvn package
 
 
 # Final running image
-FROM openjdk:8-jre-alpine
+FROM openjdk:11-jre-slim
 
 LABEL maintainer "Vincent Emonet <vincent.emonet@gmail.com>"
 
