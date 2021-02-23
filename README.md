@@ -52,7 +52,7 @@ mvn clean package
 Move it:
 
 ```bash
-mv d2s-sparql-operations-*-SNAPSHOT-jar-with-dependencies.jar ~/bin/d2s-sparql-operations.jar
+mv target/d2s-sparql-operations-*-jar-with-dependencies.jar ~/bin/d2s-sparql-operations.jar
 ```
 
 # Use Docker
