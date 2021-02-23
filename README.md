@@ -1,9 +1,4 @@
-# Get started
-See the [Data2Services framework documentation](http://d2s.semanticscience.org/) to run d2s-sparql-operations as part of workflows to generate RDF knowledge graph from structured data. 
-
-This documentation focus on using d2s-sparql-operations as a standalone Docker container.
-
-Execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL or multiple files using [RDF4J](http://rdf4j.org/).
+A Java CLI to upload RDF files, and execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL or multiple files using [RDF4J](http://rdf4j.org/).
 
 * The user can execute **SPARQL queries** by
   * Passing a SPARQL **query string** in `-sp` param 
@@ -11,17 +6,18 @@ Execute [SPARQL](https://www.w3.org/TR/sparql11-query/) queries from string, URL
   * Providing the **URL** of a **GitHub repository** containing `.rq` files to execute in `-f` param
   * Providing the **path to a directory** where the queries are stored in `.rq` text files and executed in the **alphabetical order** of their filename. 
   * A **YAML file** with multiple ordered queries.
-* **Update**, **construct** and **select** operations supported.
+* **Update**, **construct** and **select** SPARQL operations supported.
 * It is possible to optionally define **username** and **password** for the SPARQL endpoint.
-* [d2s-project-template](https://github.com/MaastrichtU-IDS/d2s-project-template): example queries to transform biomedical data to the [BioLink](https://biolink.github.io/biolink-model/docs/) model for the [NCATS Translator program](https://ncats.nih.gov/translator).
-* Other examples available [here](https://github.com/MaastrichtU-IDS/d2s-scripts-repository/tree/master/sparql)
-* Queries to compute HCLS descriptive statistics available [here](https://github.com/MaastrichtU-IDS/d2s-scripts-repository/tree/master/sparql/compute-hcls-stats).
+
+> See the [Data2Services framework documentation](http://d2s.semanticscience.org/) to run d2s-sparql-operations as part of workflows to generate RDF knowledge graph from structured data. 
 
 ---
 
 # Use the jar
 
-Download the `.jar` file from the latest GitHub release [here](https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/d2s-sparql-operations.jar), you can use this command to do it automatically with Bash:
+[![Java version](https://img.shields.io/badge/java-11-blue)](https://openjdk.java.net/install/) [![Download jar](https://img.shields.io/badge/download-jar-blueviolet)](https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/d2s-sparql-operations.jar) 
+
+Download the `.jar` file from the latest GitHub release [here](https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/d2s-sparql-operations.jar), you can use this command to do it automatically in a Bash terminal:
 
 ```bash
 wget https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/d2s-sparql-operations.jar
