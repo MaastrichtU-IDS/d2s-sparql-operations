@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.semanticscience.d2s</groupId>
 	<artifactId>sparql-operations</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	
 	<url>https://maastrichtu-ids.github.io/d2s-sparql-operations</url>
 	<description>Execute SPARQL queries from string, URL or multiple files using the RDF4J framework.</description>

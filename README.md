@@ -15,12 +15,12 @@ A Java CLI to upload RDF files, and execute [SPARQL](https://www.w3.org/TR/sparq
 
 # Use the jar
 
-[![Java version](https://img.shields.io/badge/java-11-blue)](https://openjdk.java.net/install/) [![Download jar](https://img.shields.io/badge/download-jar-blueviolet)](https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/d2s-sparql-operations.jar) 
+[![Java version](https://img.shields.io/badge/java-11-blue)](https://openjdk.java.net/install/) [![Download jar](https://img.shields.io/badge/download-jar-blueviolet)](https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/sparql-operations.jar) 
 
-Download the `.jar` file from the latest GitHub release [here](https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/d2s-sparql-operations.jar), you can use this command to do it automatically in a Bash terminal:
+Download the `.jar` file from the latest GitHub release [here](https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/sparql-operations.jar), you can use this command to do it automatically in a Bash terminal:
 
 ```bash
-wget https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/d2s-sparql-operations.jar
+wget https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/download/sparql-operations.jar
 ```
 
 Move the jar somewhere you can call it easily, e.g. in a `bin` folder in your home folder:
