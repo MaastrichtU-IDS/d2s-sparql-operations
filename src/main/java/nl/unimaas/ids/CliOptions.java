@@ -15,7 +15,7 @@ public class CliOptions {
 	@Option(names= {"-f", "--filepath"}, description = "Path of file(s) to execute. Single file from URL or filepath. Multiple files from directory (query files must have .rq extension). YAML file.")
 	String inputFile = null;
 	
-	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select, split, upload). Default is update")
+	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select, metadata, split, upload). Default is update")
 	QueryOperations queryOperation = QueryOperations.update;
 	
 	

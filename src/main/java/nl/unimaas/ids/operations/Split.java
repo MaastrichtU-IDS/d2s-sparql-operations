@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A class to upload to GraphDB SPARQL endpoint
+ * A class to Split statements in a SPARQL endpoint
  */
 public class Split {
 

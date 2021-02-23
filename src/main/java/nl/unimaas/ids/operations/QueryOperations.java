@@ -5,5 +5,6 @@ public enum QueryOperations {
 	construct,
 	select,
 	upload,
+	metadata,
 	split
 }
