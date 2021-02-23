@@ -26,16 +26,18 @@ wget https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/do
 Move the jar somewhere you can call it easily, e.g. in a `bin` folder in your home folder:
 
 ```bash
-mv d2s-sparql-operations.jar ~/bin/d2s-sparql-operations.jar
+mkdir -p ~/bin && mv d2s-sparql-operations.jar ~/bin/d2s-sparql-operations.jar
 ```
 
-Run the jar:
+Run the jar to upload RDF files:
 
 ```bash
 java -jar ~/bin/d2s-sparql-operations.jar -op upload -f "*.ttl" -ep "https://graphdb.dumontierlab.com/repositories/test/statements" -un $USERNAME -pw $PASSWORD -g "http://my-graph.com"
 ```
 
 > Optionally use `-g "http://my-graph.com"` to specify a graph to upload the data to
+
+See below for more example to execute SPARQL queries, and various operations.
 
 ### Build the jar
 
