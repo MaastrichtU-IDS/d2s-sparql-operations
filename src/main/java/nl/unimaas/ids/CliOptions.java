@@ -35,6 +35,9 @@ public class CliOptions {
 	
 	
 	// SPARQL query variables
+	@Option(names= {"-g", "--graph"}, description = "Graph URI used in some operations (e.g. to upload to a specific graph)")
+	String graph;
+
 	@Option(names= {"--var-input"}, description = "Input graph URI variable to replace in the SPARQL query. E.g.: https://w3id.org/d2s/input")
 	String varInput;
 	

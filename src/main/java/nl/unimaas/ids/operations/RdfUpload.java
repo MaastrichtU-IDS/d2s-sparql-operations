@@ -21,14 +21,15 @@ public class RdfUpload {
 		
 		DirectoryScanner scanner = new DirectoryScanner();
 		// Remove / if present at start of filepath
-		scanner.setIncludes(new String[]{filePath.substring(filePath.startsWith("/") ? 1 : 0)});
-		scanner.setBasedir("/");
+		// scanner.setIncludes(new String[]{filePath.substring(filePath.startsWith("/") ? 1 : 0)});
+		scanner.setIncludes(new String[]{filePath});
+		scanner.setBasedir(new File(System.getProperty("user.dir")));
 		scanner.setCaseSensitive(false);
 		scanner.scan();
 		
 		for(String inputFilePath : scanner.getIncludedFiles()) {
 			System.out.println("Uploading: " + inputFilePath);
-			File f = new File("/", inputFilePath);
+			File f = new File(inputFilePath);
 			if (graphUri != null) {
 				conn.add(f, null, Rio.getParserFormatForFileName(f.getName()).get(), vf.createIRI(graphUri));
 			} else {

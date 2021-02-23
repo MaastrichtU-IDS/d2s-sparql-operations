@@ -14,6 +14,8 @@ FROM openjdk:8-jre-alpine
 LABEL maintainer "Vincent Emonet <vincent.emonet@gmail.com>"
 
 COPY --from=build target/d2s-sparql-operations-0.0.1-SNAPSHOT-jar-with-dependencies.jar /app/d2s-sparql-operations.jar
+# COPY --from=build target/d2s-sparql-operations-*-SNAPSHOT-jar-with-dependencies.jar /app/d2s-sparql-operations.jar
 
+WORKDIR /data
 ENTRYPOINT ["java","-jar","/app/d2s-sparql-operations.jar"]
 CMD ["-h"]

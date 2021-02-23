@@ -27,7 +27,7 @@ public class SparqlOperation {
 				Split splitter = new Split(repo, cli.varOutput, cli.splitBufferSize);
 				splitter.executeSplit(cli.splitClass, cli.splitProperty, cli.splitDelimiter,  cli.splitQuote, cli.splitDelete, cli.uriExpansion);
 			} else if (cli.queryOperation == QueryOperations.upload) {
-				RdfUpload.uploadRdf(cli.inputFile, repo, cli.varOutput);
+				RdfUpload.uploadRdf(cli.inputFile, repo, cli.graph);
 			} else {
 				// If the query operation is SPARQL: get the SPARQL executor
 				System.out.println("Performing operation: " + cli.queryOperation.toString());
