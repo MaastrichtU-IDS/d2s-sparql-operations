@@ -1,4 +1,4 @@
-package nl.unimaas.ids.operations;
+package org.semanticscience.d2s.operations;
 
 public enum QueryOperations {
 	update,

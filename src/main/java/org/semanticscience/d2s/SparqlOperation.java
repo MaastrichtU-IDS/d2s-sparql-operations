@@ -1,12 +1,11 @@
-package nl.unimaas.ids;
-
-import nl.unimaas.ids.operations.QueryOperations;
-import nl.unimaas.ids.operations.RdfUpload;
-import nl.unimaas.ids.operations.Split;
-import nl.unimaas.ids.operations.queries.SparqlExecutorInterface;
-import nl.unimaas.ids.operations.queries.SparqlQueryFactory;
+package org.semanticscience.d2s;
 
 import org.eclipse.rdf4j.repository.Repository;
+import org.semanticscience.d2s.operations.QueryOperations;
+import org.semanticscience.d2s.operations.RdfUpload;
+import org.semanticscience.d2s.operations.Split;
+import org.semanticscience.d2s.operations.queries.SparqlExecutorInterface;
+import org.semanticscience.d2s.operations.queries.SparqlQueryFactory;
 
 import picocli.CommandLine;
 

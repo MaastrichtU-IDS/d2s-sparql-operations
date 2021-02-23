@@ -26,13 +26,13 @@ wget https://github.com/MaastrichtU-IDS/d2s-sparql-operations/releases/latest/do
 Move the jar somewhere you can call it easily, e.g. in a `bin` folder in your home folder:
 
 ```bash
-mkdir -p ~/bin && mv d2s-sparql-operations.jar ~/bin/d2s-sparql-operations.jar
+mkdir -p ~/bin && mv sparql-operations.jar ~/bin/sparql-operations.jar
 ```
 
-Run the jar to upload RDF files:
+* Run the jar to upload RDF files:
 
 ```bash
-java -jar ~/bin/d2s-sparql-operations.jar -o upload -i "*.ttl" -e "https://graphdb.dumontierlab.com/repositories/test/statements" -u 'username' -p 'password' -g "http://my-graph.com"
+java -jar ~/bin/sparql-operations.jar -o upload -i "*.ttl" -e "https://graphdb.dumontierlab.com/repositories/test/statements" -u 'username' -p 'password' -g "http://my-graph.com"
 ```
 
 > Optionally use `-g "http://my-graph.com"` to specify a graph to upload the data to
@@ -42,6 +42,12 @@ You can also define the username and password using environment variables:
 ```bash
 export D2S_USERNAME=myusername
 export D2S_PASSWORD=mypassword
+```
+
+* Execute a SPARQL query provided as argument:
+
+```bash
+java -jar ~/bin/sparql-operations.jar -o select -q "SELECT * WHERE {?s ?p ?o .} LIMIT 10" -e "https://graphdb.dumontierlab.com/repositories/test"
 ```
 
 See below for more example to execute SPARQL queries, and various operations.
@@ -57,7 +63,7 @@ mvn clean package
 Move it:
 
 ```bash
-mv target/d2s-sparql-operations-*-jar-with-dependencies.jar ~/bin/d2s-sparql-operations.jar
+mv target/sparql-operations-*-jar-with-dependencies.jar ~/bin/sparql-operations.jar
 ```
 
 # Use Docker

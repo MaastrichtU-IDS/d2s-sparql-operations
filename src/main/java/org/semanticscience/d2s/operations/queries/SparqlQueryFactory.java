@@ -1,10 +1,9 @@
-package nl.unimaas.ids.operations.queries;
+package org.semanticscience.d2s.operations.queries;
 
 import java.sql.SQLException;
 
-import nl.unimaas.ids.operations.QueryOperations;
-
 import org.eclipse.rdf4j.repository.Repository;
+import org.semanticscience.d2s.operations.QueryOperations;
 
 public class SparqlQueryFactory {
 	

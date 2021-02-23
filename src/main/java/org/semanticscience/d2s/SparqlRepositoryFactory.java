@@ -1,4 +1,4 @@
-package nl.unimaas.ids;
+package org.semanticscience.d2s;
 
 import java.sql.SQLException;
 

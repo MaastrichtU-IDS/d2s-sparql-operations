@@ -1,4 +1,4 @@
-package nl.unimaas.ids.operations;
+package org.semanticscience.d2s.operations;
 
 import org.apache.tools.ant.DirectoryScanner;
 import org.eclipse.rdf4j.repository.Repository;

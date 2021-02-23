@@ -1,6 +1,7 @@
-package nl.unimaas.ids;
+package org.semanticscience.d2s;
 
-import nl.unimaas.ids.operations.QueryOperations;
+import org.semanticscience.d2s.operations.QueryOperations;
+
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 

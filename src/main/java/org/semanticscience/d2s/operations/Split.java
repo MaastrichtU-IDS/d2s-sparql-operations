@@ -1,4 +1,4 @@
-package nl.unimaas.ids.operations;
+package org.semanticscience.d2s.operations;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package nl.unimaas.ids.operations.queries;
+package org.semanticscience.d2s.operations.queries;
 
 import java.io.File;
 import java.io.FileInputStream;

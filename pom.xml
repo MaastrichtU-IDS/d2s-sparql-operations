@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>nl.unimaas.ids</groupId>
-	<artifactId>d2s-sparql-operations</artifactId>
+	<groupId>org.semanticscience.d2s</groupId>
+	<artifactId>sparql-operations</artifactId>
 	<version>0.0.2</version>
 	
 	<url>https://maastrichtu-ids.github.io/d2s-sparql-operations</url>
@@ -98,7 +98,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>nl.unimaas.ids.SparqlOperation</mainClass>
+							<mainClass>org.semanticscience.d2s.SparqlOperation</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
