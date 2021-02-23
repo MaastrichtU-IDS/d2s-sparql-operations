@@ -13,8 +13,8 @@ FROM openjdk:11-jre-slim
 
 LABEL maintainer "Vincent Emonet <vincent.emonet@gmail.com>"
 
-COPY --from=build target/d2s-sparql-operations-*-jar-with-dependencies.jar /app/d2s-sparql-operations.jar
+COPY --from=build target/sparql-operations-*-jar-with-dependencies.jar /app/sparql-operations.jar
 
 WORKDIR /data
-ENTRYPOINT ["java","-jar","/app/d2s-sparql-operations.jar"]
+ENTRYPOINT ["java","-jar","/app/sparql-operations.jar"]
 CMD ["-h"]
