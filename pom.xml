@@ -115,4 +115,12 @@
 		</plugins>
 	</build>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub MaastrichtU-IDS Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/MaastrichtU-IDS/d2s-sparql-operations</url>
+		</repository>
+	</distributionManagement>
+
 </project>

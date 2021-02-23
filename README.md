@@ -32,10 +32,17 @@ mkdir -p ~/bin && mv d2s-sparql-operations.jar ~/bin/d2s-sparql-operations.jar
 Run the jar to upload RDF files:
 
 ```bash
-java -jar ~/bin/d2s-sparql-operations.jar -op upload -f "*.ttl" -ep "https://graphdb.dumontierlab.com/repositories/test/statements" -un $USERNAME -pw $PASSWORD -g "http://my-graph.com"
+java -jar ~/bin/d2s-sparql-operations.jar -o upload -i "*.ttl" -e "https://graphdb.dumontierlab.com/repositories/test/statements" -u 'username' -p 'password' -g "http://my-graph.com"
 ```
 
 > Optionally use `-g "http://my-graph.com"` to specify a graph to upload the data to
+
+You can also define the username and password using environment variables:
+
+```bash
+export D2S_USERNAME=myusername
+export D2S_PASSWORD=mypassword
+```
 
 See below for more example to execute SPARQL queries, and various operations.
 
@@ -94,9 +101,9 @@ Upload RDF files to a SPARQL endpoint:
 
 ```bash
 docker run -it --rm -v $(pwd):/data umids/d2s-sparql-operations -op upload \
-  -f "*.ttl" \
-  -ep "https://graphdb.dumontierlab.com/repositories/test/statements" \
-  -un $USERNAME -pw $PASSWORD \
+  -i "*.ttl" \
+  -e "https://graphdb.dumontierlab.com/repositories/test/statements" \
+  -u $USERNAME -pw $PASSWORD \
   -g "http://my-graph.com"
 ```
 
@@ -108,8 +115,8 @@ On [DBpedia](http://dbpedia.org/sparql) using a SPARQL query string as argument.
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations -op select \
-  -sp "select distinct ?Concept where {[] a ?Concept} LIMIT 10" \
-  -ep "http://dbpedia.org/sparql"
+  -q "select distinct ?Concept where {[] a ?Concept} LIMIT 10" \
+  -e "http://dbpedia.org/sparql"
 ```
 
 ---
@@ -120,10 +127,10 @@ Multiple `INSERT` on [graphdb.dumontierlab.com](https://graphdb.dumontierlab.com
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations \
-  -ep "https://graphdb.dumontierlab.com" -rep "test" \
-  #-ep "https://graphdb.dumontierlab.com/repositories/test/statements" \
-  -op update -un $USERNAME -pw $PASSWORD \
-  -f "https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/insert-examples"
+  -e "https://graphdb.dumontierlab.com" -rep "test" \
+  #-e "https://graphdb.dumontierlab.com/repositories/test/statements" \
+  -op update -u $USERNAME -pw $PASSWORD \
+  -i "https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/insert-examples"
 ```
 
 * Note that GraphDB and RDF4J Server require to add `/statements` at the end of the endpoint URL when doing an update.
@@ -136,8 +143,8 @@ On [graphdb.dumontierlab.com](https://graphdb.dumontierlab.com/) using GitHub UR
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations -op construct \
-  -ep "https://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
-  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-construct-pathways.rq" 
+  -e "https://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
+  -i "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-construct-pathways.rq" 
 ```
 
 ---
@@ -149,8 +156,8 @@ We crawl the [example GitHub repository](https://github.com/MaastrichtU-IDS/d2s-
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations \
-  -op select -ep "http://dbpedia.org/sparql" \
-  -f "https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/select-examples" 
+  -op select -e "http://dbpedia.org/sparql" \
+  -i "https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/select-examples" 
 ```
 
 > Crawling GitHub repository from URL is based on HTML parsing, hence might be unstable
@@ -163,8 +170,8 @@ A YAML file can be used to provide multiple ordered queries. See [example from G
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations \
-  -op select -ep "http://dbpedia.org/sparql" \
-  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-queries.yaml"
+  -op select -e "http://dbpedia.org/sparql" \
+  -i "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-queries.yaml"
 ```
 
 ---
@@ -184,12 +191,12 @@ docker run -it \
   --split-delete \ # Delete the splitted statement
   --uri-expansion "https://w3id.org/d2s/" \ # Use 'infer' to do it automatically using prefixcommons
   #--trim-delimiter '"' \
-  -ep "https://graphdb.dumontierlab.com" \ # RDF4J server URL
+  -e "https://graphdb.dumontierlab.com" \ # RDF4J server URL
   -rep "test" \ # RDF4J server repository ID
-  -un USERNAME -pw PASSWORD
+  -u USERNAME -pw PASSWORD
   
 # For SPARQLRepository
-#  -ep "https://graphdb.dumontierlab.com/repositories/test" \
+#  -e "https://graphdb.dumontierlab.com/repositories/test" \
 #  -uep "https://graphdb.dumontierlab.com/repositories/test/statements" \
 ```
 
@@ -217,9 +224,9 @@ Execute:
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations \
-  -op update -ep "https://graphdb.dumontierlab.com/repositories/test/statements" \
-  -un $USERNAME -pw $PASSWORD \
-  -f "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-insert-variables.rq" \
+  -op update -e "https://graphdb.dumontierlab.com/repositories/test/statements" \
+  -u $USERNAME -pw $PASSWORD \
+  -i "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-insert-variables.rq" \
   --var-input http://www.ontotext.com/explicit \
   --var-output https://w3id.org/d2s/output \
   --var-service http://localhost:7200/repositories/test
@@ -235,8 +242,8 @@ From [data2services-transform-repository](https://github.com/MaastrichtU-IDS/dat
 # DrugBank
 docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
   umids/d2s-sparql-operations \
-  -f "/data" -un USERNAME -pw PASSWORD \
-  -ep "https://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
+  -i "/data" -u USERNAME -pw PASSWORD \
+  -e "https://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
   --var-service http://localhost:7200/repositories/test \ 
   --var-input http://data2services/graph/xml2rdf \ 
   --var-output https://w3id.org/d2s/graph/biolink/drugbank
@@ -244,8 +251,8 @@ docker run -it --rm -v "$PWD/sparql/insert-biolink/drugbank":/data \
 # HGNC
 docker run -it --rm -v "$PWD/sparql/insert-biolink/hgnc":/data \
   umids/d2s-sparql-operations \
-  -f "/data" -un USERNAME -pw PASSWORD \
-  -ep "https://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
+  -i "/data" -u USERNAME -pw PASSWORD \
+  -e "https://graphdb.dumontierlab.com/repositories/ncats-test/statements" \
   --var-service http://localhost:7200/repositories/test \
   --var-input http://data2services/graph/autor2rml \
   --var-output https://w3id.org/d2s/graph/biolink/hgnc

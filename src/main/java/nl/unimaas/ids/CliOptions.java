@@ -9,28 +9,28 @@ public class CliOptions {
 	@Option(names = { "-h", "--help" }, usageHelp = true, description = "Display a help message")
 	boolean help = false;
 	
-	@Option(names= {"-sp", "--sparql-query"}, description = "SPARQL query string to execute.")
+	@Option(names= {"-q", "--query"}, description = "SPARQL query string to execute.")
 	String sparqlQuery = null;
 	
-	@Option(names= {"-f", "--filepath"}, description = "Path of file(s) to execute. Single file from URL or filepath. Multiple files from directory (query files must have .rq extension). YAML file.")
+	@Option(names= {"-i", "--input"}, description = "Path of file(s) to execute. Single file from URL or filepath. Multiple files from directory (query files must have .rq extension). YAML file.")
 	String inputFile = null;
 	
-	@Option(names= {"-op", "--operation"}, description = "SPARQL query operation (update, construct, select, metadata, split, upload). Default is update")
+	@Option(names= {"-o", "--operation"}, description = "SPARQL query operation (update, construct, select, metadata, split, upload). Default is update")
 	QueryOperations queryOperation = QueryOperations.update;
 	
 	
 	// SPARQL endpoint params
-	@Option(names= {"-ep", "--sparql-endpoint"}, required = true, 
-			description = "URL of the SPARQL Endpoint to query or RDF4J Server. e.g. https://graphdb.dumontierlab.com/repositories/test or https://graphdb.dumontierlab.com")
+	@Option(names= {"-e", "--endpoint"}, required = true, 
+			description = "URL of the SPARQL Endpoint to query, or RDF4J Server. e.g. https://graphdb.dumontierlab.com/repositories/test or https://graphdb.dumontierlab.com")
 	String endpointUrl = null;
 	
-	@Option(names= {"-rep", "--repositoryId"}, description = "Repository ID for RDF4J Server. E.g. test")
+	@Option(names= {"-r", "--repository"}, description = "Repository ID when using a RDF4J Server URL (instead of direct SPARQL endpoint). E.g. test")
 	String repositoryId = null;
 
-	@Option(names= {"-un", "--username"}, description = "Username used for SPARQL endpoint authentication")
+	@Option(names= {"-u", "--username"}, description = "Username used for SPARQL endpoint authentication")
 	String username = null;
 
-	@Option(names= {"-pw", "--password"}, description = "Password used for SPARQL endpoint authentication")
+	@Option(names= {"-p", "--password"}, description = "Password used for SPARQL endpoint authentication")
 	String password = null;
 	
 	

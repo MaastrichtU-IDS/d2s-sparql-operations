@@ -20,7 +20,15 @@ public class SparqlOperation {
 			if(cli.help)
 				printUsageAndExit();
 			
-			Repository repo = SparqlRepositoryFactory.getRepository(cli.endpointUrl, cli.repositoryId, cli.username, cli.password);
+			String username = System.getenv("D2S_USERNAME");
+			String password = System.getenv("D2S_PASSWORD");
+			if (cli.username != null) {
+				username = cli.username;
+			}
+			if (cli.password != null) {
+				password = cli.password;
+			}
+			Repository repo = SparqlRepositoryFactory.getRepository(cli.endpointUrl, cli.repositoryId, username, password);
 			
 			if (cli.queryOperation == QueryOperations.split) {
 				// If the query operation is split
