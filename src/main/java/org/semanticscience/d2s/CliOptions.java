@@ -48,6 +48,8 @@ public class CliOptions {
 	@Option(names= {"--var-service"}, description = "A SPARQL service URL variable to replace in the SPARQL query. E.g.: http://localhost:7200/repositories/test")
 	String varService;
 	
+	@Option(names= {"--lib"}, description = "The library to use to upload RDF files, rdf4 or jena. Default: rdf4j")
+	String useLib = "rdf4j";
 	
 	// Split params
 	@Option(names= {"--split-delimiter"}, description = "Delimiter for the Split operation. Default: ','")
