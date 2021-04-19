@@ -37,6 +37,7 @@ public class RdfUpload {
 			System.out.println("Uploading: " + inputFilePath);
 			
 			// Try with jena https://jena.apache.org/documentation/rdfconnection/
+			// TODO: currently not working
 			if (useLib.equals("jena")) {
 				System.out.println("Upload RDF file using Jena");
 				String username = System.getenv("D2S_USERNAME");

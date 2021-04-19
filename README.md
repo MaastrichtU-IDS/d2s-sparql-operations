@@ -106,10 +106,10 @@ docker run -it --rm umids/d2s-sparql-operations -h
 Upload RDF files to a SPARQL endpoint:
 
 ```bash
-docker run -it --rm -v $(pwd):/data umids/d2s-sparql-operations -op upload \
+docker run -it --rm -v $(pwd):/data umids/d2s-sparql-operations -o upload \
   -i "*.ttl" \
   -e "https://graphdb.dumontierlab.com/repositories/test/statements" \
-  -u $USERNAME -pw $PASSWORD \
+  -u $USERNAME -p $PASSWORD \
   -g "http://my-graph.com"
 ```
 
@@ -120,7 +120,7 @@ docker run -it --rm -v $(pwd):/data umids/d2s-sparql-operations -op upload \
 On [DBpedia](http://dbpedia.org/sparql) using a SPARQL query string as argument.
 
 ```bash
-docker run -it --rm umids/d2s-sparql-operations -op select \
+docker run -it --rm umids/d2s-sparql-operations -o select \
   -q "select distinct ?Concept where {[] a ?Concept} LIMIT 10" \
   -e "http://dbpedia.org/sparql"
 ```
@@ -133,9 +133,9 @@ Multiple `INSERT` on [graphdb.dumontierlab.com](https://graphdb.dumontierlab.com
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations \
-  -e "https://graphdb.dumontierlab.com" -rep "test" \
+  -e "https://graphdb.dumontierlab.com" -r "test" \
   #-e "https://graphdb.dumontierlab.com/repositories/test/statements" \
-  -op update -u $USERNAME -pw $PASSWORD \
+  -o update -u $USERNAME -p $PASSWORD \
   -i "https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/insert-examples"
 ```
 
@@ -148,7 +148,7 @@ docker run -it --rm umids/d2s-sparql-operations \
 On [graphdb.dumontierlab.com](https://graphdb.dumontierlab.com/) using GitHub URL to get the SPARQL query from a file.
 
 ```bash
-docker run -it --rm umids/d2s-sparql-operations -op construct \
+docker run -it --rm umids/d2s-sparql-operations -o construct \
   -e "https://graphdb.dumontierlab.com/repositories/ncats-red-kg" \
   -i "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-construct-pathways.rq" 
 ```
@@ -162,7 +162,7 @@ We crawl the [example GitHub repository](https://github.com/MaastrichtU-IDS/d2s-
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations \
-  -op select -e "http://dbpedia.org/sparql" \
+  -o select -e "http://dbpedia.org/sparql" \
   -i "https://github.com/MaastrichtU-IDS/d2s-sparql-operations/tree/master/src/main/resources/select-examples" 
 ```
 
@@ -176,7 +176,7 @@ A YAML file can be used to provide multiple ordered queries. See [example from G
 
 ```bash
 docker run -it --rm umids/d2s-sparql-operations \
-  -op select -e "http://dbpedia.org/sparql" \
+  -o select -e "http://dbpedia.org/sparql" \
   -i "https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-sparql-operations/master/src/main/resources/example-queries.yaml"
 ```
 
